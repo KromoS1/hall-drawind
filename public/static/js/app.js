@@ -98,7 +98,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
       if (this.selector.nodeType) return this._setup([this.selector]);else // shorthand for DOMReady
-        if (typeof this.selector === 'function') return this._setup([document]).ready(this.selector); // Array like objects (e.g. NodeList/HTMLCollection)
+      if (typeof this.selector === 'function') return this._setup([document]).ready(this.selector); // Array like objects (e.g. NodeList/HTMLCollection)
 
       return this._setup(arrayFrom(this.selector));
     },
@@ -311,8 +311,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var found = [];
       this.each(function (i, item) {
         found = found.concat(map(item.querySelectorAll(
-        /*':scope ' + */
-        selector), function (fitem) {
+            /*':scope ' + */
+            selector), function (fitem) {
           return fitem;
         }));
       });
@@ -484,7 +484,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
    * - Only Collapse is required which is used by the sidebar.
    * - Tab and Dropdown are optional features.
    */
-  // Emulate jQuery symbol to simplify usage
+      // Emulate jQuery symbol to simplify usage
 
   var $ = Wrap.Constructor; // Emulates Collapse plugin
 
@@ -502,25 +502,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     if (target.is('a')) e.preventDefault();
 
     switch (target.data('toggle')) {
-      case 'collapse':
-        $(target.attr('href')).collapse('toggle');
-        break;
+    case 'collapse':
+      $(target.attr('href')).collapse('toggle');
+      break;
 
-      case 'tab':
-        target.parent().parent().find('.active').removeClass('active');
-        target.addClass('active');
-        var tabPane = $(target.attr('href'));
-        tabPane.siblings().removeClass('active show');
-        tabPane.addClass('active show');
-        break;
+    case 'tab':
+      target.parent().parent().find('.active').removeClass('active');
+      target.addClass('active');
+      var tabPane = $(target.attr('href'));
+      tabPane.siblings().removeClass('active show');
+      tabPane.addClass('active show');
+      break;
 
-      case 'dropdown':
-        var dd = target.parent().toggleClass('show');
-        dd.find('.dropdown-menu').toggleClass('show');
-        break;
+    case 'dropdown':
+      var dd = target.parent().toggleClass('show');
+      dd.find('.dropdown-menu').toggleClass('show');
+      break;
 
-      default:
-        break;
+    default:
+      break;
     }
   });
   return Wrap.Constructor;
@@ -1132,8 +1132,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         //position: 'right' or 'left',
         tickFormatter: function tickFormatter(v) {
           return v
-          /* + ' visitors'*/
-          ;
+              /* + ' visitors'*/
+              ;
         }
       },
       shadowSize: 0
@@ -1471,7 +1471,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             radius: 0.8,
             formatter: function formatter(label, series) {
               return '<div class="flot-pie-label">' + //label + ' : ' +
-              Math.round(series.percent) + '%</div>';
+                  Math.round(series.percent) + '%</div>';
             },
             background: {
               opacity: 0.8,
@@ -2121,8 +2121,72 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
     return $('#' + linkId);
   }
-})();
-; // NAVBAR SEARCH
+})(); // TRANSLATION
+// -----------------------------------
+
+//
+// (function () {
+//   'use strict';
+//
+//   $(initTranslation);
+//   var pathPrefix = 'server/i18n'; // folder of json files
+//
+//   var STORAGEKEY = 'jq-appLang';
+//   var savedLanguage = Storages.localStorage.get(STORAGEKEY);
+//
+//   function initTranslation() {
+//     i18next.use(i18nextXHRBackend) // .use(LanguageDetector)
+//         .init({
+//           fallbackLng: savedLanguage || 'en',
+//           backend: {
+//             loadPath: pathPrefix + '/{{ns}}-{{lng}}.json'
+//           },
+//           ns: ['site'],
+//           defaultNS: 'site',
+//           debug: false
+//         }, function (err, t) {
+//           // initialize elements
+//           applyTranlations(); // listen to language changes
+//
+//           attachChangeListener();
+//         });
+//
+//     function applyTranlations() {
+//       var list = [].slice.call(document.querySelectorAll('[data-localize]'));
+//       list.forEach(function (item) {
+//         var key = item.getAttribute('data-localize');
+//         if (i18next.exists(key)) item.innerHTML = i18next.t(key);
+//       });
+//     }
+//
+//     function attachChangeListener() {
+//       var list = [].slice.call(document.querySelectorAll('[data-set-lang]'));
+//       list.forEach(function (item) {
+//         item.addEventListener('click', function (e) {
+//           if (e.target.tagName === 'A') e.preventDefault();
+//           var lang = item.getAttribute('data-set-lang');
+//
+//           if (lang) {
+//             i18next.changeLanguage(lang, function (err) {
+//               if (err) console.log(err);else {
+//                 applyTranlations();
+//                 Storages.localStorage.set(STORAGEKEY, lang);
+//               }
+//             });
+//           }
+//
+//           activateDropdown(item);
+//         });
+//       });
+//     }
+//
+//     function activateDropdown(item) {
+//       if (item.classList.contains('dropdown-item')) {
+//         item.parentElement.previousElementSibling.innerHTML = item.innerHTML;
+//       }
+//     }
+//   }
+// })(); // NAVBAR SEARCH
 // -----------------------------------
 
 
@@ -2166,7 +2230,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       },
       dismiss: function dismiss() {
         $(navbarFormSelector).removeClass('open') // Close control
-        .find('input[type="text"]').blur() // remove focus
+            .find('input[type="text"]').blur() // remove focus
         // .val('')                    // Empty input
         ;
       }
@@ -2244,8 +2308,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var currentItem = $('.sidebar .active').parents('li'); // hover mode don't try to expand active collapse
 
     if (!useAsideHover()) currentItem.addClass('active') // activate the parent
-    .children('.collapse') // find the collapse
-    .collapse('show'); // and show it
+        .children('.collapse') // find the collapse
+        .collapse('show'); // and show it
     // remove this if you use only collapsible sidebar items
 
     $sidebar.find('li > a + ul').on('show.bs.collapse', function (e) {
@@ -2272,11 +2336,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var $target = $(e.target);
 
         if (!$target.parents('.aside-container').length && // if not child of sidebar
-        !$target.is('#user-block-toggle') && // user block toggle anchor
-        !$target.parent().is('#user-block-toggle') // user block toggle icon
+            !$target.is('#user-block-toggle') && // user block toggle anchor
+            !$target.parent().is('#user-block-toggle') // user block toggle icon
         ) {
-            $body.removeClass('aside-toggled');
-          }
+          $body.removeClass('aside-toggled');
+        }
       });
     }
   }
@@ -2449,27 +2513,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     /** Add a state to the browser storage to be restored later */
 
     this.addState = function (classname) {
-      var data = localStorage.getItem(STORAGE_KEY_NAME);
+      var data = Storages.localStorage.get(STORAGE_KEY_NAME);
       if (data instanceof Array) data.push(classname);else data = [classname];
-      localStorage.setItem(STORAGE_KEY_NAME, data);
+      Storages.localStorage.set(STORAGE_KEY_NAME, data);
     };
     /** Remove a state from the browser storage */
 
 
     this.removeState = function (classname) {
-      var data = localStorage.getItem(STORAGE_KEY_NAME);
+      var data = Storages.localStorage.get(STORAGE_KEY_NAME);
 
       if (data) {
         var index = data.indexOf(classname);
         if (index !== -1) data.splice(index, 1);
-        localStorage.setItem(STORAGE_KEY_NAME, data);
+        Storages.localStorage.set(STORAGE_KEY_NAME, data);
       }
     };
     /** Load the state string and restore the classlist */
 
 
     this.restoreState = function ($elem) {
-      var data = localStorage.getItem(STORAGE_KEY_NAME);
+      var data = Storages.localStorage.get(STORAGE_KEY_NAME);
       if (data instanceof Array) $elem.addClass(data.join(' '));
     };
   };
@@ -2645,38 +2709,38 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   var containers = {},
       messages = {},
       notify = function notify(options) {
-    if ($.type(options) == 'string') {
-      options = {
-        message: options
-      };
-    }
+        if ($.type(options) == 'string') {
+          options = {
+            message: options
+          };
+        }
 
-    if (arguments[1]) {
-      options = $.extend(options, $.type(arguments[1]) == 'string' ? {
-        status: arguments[1]
-      } : arguments[1]);
-    }
+        if (arguments[1]) {
+          options = $.extend(options, $.type(arguments[1]) == 'string' ? {
+            status: arguments[1]
+          } : arguments[1]);
+        }
 
-    return new Message(options).show();
-  },
+        return new Message(options).show();
+      },
       closeAll = function closeAll(group, instantly) {
-    if (group) {
-      for (var id in messages) {
-        if (group === messages[id].group) messages[id].close(instantly);
-      }
-    } else {
-      for (var id in messages) {
-        messages[id].close(instantly);
-      }
-    }
-  };
+        if (group) {
+          for (var id in messages) {
+            if (group === messages[id].group) messages[id].close(instantly);
+          }
+        } else {
+          for (var id in messages) {
+            messages[id].close(instantly);
+          }
+        }
+      };
 
   var Message = function Message(options) {
     var $this = this;
     this.options = $.extend({}, Message.defaults, options);
     this.uuid = "ID" + new Date().getTime() + "RAND" + Math.ceil(Math.random() * 100000);
     this.element = $([// alert-dismissable enables bs close icon
-    '<div class="uk-notify-message alert-dismissable">', '<a class="close">&times;</a>', '<div>' + this.options.message + '</div>', '</div>'].join('')).data("notifyMessage", this); // status
+      '<div class="uk-notify-message alert-dismissable">', '<a class="close">&times;</a>', '<div>' + this.options.message + '</div>', '</div>'].join('')).data("notifyMessage", this); // status
 
     if (this.options.status) {
       this.element.addClass('alert alert-' + this.options.status);
@@ -2731,14 +2795,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     close: function close(instantly) {
       var $this = this,
           finalize = function finalize() {
-        $this.element.remove();
+            $this.element.remove();
 
-        if (!containers[$this.options.pos].children().length) {
-          containers[$this.options.pos].hide();
-        }
+            if (!containers[$this.options.pos].children().length) {
+              containers[$this.options.pos].hide();
+            }
 
-        delete messages[$this.uuid];
-      };
+            delete messages[$this.uuid];
+          };
 
       if (this.timeout) clearTimeout(this.timeout);
 
@@ -2825,7 +2889,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   }
 
   function savePortletOrder(event, ui) {
-    var data = localStorage.getItem(STORAGE_KEY_NAME);
+    var data = Storages.localStorage.get(STORAGE_KEY_NAME);
 
     if (!data) {
       data = {};
@@ -2834,12 +2898,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     data[this.id] = $(this).sortable('toArray');
 
     if (data) {
-      localStorage.setItem(STORAGE_KEY_NAME, data);
+      Storages.localStorage.set(STORAGE_KEY_NAME, data);
     }
   }
 
   function loadPortletOrder() {
-    var data = localStorage.getItem(STORAGE_KEY_NAME);
+    var data = Storages.localStorage.get(STORAGE_KEY_NAME);
 
     if (data) {
       var porletId = this.id,
@@ -2856,7 +2920,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
   window.resetPorlets = function (e) {
-    localStorage.removeItem(STORAGE_KEY_NAME); // reload the page
+    Storages.localStorage.remove(STORAGE_KEY_NAME); // reload the page
 
     window.location.reload();
   };
@@ -3043,53 +3107,53 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         $dataWidth = $('#dataWidth'),
         $dataRotate = $('#dataRotate'),
         options = {
-      // data: {
-      //   x: 420,
-      //   y: 60,
-      //   width: 640,
-      //   height: 360
-      // },
-      // strict: false,
-      // responsive: false,
-      // checkImageOrigin: false
-      // modal: false,
-      // guides: false,
-      // highlight: false,
-      // background: false,
-      // autoCrop: false,
-      // autoCropArea: 0.5,
-      // dragCrop: false,
-      // movable: false,
-      // rotatable: false,
-      // zoomable: false,
-      // touchDragZoom: false,
-      // mouseWheelZoom: false,
-      // cropBoxMovable: false,
-      // cropBoxResizable: false,
-      // doubleClickToggle: false,
-      // minCanvasWidth: 320,
-      // minCanvasHeight: 180,
-      // minCropBoxWidth: 160,
-      // minCropBoxHeight: 90,
-      // minContainerWidth: 320,
-      // minContainerHeight: 180,
-      // build: null,
-      // built: null,
-      // dragstart: null,
-      // dragmove: null,
-      // dragend: null,
-      // zoomin: null,
-      // zoomout: null,
-      aspectRatio: 16 / 9,
-      preview: '.img-preview',
-      crop: function crop(data) {
-        $dataX.val(Math.round(data.x));
-        $dataY.val(Math.round(data.y));
-        $dataHeight.val(Math.round(data.height));
-        $dataWidth.val(Math.round(data.width));
-        $dataRotate.val(Math.round(data.rotate));
-      }
-    };
+          // data: {
+          //   x: 420,
+          //   y: 60,
+          //   width: 640,
+          //   height: 360
+          // },
+          // strict: false,
+          // responsive: false,
+          // checkImageOrigin: false
+          // modal: false,
+          // guides: false,
+          // highlight: false,
+          // background: false,
+          // autoCrop: false,
+          // autoCropArea: 0.5,
+          // dragCrop: false,
+          // movable: false,
+          // rotatable: false,
+          // zoomable: false,
+          // touchDragZoom: false,
+          // mouseWheelZoom: false,
+          // cropBoxMovable: false,
+          // cropBoxResizable: false,
+          // doubleClickToggle: false,
+          // minCanvasWidth: 320,
+          // minCanvasHeight: 180,
+          // minCropBoxWidth: 160,
+          // minCropBoxHeight: 90,
+          // minContainerWidth: 320,
+          // minContainerHeight: 180,
+          // build: null,
+          // built: null,
+          // dragstart: null,
+          // dragmove: null,
+          // dragend: null,
+          // zoomin: null,
+          // zoomout: null,
+          aspectRatio: 16 / 9,
+          preview: '.img-preview',
+          crop: function crop(data) {
+            $dataX.val(Math.round(data.x));
+            $dataY.val(Math.round(data.y));
+            $dataHeight.val(Math.round(data.height));
+            $dataWidth.val(Math.round(data.width));
+            $dataRotate.val(Math.round(data.rotate));
+          }
+        };
     $image.on({
       'build.cropper': function buildCropper(e) {
         console.log(e.type);
@@ -3161,25 +3225,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       switch (e.which) {
-        case 37:
-          e.preventDefault();
-          $image.cropper('move', -1, 0);
-          break;
+      case 37:
+        e.preventDefault();
+        $image.cropper('move', -1, 0);
+        break;
 
-        case 38:
-          e.preventDefault();
-          $image.cropper('move', 0, -1);
-          break;
+      case 38:
+        e.preventDefault();
+        $image.cropper('move', 0, -1);
+        break;
 
-        case 39:
-          e.preventDefault();
-          $image.cropper('move', 1, 0);
-          break;
+      case 39:
+        e.preventDefault();
+        $image.cropper('move', 1, 0);
+        break;
 
-        case 40:
-          e.preventDefault();
-          $image.cropper('move', 0, 1);
-          break;
+      case 40:
+        e.preventDefault();
+        $image.cropper('move', 0, 1);
+        break;
       }
     }); // Import image
 
@@ -3303,10 +3367,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         });
         this.on('sendingmultiple', function () {});
         this.on('successmultiple', function ()
-        /*files, response*/
+            /*files, response*/
         {});
         this.on('errormultiple', function ()
-        /*files, response*/
+            /*files, response*/
         {});
       }
     };
@@ -3408,13 +3472,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }],
       display: function display(value, sourceData) {
         var colors = {
-          "": "gray",
-          1: "green",
-          2: "blue"
-        },
+              "": "gray",
+              1: "green",
+              2: "blue"
+            },
             elem = $.grep(sourceData, function (o) {
-          return o.value == value;
-        });
+              return o.value == value;
+            });
 
         if (elem.length) {
           $(this).text(elem[0].text).css("color", colors[value]);
@@ -3832,7 +3896,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           zoom = $this.data('zoom') || 14,
           maptype = $this.data('maptype') || 'ROADMAP',
           // or 'TERRAIN'
-      markers = [];
+          markers = [];
 
       if (addresses) {
         for (var a in addresses) {
@@ -3982,13 +4046,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     var attrs = element.data(),
         mapHeight = attrs.height || '300',
         options = {
-      markerColor: attrs.markerColor || defaultColors.markerColor,
-      bgColor: attrs.bgColor || defaultColors.bgColor,
-      scale: attrs.scale || 1,
-      scaleColors: attrs.scaleColors || defaultColors.scaleColors,
-      regionFill: attrs.regionFill || defaultColors.regionFill,
-      mapName: attrs.mapName || 'world_mill_en'
-    };
+          markerColor: attrs.markerColor || defaultColors.markerColor,
+          bgColor: attrs.bgColor || defaultColors.bgColor,
+          scale: attrs.scale || 1,
+          scaleColors: attrs.scaleColors || defaultColors.scaleColors,
+          regionFill: attrs.regionFill || defaultColors.regionFill,
+          mapName: attrs.mapName || 'world_mill_en'
+        };
     element.css('height', mapHeight);
     init(element, options, seriesData, markersData);
 
