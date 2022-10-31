@@ -1,6 +1,6 @@
-import {createReducer, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-type MouseReducerType = {
+export type MouseReducerType = {
     x: number,
     y: number,
 }
@@ -10,8 +10,15 @@ const initialState: MouseReducerType = {
     y: 0,
 }
 
-export const mouseReducer = createReducer(initialState,{
-    setMouseCoordinate: (state, action:PayloadAction<MouseReducerType>) => {
-        return action.payload;
+const sliceMouse = createSlice({
+    name:'mouse',
+    initialState,
+    reducers:{
+        setMousePosition: (state, action:PayloadAction<MouseReducerType>) => {
+            return action.payload;
+        }
     }
 })
+
+export const {setMousePosition} = sliceMouse.actions;
+export default sliceMouse.reducer
