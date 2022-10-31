@@ -1,9 +1,11 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 // import logger from 'redux-logger';
 import mouseReducer from "./reducers/mouseReducer";
+import circlesReducer from "./reducers/circlesReducer";
 
 const rootReducer = combineReducers({
-   mouse: mouseReducer
+   mouse: mouseReducer,
+   circles: circlesReducer,
 })
 
 export const store = configureStore({
@@ -12,4 +14,3 @@ export const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof rootReducer>
-

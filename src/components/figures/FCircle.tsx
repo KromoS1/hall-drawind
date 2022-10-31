@@ -1,20 +1,24 @@
-import React, {FC, memo, useState} from 'react';
+import React, {FC, memo, useEffect, useState} from 'react';
 import Konva from "konva";
 import {Circle} from 'react-konva';
 import KonvaEventObject = Konva.KonvaEventObject;
+import {useDispatch} from "react-redux";
+import {setCirclePosition} from "../../store/reducers/circlesReducer";
+import {PointType} from "../../store/mainType";
 
-type PropsType = {
-    x: number
-    y: number
+type PropsType = PointType & {
+    id: number
 }
 
 type DragType = {
     isDragging: boolean,
 }
 
-export const FCircle:FC<PropsType> = memo(({x, y}) => {
+export const FCircle:FC<PropsType> = memo(({id, x, y}) => {
 
-    const [positionCircle, setPositionCircle] = useState<PropsType & DragType>({x: x, y: y, isDragging: false});
+    const [positionCircle, setPositionCircle] = useState<PointType & DragType>({x: x, y: y, isDragging: false});
+
+    const dispatch = useDispatch();
 
     const onDragStart = () => {
         setPositionCircle(position => ({...position, isDragging: true}));
@@ -23,6 +27,10 @@ export const FCircle:FC<PropsType> = memo(({x, y}) => {
     const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
         setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
     }
+
+    useEffect(() => {
+        dispatch(setCirclePosition({id, x:positionCircle.x, y: positionCircle.y}))
+    },[positionCircle])
 
     return (
         <Circle
