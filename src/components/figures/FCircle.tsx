@@ -7,40 +7,40 @@ import {setCirclePosition} from "../../store/reducers/circlesReducer";
 import {PointType} from "../../store/mainType";
 
 type PropsType = PointType & {
-    id: number
+    id: string
 }
 
 type DragType = {
     isDragging: boolean,
 }
 
-export const FCircle:FC<PropsType> = memo(({id, x, y}) => {
+export const SIZE_CIRCLE = 20;
+export const SIZE_IDENT_CIRCLE = 5;
 
-    const [positionCircle, setPositionCircle] = useState<PointType & DragType>({x: x, y: y, isDragging: false});
+export const FCircle: FC<PropsType> = memo(({id, x, y}) => {
+
+    // const [positionCircle, setPositionCircle] = useState<PointType & DragType>({x: x, y: y, isDragging: false});
 
     const dispatch = useDispatch();
 
-    const onDragStart = () => {
-        setPositionCircle(position => ({...position, isDragging: true}));
-    }
+    // const onDragStart = () => {
+    //     setPositionCircle(position => ({...position, isDragging: true}));
+    // }
 
-    const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-        setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
-    }
+    // const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+    //     setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
+    // }
 
-    useEffect(() => {
-        dispatch(setCirclePosition({id, x:positionCircle.x, y: positionCircle.y}))
-    },[positionCircle])
 
     return (
         <Circle
-            x={positionCircle.x}
-            y={positionCircle.y}
-            radius={10}
+            x={x}
+            y={y}
+            radius={SIZE_CIRCLE / 2}
             draggable
-            fill={positionCircle.isDragging ? "#a63914" : '#dd4814'}
-            onDragStart={onDragStart}
-            onDragEnd={onDragEnd}
+            fill={'#dd4814'}
+            // onDragStart={onDragStart}
+            // onDragEnd={onDragEnd}
             shadowBlur={2}
         />
     )

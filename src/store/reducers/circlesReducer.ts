@@ -1,28 +1,20 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 
-type CirclesType = PointType & {
-    id:number
+export type CirclesType = PointType & {
+    id:string
 }
 
-export type CirclesReducerType = {
-    [key:number] : CirclesType
-}
+export type CirclesReducerType = CirclesType[]
 
-const initialState:CirclesReducerType = {
-    1:{
-        id:1,
-        x: 20,
-        y: 20,
-    }
-}
+const initialState:CirclesReducerType = []
 
 const sliceCircles = createSlice({
     name:'mouse',
     initialState,
     reducers:{
-        setCirclePosition: (state, action:PayloadAction<CirclesType>) => {
-            state[action.payload.id] = action.payload;
+        setCirclePosition: (state, action:PayloadAction<CirclesType[]>) => {
+            state = action.payload;
             return state;
         }
     }
