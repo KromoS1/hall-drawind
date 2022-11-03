@@ -2,7 +2,7 @@ import React, {memo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {MouseReducerType} from "../../store/reducers/mouseReducer";
-import {GridDraw} from "../figures/GridDraw";
+import {GridDraw} from "./GridDraw";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
 import {calcCountCircleGrid, createCirclesForGrid} from "../../calculate/calculateGrid";
 import {CountCirclesDrawType, setCirclePosition, setCountCirclesDraw} from "../../store/reducers/circlesReducer";

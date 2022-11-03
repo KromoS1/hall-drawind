@@ -37,7 +37,8 @@ export const Content = memo(() => {
         })
     }, [])
 
-    const circlesDraw = circles.map((circle: CirclesType, i: number) => <FCircle key={circle.id} id={circle.id} index={i} x={circle.x} y={circle.y}/>);
+    const circlesDraw = circles.map((circle: CirclesType) =>
+        <FCircle key={circle.id} id={circle.id}  x={circle.x} y={circle.y} numberPos={circle.numberPos} isDraggable={circle.isDraggable}/>);
 
     return (
         <section className={"section-container"}>

@@ -10,10 +10,12 @@ type CoordinateCalcType = {
 }
 const sizeCircleWithIdent = SIZE_CIRCLE + SIZE_IDENT_CIRCLE;
 
-const createCircle = (x: number, y: number): CirclesType => {
+const createCircle = (x: number, y: number, numberPos: number): CirclesType => {
     return {
         id: uuid(),
-        x, y
+        x, y,
+        numberPos,
+        isDraggable: false,
     }
 }
 
@@ -50,7 +52,7 @@ export const createCirclesForGrid = (coordinate: {xStart: number, yStart: number
 
             const pointX = coordinate.xStart + (x * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
             const pointY = coordinate.yStart + (y * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
-            resultCircles.push(createCircle(pointX,pointY));
+            resultCircles.push(createCircle(pointX, pointY, x + 1));
         }
     }
 

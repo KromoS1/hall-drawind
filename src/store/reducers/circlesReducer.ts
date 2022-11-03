@@ -2,7 +2,9 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 
 export type CirclesType = PointType & {
-    id:string
+    id:string,
+    numberPos:number
+    isDraggable:boolean
 }
 
 export type CountCirclesDrawType = {

@@ -1,48 +1,45 @@
-import React, {FC, memo, useEffect, useState} from 'react';
+import React, {FC, memo, useState} from 'react';
 import Konva from "konva";
-import {Circle} from 'react-konva';
-import KonvaEventObject = Konva.KonvaEventObject;
-import {useDispatch} from "react-redux";
-import {setCirclePosition} from "../../store/reducers/circlesReducer";
+import {Circle, Text} from 'react-konva';
+import {CirclesType} from "../../store/reducers/circlesReducer";
 import {PointType} from "../../store/mainType";
+import KonvaEventObject = Konva.KonvaEventObject;
 
-type PropsType = PointType & {
-    id: string;
-    index:number
-}
-
-type DragType = {
-    isDragging: boolean,
-}
+type PropsType = CirclesType
 
 export const SIZE_CIRCLE = 20;
 export const SIZE_IDENT_CIRCLE = 5;
 
-export const FCircle: FC<PropsType> = memo(({id, index, x, y}) => {
+export const FCircle: FC<PropsType> = memo(({id, numberPos, x, y, isDraggable}) => {
 
-    // const [positionCircle, setPositionCircle] = useState<PointType & DragType>({x: x, y: y, isDragging: false});
+    const [positionCircle, setPositionCircle] = useState<PointType & { isDragging: boolean }>({x: x, y: y, isDragging: false});
 
-    const dispatch = useDispatch();
+    const onDragStart = () => {
+        setPositionCircle(position => ({...position, isDragging: true}));
+    }
 
-    // const onDragStart = () => {
-    //     setPositionCircle(position => ({...position, isDragging: true}));
-    // }
+    const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+        setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
+    }
 
-    // const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-    //     setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
-    // }
-
+    const offset = {
+        x: `${numberPos}`.length > 2 ? 8.5 : `${numberPos}`.length > 1 ? 5 : 3,
+        y: 5
+    }
 
     return (
-        <Circle
-            x={x}
-            y={y}
-            radius={SIZE_CIRCLE / 2}
-            // draggable
-            fill={'#dd4814'}
-            // onDragStart={onDragStart}
-            // onDragEnd={onDragEnd}
-            shadowBlur={2}
-        />
+       <>
+           <Circle
+               x={positionCircle.x}
+               y={positionCircle.y}
+               radius={SIZE_CIRCLE / 2}
+               draggable={isDraggable}
+               fill={'#dd4814'}
+               onDragStart={onDragStart}
+               onDragEnd={onDragEnd}
+               shadowBlur={2}
+           />
+           <Text x={x} y={y} text={`${numberPos}`} fontSize={10} fill={'#fff'} offset={offset}/>
+       </>
     )
 })
