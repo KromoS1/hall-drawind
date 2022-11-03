@@ -7,7 +7,8 @@ import {setCirclePosition} from "../../store/reducers/circlesReducer";
 import {PointType} from "../../store/mainType";
 
 type PropsType = PointType & {
-    id: string
+    id: string;
+    index:number
 }
 
 type DragType = {
@@ -17,7 +18,7 @@ type DragType = {
 export const SIZE_CIRCLE = 20;
 export const SIZE_IDENT_CIRCLE = 5;
 
-export const FCircle: FC<PropsType> = memo(({id, x, y}) => {
+export const FCircle: FC<PropsType> = memo(({id, index, x, y}) => {
 
     // const [positionCircle, setPositionCircle] = useState<PointType & DragType>({x: x, y: y, isDragging: false});
 
@@ -37,7 +38,7 @@ export const FCircle: FC<PropsType> = memo(({id, x, y}) => {
             x={x}
             y={y}
             radius={SIZE_CIRCLE / 2}
-            draggable
+            // draggable
             fill={'#dd4814'}
             // onDragStart={onDragStart}
             // onDragEnd={onDragEnd}
