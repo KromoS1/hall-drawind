@@ -4,6 +4,7 @@ import {Header} from "./components/mainComponents/Header";
 import {LeftAside} from "./components/mainComponents/LeftAside";
 import {RightAside} from "./components/mainComponents/RightAside";
 import {Content} from "./components/mainComponents/Content";
+import {NewContent} from "./components/mainComponents/NewContent";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
                 <LeftAside/>
                 <RightAside/>
                 <Content/>
+                {/*<NewContent/>*/}
             </div>
         </div>
     )

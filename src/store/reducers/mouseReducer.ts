@@ -40,16 +40,25 @@ const sliceMouse = createSlice({
     }
 })
 
+const checkZoom = (isZoom: boolean, mousePos: PointType, stageZoomPos: PointType, scale: number) => {
+
+    if (isZoom) {
+        return {x: +((mousePos.x - stageZoomPos.x) / scale).toFixed(2), y: +((mousePos.y - stageZoomPos.y) / scale).toFixed(2)}
+    }else{
+        return {x: mousePos.x, y: mousePos.y }
+    }
+}
 
 export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
     // @ts-ignore
     const stage = thunkApi.getState()?.stage;
 
-    if (stage.isZoom){
-        thunkApi.dispatch(setMousePosition({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
-    }else{
-        thunkApi.dispatch(setMousePosition({x: e.evt.offsetX, y: e.evt.offsetY}));
+    const mousePos = {
+        x: e.evt.offsetX + stage.stagePositionMove.x,
+        y: e.evt.offsetY + stage.stagePositionMove.y
     }
+
+    thunkApi.dispatch(setMousePosition(checkZoom(stage.isZoom, mousePos, stage.stagePositionZoom, stage.scale)));
 })
 
 export const mouseDownThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
@@ -57,11 +66,12 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaE
     const stage = thunkApi.getState()?.stage;
     thunkApi.dispatch(setValueDown({isDown: true}));
 
-    if (stage.isZoom){
-        thunkApi.dispatch(setMousePointDown({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
-    }else{
-        thunkApi.dispatch(setMousePointDown({x: e.evt.offsetX, y: e.evt.offsetY}));
+    const mousePos = {
+        x: e.evt.offsetX + stage.stagePositionMove.x,
+        y: e.evt.offsetY + stage.stagePositionMove.y
     }
+
+    thunkApi.dispatch(setMousePointDown(checkZoom(stage.isZoom, mousePos, stage.stagePositionZoom, stage.scale)));
 })
 
 export const mouseUpThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
@@ -70,11 +80,12 @@ export const mouseUpThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEve
 
     thunkApi.dispatch(setValueDown({isDown: false}));
 
-    if (stage.isZoom){
-        thunkApi.dispatch(setMousePointUp({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
-    }else{
-        thunkApi.dispatch(setMousePointUp({x: e.evt.offsetX, y: e.evt.offsetY}));
+    const mousePos = {
+        x: e.evt.offsetX + stage.stagePositionMove.x,
+        y: e.evt.offsetY + stage.stagePositionMove.y
     }
+
+    thunkApi.dispatch(setMousePointUp(checkZoom(stage.isZoom, mousePos, stage.stagePositionZoom, stage.scale)));
 })
 
 export const {setMousePosition, setMousePointDown, setMousePointUp, setValueDown} = sliceMouse.actions;
