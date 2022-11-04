@@ -1,5 +1,7 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
+import Konva from "konva";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export type MouseReducerType = {
     move: PointType,
@@ -31,10 +33,47 @@ const sliceMouse = createSlice({
             state.mouseUp = action.payload;
             return state;
         },
-        setValueDown: (state, action:PayloadAction<{isDown: boolean}>) => {
+        setValueDown: (state, action: PayloadAction<{ isDown: boolean }>) => {
             state.isDown = action.payload.isDown;
             return state;
-        }
+        },
+    }
+})
+
+
+export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
+    // @ts-ignore
+    const stage = thunkApi.getState()?.stage;
+
+    if (stage.isZoom){
+        thunkApi.dispatch(setMousePosition({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
+    }else{
+        thunkApi.dispatch(setMousePosition({x: e.evt.offsetX, y: e.evt.offsetY}));
+    }
+})
+
+export const mouseDownThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
+    // @ts-ignore
+    const stage = thunkApi.getState()?.stage;
+    thunkApi.dispatch(setValueDown({isDown: true}));
+
+    if (stage.isZoom){
+        thunkApi.dispatch(setMousePointDown({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
+    }else{
+        thunkApi.dispatch(setMousePointDown({x: e.evt.offsetX, y: e.evt.offsetY}));
+    }
+})
+
+export const mouseUpThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
+    // @ts-ignore
+    const stage = thunkApi.getState()?.stage;
+
+    thunkApi.dispatch(setValueDown({isDown: false}));
+
+    if (stage.isZoom){
+        thunkApi.dispatch(setMousePointUp({x: (e.evt.offsetX - stage.stagePosition.x) / stage.scale, y: (e.evt.offsetY - stage.stagePosition.y) / stage.scale}));
+    }else{
+        thunkApi.dispatch(setMousePointUp({x: e.evt.offsetX, y: e.evt.offsetY}));
     }
 })
 

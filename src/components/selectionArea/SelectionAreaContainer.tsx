@@ -4,9 +4,9 @@ import {RootState} from "../../store/store";
 import {MouseReducerType} from "../../store/reducers/mouseReducer";
 import {GridDraw} from "./GridDraw";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
-import {calcCountCircleGrid, createCirclesForGrid} from "../../calculate/calculateGrid";
 import {CountCirclesDrawType, setCirclePosition, setCountCirclesDraw} from "../../store/reducers/circlesReducer";
-import {observerMouse} from "../../observer/observerMouse";
+import {observerStage} from "../../observer/observerStage";
+import {calcCountCircleGrid, createCirclesForGrid} from "../../store/calculateDateEvents/calculateGrid";
 
 export const SelectionAreaContainer = memo(() => {
 
@@ -46,14 +46,14 @@ export const SelectionAreaContainer = memo(() => {
     useEffect(() => {
         calculateGrid();
 
-        observerMouse.subscribeEventMouse('mouseUp',resetSelection);
-        observerMouse.subscribeEventMouse('mouseUp',drawGrid);
+        observerStage.subscribeEventStage('mouseUp', resetSelection);
+        observerStage.subscribeEventStage('mouseUp', drawGrid);
         return () => {
 
-            observerMouse.removeSubscriber('mouseUp', resetSelection);
-            observerMouse.removeSubscriber('mouseUp', drawGrid);
+            observerStage.removeSubscriber('mouseUp', resetSelection);
+            observerStage.removeSubscriber('mouseUp', drawGrid);
         }
-    },[move])
+    }, [move])
 
     return (
         <>

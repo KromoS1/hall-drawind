@@ -1,5 +1,5 @@
-import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../components/figures/FCircle";
-import {CirclesType, CountCirclesDrawType} from "../store/reducers/circlesReducer";
+import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/FCircle";
+import {CirclesType, CountCirclesDrawType} from "../reducers/circlesReducer";
 import uuid from "react-uuid";
 
 type CoordinateCalcType = {

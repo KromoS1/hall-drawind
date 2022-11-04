@@ -1,18 +1,20 @@
 import Konva from "konva";
 import KonvaEventObject = Konva.KonvaEventObject;
 
-type eventMouse = 'move' | 'mouseDown' | 'mouseUp'
+type eventMouse = 'move' | 'mouseDown' | 'mouseUp' | 'wheel'
 
 type SubscribersType = {
     move: Function[],
     mouseDown: Function[],
     mouseUp: Function[],
+    wheel: Function[]
 }
 
 let subscribers:SubscribersType = {
     'move': [],
     'mouseDown': [],
-    'mouseUp': []
+    'mouseUp': [],
+    'wheel': []
 }
 
 function move(e: KonvaEventObject<MouseEvent>) {
@@ -27,7 +29,11 @@ function mouseUp(e: KonvaEventObject<MouseEvent>) {
     subscribers.mouseUp.forEach(s => s(e))
 }
 
-function subscribeEventMouse(eventName:eventMouse, callback: Function) {
+function wheel(e: KonvaEventObject<MouseEvent>) {
+    subscribers.wheel.forEach(s => s(e))
+}
+
+function subscribeEventStage(eventName:eventMouse, callback: Function) {
     subscribers[eventName].push(callback)
 }
 
@@ -39,6 +45,6 @@ function cleanSubscribers(eventName: eventMouse) {
     subscribers[eventName] = [];
 }
 
-export const observerMouse = {
-    move, mouseDown, mouseUp, subscribeEventMouse, removeSubscriber, cleanSubscribers
+export const observerStage = {
+    move, mouseDown, mouseUp, wheel, subscribeEventStage, removeSubscriber, cleanSubscribers
 }

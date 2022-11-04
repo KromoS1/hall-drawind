@@ -23,7 +23,7 @@ export const FCircle: FC<PropsType> = memo(({id, numberPos, x, y, isDraggable}) 
     }
 
     const offset = {
-        x: `${numberPos}`.length > 2 ? 8.5 : `${numberPos}`.length > 1 ? 5 : 3,
+        x: `${numberPos}`.length > 2 ? 8.5 : `${numberPos}`.length > 1 ? 6 : 3,
         y: 5
     }
 
