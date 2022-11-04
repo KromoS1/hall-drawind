@@ -34,11 +34,6 @@ export const zoomStage = (e:KonvaEventObject<MouseEvent>) => {
         y: pointer.y - mousePointTo.y * newScale,
     };
 
-    const pos = {
-        x: stage.x(),
-        y: stage.y(),
-    }
-
     stage.position(newPos);
-    return {pos, isZoom, scale: oldScale};
+    return {pos:newPos, isZoom, scale: newScale};
 }
