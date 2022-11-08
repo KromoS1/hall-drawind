@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 import Konva from "konva";
-import {checkStage} from "../calculateDateEvents/zoom";
+import {RootState} from "../store";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 export type MouseReducerType = {
@@ -41,55 +41,33 @@ const sliceMouse = createSlice({
     }
 })
 
-export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
-    // @ts-ignore
-    const stage = thunkApi.getState()?.stage;
-    let isMove = false
+export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch}) => {
 
-    const mousePos = {
-        x: e.evt.offsetX,
-        y: e.evt.offsetY,
-    }
-
-    if (stage.stagePositionMove.x || stage.stagePositionMove.y){
-        isMove = true;
-    }
-
-    // thunkApi.dispatch(setMousePosition(checkStage(stage.isZoom, isMove, mousePos, stage.stagePositionZoom, stage.stagePositionMove, stage.scale)));
-    thunkApi.dispatch(setMousePosition(mousePos));
+    const mousePos = e.currentTarget.getRelativePointerPosition();
+    dispatch(setMousePosition(mousePos));
 })
 
-export const mouseDownThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
-    // @ts-ignore
-    const stage = thunkApi.getState()?.stage;
-    // @ts-ignore
-    const mouse = thunkApi.getState()?.mouse.move;
+export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch,getState}) => {
 
-    thunkApi.dispatch(setValueDown({isDown: true}));
+    const state = getState() as RootState;
+    const mouse = state.mouse.move;
 
-    const mousePos = {
-        x: mouse.x,
-        y: mouse.y
-    }
+    const mousePos = {x: mouse.x, y: mouse.y}
 
-    thunkApi.dispatch(setMousePointDown(mousePos));
+    dispatch(setValueDown({isDown: true}));
+    dispatch(setMousePointDown(mousePos));
 })
 
-export const mouseUpThunk = createAsyncThunk('mouse/mouseMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
-    // @ts-ignore
-    const stage = thunkApi.getState()?.stage;
+export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch,getState}) => {
 
-    // @ts-ignore
-    const mouse = thunkApi.getState()?.mouse.move;
+    const state = getState() as RootState;
+    const mouse = state.mouse.move;
 
-    thunkApi.dispatch(setValueDown({isDown: false}));
 
-    const mousePos = {
-        x: mouse.x,
-        y: mouse.y
-    }
+    const mousePos = {x: mouse.x, y: mouse.y}
 
-    thunkApi.dispatch(setMousePointUp(mousePos));
+    dispatch(setValueDown({isDown: false}));
+    dispatch(setMousePointUp(mousePos));
 })
 
 export const {setMousePosition, setMousePointDown, setMousePointUp, setValueDown} = sliceMouse.actions;

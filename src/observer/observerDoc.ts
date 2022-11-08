@@ -24,6 +24,11 @@ function subscribeEventDoc(eventName:EventDocType, callback: Function) {
     subscribers[eventName].push(callback)
 }
 
+function cleanSubscribersAll() {
+    subscribers.ctrlKeyDown = [];
+    subscribers.ctrlKeyUp = [];
+}
+
 export const observerDoc = {
-    ctrlKeyDown, ctrlKeyUp, subscribeEventDoc
+    ctrlKeyDown, ctrlKeyUp, subscribeEventDoc ,cleanSubscribersAll
 }

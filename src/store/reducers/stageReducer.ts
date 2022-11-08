@@ -2,8 +2,8 @@ import {PointType} from "../mainType";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Konva from "konva";
 import {moveStage, zoomStage} from "../calculateDateEvents/zoom";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {setIsDrawGrid, setIsSelection} from "./selectionAreaReducer";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export type StageReducerType = {
     stagePositionZoom: PointType,
@@ -50,39 +50,25 @@ const sliceStage = createSlice({
     }
 })
 
-export const stageMoveThunk = createAsyncThunk('stage/stageMove',async (e:KonvaEventObject<MouseEvent>,thunkApi) => {
-    // @ts-ignore
-    // const scale = thunkApi.getState()?.stage.scale;
+export const stageMoveThunk = createAsyncThunk('stage/stageMove',async (e:KonvaEventObject<MouseEvent>,{dispatch}) => {
 
     const moveSetting = moveStage(e);
-
-    //@ts-ignore
-    // const stagePos = e.currentTarget.getPointerPosition();
-    //@ts-ignore
-    // const pointMouseDown = thunkApi.getState()?.mouse.mouseDown;
-
-    // const resPos = {
-    //     x: pointMouseDown.x - stagePos.x * scale,
-    //     y: pointMouseDown.y - stagePos.y * scale
-    // }
-
-    thunkApi.dispatch(setStageMove({x: moveSetting.x, y: moveSetting.y}));
+    dispatch(setStageMove({x: moveSetting.x, y: moveSetting.y}));
 })
 
+export const stageZoomThunk = createAsyncThunk('stage/stageZoom', async (e: KonvaEventObject<WheelEvent>,{dispatch}) => {
 
-//попробовать сделть сейв координат мышки сразу здесь при зуме, а не при движении
-export const stageZoomThunk = createAsyncThunk('stage/stageZoom', async (e: KonvaEventObject<MouseEvent>,thunkApi) => {
-    //@ts-ignore
     const zoomSetting = zoomStage(e);
-    thunkApi.dispatch(setZoomPosition(zoomSetting.pos));
-    thunkApi.dispatch(setIsZoom({isZoom: zoomSetting.isZoom}));
-    thunkApi.dispatch(setScale({scale: zoomSetting.scale}));
+    dispatch(setZoomPosition(zoomSetting.pos));
+    dispatch(setIsZoom({isZoom: zoomSetting.isZoom}));
+    dispatch(setScale({scale: zoomSetting.scale}));
 })
 
-export const toggleMoteStageThunk = createAsyncThunk('stage/toggleMoteStage', async (valueToggle:boolean,thunkApi) => {
-    thunkApi.dispatch(setDraggable({draggable: valueToggle}));
-    thunkApi.dispatch(setIsSelection({isSelection: false}));
-    thunkApi.dispatch(setIsDrawGrid({isDrawGrid: false}));
+export const toggleMoteStageThunk = createAsyncThunk('stage/toggleMoteStage', async (valueToggle:boolean,{dispatch}) => {
+
+    dispatch(setDraggable({draggable: valueToggle}));
+    dispatch(setIsSelection({isSelection: false}));
+    dispatch(setIsDrawGrid({isDrawGrid: false}));
 })
 
 export default sliceStage.reducer;

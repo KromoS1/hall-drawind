@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo, useRef} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {Layer, Stage} from 'react-konva';
 import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "../../store/store";
@@ -24,15 +24,12 @@ export const Content = memo(() => {
     const circles = useSelector<RootState, CirclesType[]>(state => state.circles.circles);
     const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
 
-    const containerRef = useRef(null);
-    const stageRef = useRef(null);
-
     const dispatch = useAppDispatch();
 
     const handlerMouseMove = (e: KonvaEventObject<MouseEvent>) => observerStage.move(e);
     const handlerMouseDown = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseDown(e);
     const handlerMouseUp = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseUp(e);
-    const handlerWheel = (e: KonvaEventObject<MouseEvent>) => observerStage.wheel(e);
+    const handlerWheel = (e: KonvaEventObject<WheelEvent>) => observerStage.wheel(e);
     const handlerMoveStage = (e: KonvaEventObject<MouseEvent>) => observerStage.moveStage(e);
 
     useEffect(() => {
@@ -58,7 +55,7 @@ export const Content = memo(() => {
             dispatch(stageMoveThunk(e));
         });
 
-        observerStage.subscribeEventStage('wheel', (e: KonvaEventObject<MouseEvent>) => {
+        observerStage.subscribeEventStage('wheel', (e: KonvaEventObject<WheelEvent>) => {
             dispatch(stageZoomThunk(e));
         })
 
@@ -73,6 +70,10 @@ export const Content = memo(() => {
         observerStage.subscribeEventStage("mouseUp", (e: KonvaEventObject<MouseEvent>) => {
             dispatch(mouseUpThunk(e));
         })
+
+        return () => {
+            observerStage.cleanSubscribersAll();
+        }
     }, [])
 
     const circlesDraw = useMemo(() => {
@@ -82,10 +83,9 @@ export const Content = memo(() => {
     }, [circles]);
 
     return (
-        <section className={"section-container"} style={{height: '100vh', width: '100vw', overflow: 'auto'}}
-                 ref={containerRef}>
+        <section className={"section-container"} style={{height: '100vh', width: '100vw', overflow: 'auto'}}>
             <ShowCoordinate/>
-            <Stage id={'stage_container'} ref={stageRef} draggable={draggable} width={window.innerWidth}
+            <Stage id={'stage_container'} draggable={draggable} width={window.innerWidth}
                    height={window.innerHeight} onWheel={handlerWheel}
                    onMouseMove={handlerMouseMove} onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onDragMove={handlerMoveStage}>
