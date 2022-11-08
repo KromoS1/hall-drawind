@@ -9,60 +9,23 @@ import {FCircle} from "../figures/FCircle";
 import {SelectionAreaContainer} from "../selectionArea/SelectionAreaContainer";
 import {observerStage} from "../../observer/observerStage";
 import {ShowCoordinate} from "./ShowCoordinate";
-import {zoomStage} from "../../store/calculateDateEvents/zoom";
 import {
-    setIsZoom,
-    setScale,
-    setStageMove,
-    setZoomPosition,
+    setDraggable,
     stageMoveThunk,
-    StageReducerType
+    StageReducerType,
+    stageZoomThunk,
+    toggleMoteStageThunk
 } from "../../store/reducers/stageReducer";
+import {observerDoc} from "../../observer/observerDoc";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
     const circles = useSelector<RootState, CirclesType[]>(state => state.circles.circles);
-    const {draggable} = useSelector<RootState,StageReducerType>(state => state.stage);
-
-    // const [scale, setScale] = React.useState(1);
-    // const [scaleToFit, setScaleToFit] = React.useState(1);
-    // const [size, setSize] = React.useState({
-    //     width: 1000,
-    //     height: 1000,
-    //     virtualWidth: 1000
-    // });
-    // const [virtualWidth, setVirtualWidth] = React.useState(1000);
+    const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
 
     const containerRef = useRef(null);
     const stageRef = useRef(null);
-
-    // React.useEffect(() => {
-    //     const newSize = {
-    //         // @ts-ignore
-    //         width: containerRef.current.offsetWidth,
-    //         // @ts-ignore
-    //         height: containerRef.current.offsetHeight
-    //     };
-    //     if (newSize.width !== size.width || newSize.height !== size.height) {
-    //         // @ts-ignore
-    //         setSize(newSize);
-    //     }
-    // });
-
-    // React.useEffect(() => {
-    //     if (!stageRef.current) {
-    //         return;
-    //     }
-    //     const stage = stageRef.current;
-    //     // @ts-ignore
-    //     const clientRect = stage.getClientRect({ skipTransform: true });
-    //
-    //     const scaleToFit = size.width / clientRect.width;
-    //     setScale(scaleToFit);
-    //     setScaleToFit(scaleToFit);
-    //     setVirtualWidth(clientRect.width);
-    // }, [size]);
 
     const dispatch = useAppDispatch();
 
@@ -74,16 +37,29 @@ export const Content = memo(() => {
 
     useEffect(() => {
 
+        observerDoc.subscribeEventDoc('ctrlKeyDown', (e: KeyboardEvent) => {
+            if (e.ctrlKey) {
+                dispatch(toggleMoteStageThunk(true));
+            }
+        })
+        observerDoc.subscribeEventDoc('ctrlKeyUp', (e: KeyboardEvent) => {
+            if (!e.ctrlKey) {
+                dispatch(toggleMoteStageThunk(false));
+            }
+        })
+
+        document.addEventListener("keyup", (event) => {
+            if (!event.ctrlKey) {
+                dispatch(setDraggable({draggable: false}));
+            }
+        })
+
         observerStage.subscribeEventStage('moveStage', (e: KonvaEventObject<MouseEvent>) => {
             dispatch(stageMoveThunk(e));
         });
 
         observerStage.subscribeEventStage('wheel', (e: KonvaEventObject<MouseEvent>) => {
-
-            const zoomSetting = zoomStage(e);
-            dispatch(setZoomPosition(zoomSetting.pos));
-            dispatch(setIsZoom({isZoom: zoomSetting.isZoom}));
-            dispatch(setScale({scale: zoomSetting.scale}))
+            dispatch(stageZoomThunk(e));
         })
 
         observerStage.subscribeEventStage("move", (e: KonvaEventObject<MouseEvent>) => {
@@ -91,7 +67,7 @@ export const Content = memo(() => {
         })
 
         observerStage.subscribeEventStage("mouseDown", (e: KonvaEventObject<MouseEvent>) => {
-           dispatch(mouseDownThunk(e));
+            dispatch(mouseDownThunk(e));
         })
 
         observerStage.subscribeEventStage("mouseUp", (e: KonvaEventObject<MouseEvent>) => {
@@ -101,23 +77,18 @@ export const Content = memo(() => {
 
     const circlesDraw = useMemo(() => {
         return circles.map((circle: CirclesType) =>
-            <FCircle key={circle.id} id={circle.id}  x={circle.x} y={circle.y} numberPos={circle.numberPos} isDraggable={circle.isDraggable}/>)
-    },[circles]);
+            <FCircle key={circle.id} id={circle.id} x={circle.x} y={circle.y} numberPos={circle.numberPos}
+                     isDraggable={circle.isDraggable}/>)
+    }, [circles]);
 
     return (
-        <section className={"section-container"} style={{height:'100vh',width:'100vw'}} ref={containerRef}>
+        <section className={"section-container"} style={{height: '100vh', width: '100vw', overflow: 'auto'}}
+                 ref={containerRef}>
             <ShowCoordinate/>
-            <Stage id={'stage_container'} ref={stageRef} draggable={draggable} width={window.innerWidth} height={window.innerHeight} onWheel={handlerWheel}
-                   onMouseMove={handlerMouseMove} onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp} onDragMove={handlerMoveStage}
-                   // dragBoundFunc={(pos) => {
-                   //     pos.x = Math.min(
-                   //         size.width / 2,
-                   //         Math.max(pos.x, -virtualWidth * 1 + size.width / 2)
-                   //     );
-                   //     pos.y = Math.min(size.height / 2, Math.max(pos.y, -size.height / 2));
-                   //     return pos;
-                   // }}
-            >
+            <Stage id={'stage_container'} ref={stageRef} draggable={draggable} width={window.innerWidth}
+                   height={window.innerHeight} onWheel={handlerWheel}
+                   onMouseMove={handlerMouseMove} onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
+                   onDragMove={handlerMoveStage}>
                 <Layer id={'layer'}>
                     <SelectionAreaContainer/>
                     {circlesDraw && circlesDraw}
