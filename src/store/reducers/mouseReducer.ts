@@ -3,6 +3,7 @@ import {PointType} from "../mainType";
 import Konva from "konva";
 import {RootState} from "../store";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {checkTypeActionForCursor} from "../utils";
 
 export type MouseReducerType = {
     move: PointType,
@@ -41,13 +42,28 @@ const sliceMouse = createSlice({
     }
 })
 
-export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch}) => {
+export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
+    dispatch,
+    getState
+}) => {
+
+    const state = getState() as RootState;
+
+    checkTypeActionForCursor({
+        draggable: state.stage.draggable,
+        isDown: state.mouse.isDown,
+        isSelection: state.selectionArea.isSelection,
+        isDrawGrid: state.selectionArea.isDrawGrid
+    })
 
     const mousePos = e.currentTarget.getRelativePointerPosition();
     dispatch(setMousePosition(mousePos));
 })
 
-export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch,getState}) => {
+export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
+    dispatch,
+    getState
+}) => {
 
     const state = getState() as RootState;
     const mouse = state.mouse.move;
@@ -58,11 +74,13 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
     dispatch(setMousePointDown(mousePos));
 })
 
-export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {dispatch,getState}) => {
+export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
+    dispatch,
+    getState
+}) => {
 
     const state = getState() as RootState;
     const mouse = state.mouse.move;
-
 
     const mousePos = {x: mouse.x, y: mouse.y}
 

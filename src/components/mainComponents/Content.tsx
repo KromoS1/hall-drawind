@@ -83,11 +83,13 @@ export const Content = memo(() => {
     }, [circles]);
 
     return (
-        <section className={"section-container"} style={{height: '100vh', width: '100vw', overflow: 'auto'}}>
+        <section id={'section_container'} className={"section-container"} style={{height: '100%', width: '100%'}}>
             <ShowCoordinate/>
-            <Stage id={'stage_container'} draggable={draggable} width={window.innerWidth}
-                   height={window.innerHeight} onWheel={handlerWheel}
-                   onMouseMove={handlerMouseMove} onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
+            <Stage id={'stage_container'} draggable={draggable}
+                   width={window.innerWidth}
+                   height={window.innerHeight - 77}
+                   onWheel={handlerWheel} onMouseMove={handlerMouseMove}
+                   onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onDragMove={handlerMoveStage}>
                 <Layer id={'layer'}>
                     <SelectionAreaContainer/>

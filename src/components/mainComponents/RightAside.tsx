@@ -2,7 +2,6 @@ import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
 import {removeAllCircles} from "../../store/reducers/circlesReducer";
-import {setDraggable, StageReducerType} from "../../store/reducers/stageReducer";
 import {RootState} from "../../store/store";
 
 export const RightAside = memo(() => {
@@ -26,10 +25,9 @@ export const RightAside = memo(() => {
     };
     const removeGrid = () => dispatch(removeAllCircles());
 
-
     return (
-        <aside className={"offsidebar d-none"}>
-           <div style={{marginTop:'55px'}}>
+        <aside className={"offsidebar"}>
+           <div>
                <div style={{cursor:'pointer', color: isSelection ? 'green' : 'white'}} onClick={selectionArea}>Выделение</div>
                <div style={{cursor:'pointer', color: isDrawGrid ? 'green' : 'white'}} onClick={drawGrid}>Нарисовать сетку</div>
                <div style={{cursor:'pointer'}} onClick={removeGrid}>Очистить сетку</div>

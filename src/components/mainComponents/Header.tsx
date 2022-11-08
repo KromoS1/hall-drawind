@@ -1,26 +1,46 @@
 import React, {memo} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store/store";
+import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
+import {removeAllCircles} from "../../store/reducers/circlesReducer";
 
 export const Header = memo(() => {
+
+    const dispatch = useDispatch();
+    const {isSelection, isDrawGrid} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
+
+    const resetSelectAction = () => {
+        dispatch(setIsSelection({isSelection: false}));
+        dispatch(setIsDrawGrid({isDrawGrid: false}));
+    };
+
+    const selectionArea = () => {
+        resetSelectAction();
+        dispatch(setIsSelection({isSelection: true}));
+    };
+
+    const drawGrid = () => {
+        resetSelectAction();
+        dispatch(setIsDrawGrid({isDrawGrid: true}));
+    };
+
+    const removeGrid = () => {
+        resetSelectAction();
+        dispatch(removeAllCircles());
+    };
+
     return (
         <header className={"topnavbar-wrapper"}>
-            <nav className={"navbar topnavbar"}>
-                <ul className={"navbar-nav mr-auto flex-row"}>
-                    <li className={"nav-item"}>
-                        <a className={"nav-link d-none d-md-block d-lg-block d-xl-block"} href="#" data-trigger-resize="" data-toggle-state="aside-collapsed">
-                            <em className="fas fa-bars"/>
-                        </a>
-                        <a className={"nav-link sidebar-toggle d-md-none"} href="#" data-toggle-state="aside-toggled" data-no-persist="true">
-                            <em className={"fas fa-bars"}/>
-                        </a>
-                    </li>
-                </ul>
-                <ul className={"navbar-nav flex-row"}>
-                    <li className={"nav-item"}>
-                        <a className={"nav-link"} href="#" data-toggle-state="offsidebar-open" data-no-persist="true">
-                            <em className={"fas fa-bars"}/>
-                        </a>
-                    </li>
-                </ul>
+            <nav className={"navbar topnavbar pr-4 pl-4 justify-content-start"}>
+                <div className={'btn btn-secondary mr-2'} onClick={selectionArea}>
+                    <i className={"fa-2x far fa-hand-pointer"} style={{color: isSelection ? 'green' : '#000'}}/>
+                </div>
+                <div className={'btn btn-secondary mr-2'} onClick={drawGrid}>
+                    <i className={"fa-2x fab fa-buromobelexperte"} style={{color: isDrawGrid ? 'green' : '#000'}}/>
+                </div>
+                <div className={'btn btn-secondary mr-2'} onClick={removeGrid}>
+                    <i className={"fa-2x fas fa-broom"} style={{color: '#000'}}/>
+                </div>
             </nav>
         </header>
     )

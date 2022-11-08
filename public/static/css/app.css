@@ -27,8 +27,8 @@ body {
 .wrapper {
   position: relative;
   width: 100%;
-  height: auto;
-  min-height: 100%;
+  height: 100%;
+  max-height: 100%;
   overflow-x: hidden; }
   .wrapper .aside-container {
     position: absolute;
@@ -55,8 +55,7 @@ body {
     height: 100%;
     margin-left: 0;
     z-index: 111;
-    background-color: #f5f7fa;
-    margin-bottom: 60px !important; }
+    background-color: #f5f7fa; }
   .wrapper .footer-container {
     position: absolute;
     left: 0;
@@ -118,8 +117,6 @@ body {
   body {
     min-height: 100%; }
   .wrapper .section-container,
-  .wrapper .footer-container {
-    margin-left: 220px; }
   .wrapper .section-container.has-sidebar-right {
     margin-right: 240px; }
     .wrapper .section-container.has-sidebar-right + .offsidebar {
@@ -335,6 +332,9 @@ _:-ms-lang(x),
 
 .layout-h .wrapper .footer-container {
   margin: 0; }
+
+.layout-h .wrapper .offsidebar {
+  margin-top: 55px; }
 
 .layout-h.layout-fixed .wrapper .section-container{
   margin-top: 55px; }
@@ -864,11 +864,12 @@ _:-ms-lang(x),
      Component: offsidebar
  ========================================================================== */
 .offsidebar {
-  position: absolute;
+
   top: 0;
   bottom: 0;
   right: 0;
   width: 235px;
+  margin-top: 55px;
   border-left: 1px solid #cccccc;
   background-color: #fff;
   color: #656565;
@@ -5045,3 +5046,16 @@ body .jvectormap-zoomout {
         padding-bottom: 0; }
   .plan .plan-feature-disable {
     color: #f05050 !important; }
+
+
+.cursor-move{
+  cursor:move;
+}
+
+.cursor-selection{
+  cursor:pointer;
+}
+
+.cursor-draw-grid{
+  cursor: crosshair;
+}
