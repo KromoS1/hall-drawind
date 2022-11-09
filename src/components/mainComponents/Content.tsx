@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "../../store/store";
 import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../store/reducers/mouseReducer";
 import Konva from 'konva';
-import {CirclesType} from "../../store/reducers/circlesReducer";
+import {CircleReducerType, CirclesType} from "../../store/reducers/circlesReducer";
 import {FCircle} from "../figures/FCircle";
 import {SelectionAreaContainer} from "../selectionArea/SelectionAreaContainer";
 import {observerStage} from "../../observer/observerStage";
@@ -21,7 +21,7 @@ import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
-    const circles = useSelector<RootState, CirclesType[]>(state => state.circles);
+    const circles = useSelector<RootState, CircleReducerType>(state => state.circles);
     const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
 
     const dispatch = useAppDispatch();
@@ -77,8 +77,11 @@ export const Content = memo(() => {
     }, [])
 
     const circlesDraw = useMemo(() => {
-        return circles.map((circle: CirclesType) =>
-            <FCircle key={circle.id} circle={circle}/>)
+        const keyCircle = Object.keys(circles);
+        return keyCircle.map((id:string) =>{
+                const circle = circles[id];
+                return <FCircle key={circle.id} circle={circle}/>
+            })
     }, [circles]);
 
     return (

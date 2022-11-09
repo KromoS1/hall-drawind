@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../store";
 import {calcSelectedCircle} from "../calculateDateEvents/calculateGrid";
-import {toggleSelect} from "./circlesReducer";
 
 export type CountCirclesDrawType = {
     countX: number,
@@ -64,11 +63,6 @@ export const selectedCircle = createAsyncThunk('mouse/mouseMove', async (id:stri
     if (mouse.isDown && isSelected){
 
         calcSelectedCircle(mouse.mouseDown, mouse.move, circles, dispatch);
-
-        // if (idSelectCircle.length > 0){
-        //     dispatch(toggleSelectCircle({selectCircle:true}));
-        //     dispatch(toggleSelect(idSelectCircle));
-        // }
 
     }
 })
