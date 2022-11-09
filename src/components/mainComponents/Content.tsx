@@ -21,7 +21,7 @@ import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
-    const circles = useSelector<RootState, CirclesType[]>(state => state.circles.circles);
+    const circles = useSelector<RootState, CirclesType[]>(state => state.circles);
     const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
 
     const dispatch = useAppDispatch();
@@ -78,8 +78,7 @@ export const Content = memo(() => {
 
     const circlesDraw = useMemo(() => {
         return circles.map((circle: CirclesType) =>
-            <FCircle key={circle.id} id={circle.id} x={circle.x} y={circle.y} numberPos={circle.numberPos}
-                     isDraggable={circle.isDraggable}/>)
+            <FCircle key={circle.id} circle={circle}/>)
     }, [circles]);
 
     return (

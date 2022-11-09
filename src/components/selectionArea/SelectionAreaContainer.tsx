@@ -3,8 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {MouseReducerType} from "../../store/reducers/mouseReducer";
 import {GridDraw} from "./GridDraw";
-import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
-import {CountCirclesDrawType, setCirclePosition, setCountCirclesDraw} from "../../store/reducers/circlesReducer";
+import {
+    CountCirclesDrawType,
+    SelectionAreaReducerType,
+    setCountCirclesDraw,
+    setIsDrawGrid,
+    setIsSelection
+} from "../../store/reducers/selectionAreaReducer";
+import {setCirclePosition} from "../../store/reducers/circlesReducer";
 import {observerStage} from "../../observer/observerStage";
 import {calcCountCircleGrid, createCirclesForGrid} from "../../store/calculateDateEvents/calculateGrid";
 
@@ -12,7 +18,7 @@ export const SelectionAreaContainer = memo(() => {
 
     const {move, mouseDown, isDown} = useSelector<RootState, MouseReducerType>(state => state.mouse);
     const {isSelection, isDrawGrid} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
-    const countCircles = useSelector<RootState, CountCirclesDrawType>(state => state.circles.countCirclesDraw);
+    const countCircles = useSelector<RootState, CountCirclesDrawType>(state => state.selectionArea.countCirclesDraw);
 
     const dispatch = useDispatch();
 

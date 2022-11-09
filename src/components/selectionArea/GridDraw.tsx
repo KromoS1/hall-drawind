@@ -3,7 +3,7 @@ import {Shape, Text} from "react-konva";
 import {RectType} from "../../store/mainType";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
-import {CountCirclesDrawType} from "../../store/reducers/circlesReducer";
+import {CountCirclesDrawType} from "../../store/reducers/selectionAreaReducer";
 
 type PropsType = RectType & {
     isDrawGrid?: boolean
@@ -11,7 +11,7 @@ type PropsType = RectType & {
 
 export const GridDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid}) => {
 
-    const countCircles = useSelector<RootState, CountCirclesDrawType>(state => state.circles.countCirclesDraw);
+    const countCircles = useSelector<RootState, CountCirclesDrawType>(state => state.selectionArea.countCirclesDraw);
 
     let xText = w / 2 + x - 30;
     let yText = h / 2 + y;

@@ -1,6 +1,9 @@
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/FCircle";
-import {CirclesType, CountCirclesDrawType} from "../reducers/circlesReducer";
+import {CirclesType, toggleSelect} from "../reducers/circlesReducer";
 import uuid from "react-uuid";
+import {CountCirclesDrawType} from "../reducers/selectionAreaReducer";
+import {PointType} from "../mainType";
+import {Dispatch} from "redux";
 
 type CoordinateCalcType = {
     xStart: number,
@@ -10,12 +13,14 @@ type CoordinateCalcType = {
 }
 const sizeCircleWithIdent = SIZE_CIRCLE + SIZE_IDENT_CIRCLE;
 
-const createCircle = (x: number, y: number, numberPos: number): CirclesType => {
+const createCircle = (x: number, y: number, numberRow: number, numberColumn: number): CirclesType => {
     return {
         id: uuid(),
         x, y,
-        numberPos,
+        numCol: numberRow,
+        numRow: numberColumn,
         isDraggable: false,
+        isSelected: false,
     }
 }
 
@@ -52,9 +57,21 @@ export const createCirclesForGrid = (coordinate: {xStart: number, yStart: number
 
             const pointX = coordinate.xStart + (x * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
             const pointY = coordinate.yStart + (y * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
-            resultCircles.push(createCircle(pointX, pointY, x + 1));
+            resultCircles.push(createCircle(pointX, pointY, x + 1, y + 1));
         }
     }
 
     return resultCircles
+}
+
+export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CirclesType[], dispatch: Dispatch) => {
+
+    circles.forEach(circle => {
+        if (circle.x + 10 < endPoint.x && circle.x - 10 > startPoint.x && circle.y + 10 < endPoint.y && circle.y -10 > startPoint.y){
+            dispatch(toggleSelect({id: circle.id, value: true}));
+        }else{
+            dispatch(toggleSelect({id: circle.id, value: false}));
+        }
+    })
+
 }

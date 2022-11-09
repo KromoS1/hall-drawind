@@ -5,12 +5,16 @@ import {CirclesType} from "../../store/reducers/circlesReducer";
 import {PointType} from "../../store/mainType";
 import KonvaEventObject = Konva.KonvaEventObject;
 
-type PropsType = CirclesType
+type PropsType = {
+    circle: CirclesType
+}
 
 export const SIZE_CIRCLE = 20;
 export const SIZE_IDENT_CIRCLE = 5;
 
-export const FCircle: FC<PropsType> = memo(({id, numberPos, x, y, isDraggable}) => {
+export const FCircle: FC<PropsType> = memo(({circle}) => {
+
+    const {id, numRow, numCol, x, y, isDraggable, isSelected} = circle;
 
     const [positionCircle, setPositionCircle] = useState<PointType & { isDragging: boolean }>({x: x, y: y, isDragging: false});
 
@@ -23,7 +27,7 @@ export const FCircle: FC<PropsType> = memo(({id, numberPos, x, y, isDraggable}) 
     }
 
     const offset = {
-        x: `${numberPos}`.length > 2 ? 8.5 : `${numberPos}`.length > 1 ? 6 : 3,
+        x: `${numCol}`.length > 2 ? 8.5 : `${numCol}`.length > 1 ? 6 : 3,
         y: 5
     }
 
@@ -34,12 +38,12 @@ export const FCircle: FC<PropsType> = memo(({id, numberPos, x, y, isDraggable}) 
                y={positionCircle.y}
                radius={SIZE_CIRCLE / 2}
                draggable={isDraggable}
-               fill={'#dd4814'}
+               fill={isSelected ? '#ff4000' : '#dd4814'}
                onDragStart={onDragStart}
                onDragEnd={onDragEnd}
-               shadowBlur={2}
+               shadowBlur={isSelected ? 4 : 2}
            />
-           <Text x={x} y={y} text={`${numberPos}`} fontSize={10} fill={'#fff'} offset={offset}/>
+           <Text x={x} y={y} text={`${numCol}`} fontSize={10} fill={'#fff'} offset={offset}/>
        </>
     )
 })

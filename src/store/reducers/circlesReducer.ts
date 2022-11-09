@@ -2,47 +2,45 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 
 export type CirclesType = PointType & {
-    id:string,
-    numberPos:number
-    isDraggable:boolean
+    id: string,
+    numRow: number
+    numCol: number
+    isDraggable: boolean
+    isSelected: boolean
 }
 
-export type CountCirclesDrawType = {
-    countX: number,
-    countY: number
-}
-
-export type CirclesReducerType = {
-    countCirclesDraw: CountCirclesDrawType
-    circles: CirclesType[]
-}
-
-const initialState:CirclesReducerType = {
-    countCirclesDraw: {
-       countX: 0,
-       countY: 0
-    },
-    circles:[],
-}
+const initialState: CirclesType[] = []
 
 const sliceCircles = createSlice({
-    name:'mouse',
+    name: 'mouse',
     initialState,
-    reducers:{
-        setCirclePosition: (state, action:PayloadAction<CirclesType[]>) => {
-            state.circles = [...state.circles,...action.payload];
+    reducers: {
+        setCirclePosition: (state, action: PayloadAction<CirclesType[]>) => {
+            state = [...state, ...action.payload];
             return state;
         },
-        setCountCirclesDraw: (state,action:PayloadAction<CountCirclesDrawType>) => {
-            state.countCirclesDraw = action.payload;
+        toggleSelect: (state, action:PayloadAction<{id:string, value: boolean}>) => {
+            const circle = state.find(c => c.id === action.payload.id);
+
+            if (circle) {
+                circle.isSelected = action.payload.value;
+            }
+            return state;
+        },
+        resetSelected:(state) => {
+            state = state.map(circle => {
+                circle.isSelected = false;
+                return circle;
+            })
             return state;
         },
         removeAllCircles: (state) => {
-            state.circles = [];
+            state = [];
             return state;
         }
     }
 })
 
-export const {setCirclePosition, setCountCirclesDraw, removeAllCircles} = sliceCircles.actions;
+export const {setCirclePosition, removeAllCircles, toggleSelect, resetSelected} = sliceCircles.actions;
 export default sliceCircles.reducer
+

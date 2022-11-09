@@ -4,6 +4,8 @@ import Konva from "konva";
 import {RootState} from "../store";
 import KonvaEventObject = Konva.KonvaEventObject;
 import {checkTypeActionForCursor} from "../utils";
+import {selectedCircle} from "./selectionAreaReducer";
+import {resetSelected} from "./circlesReducer";
 
 export type MouseReducerType = {
     move: PointType,
@@ -58,6 +60,8 @@ export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
 
     const mousePos = e.currentTarget.getRelativePointerPosition();
     dispatch(setMousePosition(mousePos));
+
+    dispatch(selectedCircle('1'));
 })
 
 export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
@@ -72,6 +76,11 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
 
     dispatch(setValueDown({isDown: true}));
     dispatch(setMousePointDown(mousePos));
+    console.log(state.selectionArea.isSelection)
+
+    if (state.selectionArea.selectCircle){
+        dispatch(resetSelected())
+    }
 })
 
 export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
