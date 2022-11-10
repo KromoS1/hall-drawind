@@ -1,12 +1,9 @@
-import React, {memo, useEffect, useMemo} from 'react';
-import {Layer, Stage} from 'react-konva';
+import React, {memo, useEffect} from 'react';
+import {Stage} from 'react-konva';
 import {useSelector} from "react-redux";
-import {RootState, useAppDispatch} from "../../store/store";
+import {RootState} from "../../store/store";
 import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../store/reducers/mouseReducer";
 import Konva from 'konva';
-import {CircleReducerType, CirclesType} from "../../store/reducers/circlesReducer";
-import {FCircle} from "../figures/FCircle";
-import {SelectionAreaContainer} from "../selectionArea/SelectionAreaContainer";
 import {observerStage} from "../../observer/observerStage";
 import {ShowCoordinate} from "./ShowCoordinate";
 import {
@@ -17,13 +14,16 @@ import {
     toggleMoteStageThunk
 } from "../../store/reducers/stageReducer";
 import {observerDoc} from "../../observer/observerDoc";
+import {LayerCircle} from "./layers/LayerCircle";
+import {LayerSelectionArea} from "./layers/LayerSelectionArea";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {useAppDispatch} from "../../store/hooks";
 
 export const Content = memo(() => {
 
-    const circles = useSelector<RootState, CircleReducerType>(state => state.circles);
-    const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
+    console.log('content')
 
+    const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
     const dispatch = useAppDispatch();
 
     const handlerMouseMove = (e: KonvaEventObject<MouseEvent>) => observerStage.move(e);
@@ -76,14 +76,6 @@ export const Content = memo(() => {
         }
     }, [])
 
-    const circlesDraw = useMemo(() => {
-        const keyCircle = Object.keys(circles);
-        return keyCircle.map((id:string) =>{
-                const circle = circles[id];
-                return <FCircle key={circle.id} circle={circle}/>
-            })
-    }, [circles]);
-
     return (
         <section id={'section_container'} className={"section-container"} style={{height: '100%', width: '100%'}}>
             <ShowCoordinate/>
@@ -93,10 +85,8 @@ export const Content = memo(() => {
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onDragMove={handlerMoveStage}>
-                <Layer id={'layer'}>
-                    <SelectionAreaContainer/>
-                    {circlesDraw && circlesDraw}
-                </Layer>
+                <LayerCircle/>
+                <LayerSelectionArea/>
             </Stage>
         </section>
     )

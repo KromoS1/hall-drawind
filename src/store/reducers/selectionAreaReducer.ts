@@ -60,11 +60,11 @@ export const selectedCircle = createAsyncThunk('mouse/mouseMove', async (id:stri
     const isSelected = state.selectionArea.isSelection;
     const circles = state.circles;
 
-    if (mouse.isDown && isSelected){
-
-        calcSelectedCircle(mouse.mouseDown, mouse.move, circles, dispatch);
-
-    }
+    // if (mouse.isDown && isSelected){
+    //
+    //     calcSelectedCircle(mouse.mouseDown, mouse.move, circles, dispatch);
+    //
+    // }
 })
 
 export const {setIsSelection, setIsDrawGrid, setCountCirclesDraw, toggleSelectCircle, resetParamSelection} = sliceSelectionArea.actions;
