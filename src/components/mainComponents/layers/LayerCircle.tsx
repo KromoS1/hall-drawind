@@ -1,5 +1,4 @@
 import React, {memo, useMemo} from "react";
-import {SelectionAreaContainer} from "../../selectionArea/SelectionAreaContainer";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {CircleReducerType} from "../../../store/reducers/circlesReducer";
@@ -15,14 +14,11 @@ export const LayerCircle = memo(() => {
 
         const keyCircle = Object.keys(circles);
 
-        return keyCircle.map((id:string) =>{
-            return <FCircle key={id} idCircle={id}/>
-        })
+        return keyCircle.map((id:string) => <FCircle key={id} idCircle={id}/>)
     }, [circles]);
 
     return (
         <Layer id={'layer_circle'}>
-            <SelectionAreaContainer/>
             {circlesDraw && circlesDraw}
         </Layer>
     )

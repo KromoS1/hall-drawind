@@ -2,10 +2,8 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 import Konva from "konva";
 import {RootState} from "../store";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {checkTypeActionForCursor} from "../utils";
-import {selectedCircle} from "./selectionAreaReducer";
-import {resetSelected} from "./circlesReducer";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export type MouseReducerType = {
     move: PointType,
@@ -76,10 +74,6 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
 
     dispatch(setValueDown({isDown: true}));
     dispatch(setMousePointDown(mousePos));
-
-    if (state.selectionArea.selectCircle){
-        dispatch(resetSelected())
-    }
 })
 
 export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {

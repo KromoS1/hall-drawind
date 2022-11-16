@@ -12,9 +12,13 @@ type PropsType = RectType & {
 export const GridDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid}) => {
 
     const countCircles = useSelector<RootState, CountCirclesDrawType>(state => state.selectionArea.countCirclesDraw);
+    let xText = 0;
+    let yText = 0;
 
-    let xText = w / 2 + x - 30;
-    let yText = h / 2 + y;
+    if (isDrawGrid) {
+        xText = w / 2 + x - 30;
+        yText = h / 2 + y;
+    }
 
     return (
         <>

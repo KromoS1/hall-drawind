@@ -7,6 +7,7 @@ import {Content} from "./components/mainComponents/Content";
 function App() {
 
     useEffect(() => {
+
         document.addEventListener('keydown', (e) => observerDoc.ctrlKeyDown(e));
         document.addEventListener('keyup', (e) => observerDoc.ctrlKeyUp(e));
 

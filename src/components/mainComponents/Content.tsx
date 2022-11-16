@@ -14,14 +14,12 @@ import {
     toggleMoteStageThunk
 } from "../../store/reducers/stageReducer";
 import {observerDoc} from "../../observer/observerDoc";
-import {LayerCircle} from "./layers/LayerCircle";
 import {LayerSelectionArea} from "./layers/LayerSelectionArea";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {useAppDispatch} from "../../store/hooks";
+import KonvaEventObject = Konva.KonvaEventObject;
+import {LayerCircle} from "./layers/LayerCircle";
 
 export const Content = memo(() => {
-
-    console.log('content')
 
     const {draggable} = useSelector<RootState, StageReducerType>(state => state.stage);
     const dispatch = useAppDispatch();

@@ -6,7 +6,9 @@ import {Dispatch, SetStateAction, useCallback, useState} from "react";
 
 type AppDispatchType = ThunkDispatch<RootState, void, AnyAction>
 
-export const useAppSelector = <T>() => useSelector<RootState,T>;
+export const useAppSelector = () => {
+    return useSelector<RootState, RootState>(state => state);
+}
 export const useAppDispatch = () => useDispatch<AppDispatchType>();
 
 interface UseBooleanOutput {
