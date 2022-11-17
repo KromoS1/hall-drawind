@@ -3,9 +3,7 @@ import mouseReducer from "./reducers/mouseReducer";
 import circlesReducer from "./reducers/circlesReducer";
 import selectionAreaReducer from "./reducers/selectionAreaReducer";
 import stageReducer from "./reducers/stageReducer";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {useDispatch} from "react-redux";
+import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
    stage: stageReducer,
@@ -14,8 +12,11 @@ const rootReducer = combineReducers({
    circles: circlesReducer,
 })
 
+const immutableStateInvariant = require('redux-immutable-state-invariant').default()
+
 export const store = configureStore({
    reducer: rootReducer,
+   middleware:[thunk]
 })
 
 export type StoreType = typeof store;

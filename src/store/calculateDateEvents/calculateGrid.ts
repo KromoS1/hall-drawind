@@ -1,9 +1,9 @@
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/FCircle";
 import {CircleReducerType, CirclesType, toggleSelect} from "../reducers/circlesReducer";
 import uuid from "react-uuid";
-import {CountCirclesDrawType} from "../reducers/selectionAreaReducer";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
+import {CountCirclesDrawType} from "../../components/mainComponents/layers/LayerSelectionArea";
 
 type CoordinateCalcType = {
     xStart: number,
@@ -47,21 +47,23 @@ export const calcCountCircleGrid = (coordinate: CoordinateCalcType) => {
     return {countX, countY};
 }
 
-export const createCirclesForGrid = (coordinate: {xStart: number, yStart: number}, countCircleGrid: CountCirclesDrawType): CirclesType[] => {
+export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: number}, countCircleGrid: CountCirclesDrawType): Promise<CirclesType[]> => {
 
-    let resultCircles = [];
+    return new Promise((resolve) => {
 
-    for ( let x = 0; x < countCircleGrid.countX; x++){
+        let resultCircles = [];
 
-        for (let y = 0; y < countCircleGrid.countY; y++){
+        for ( let x = 0; x < countCircleGrid.countX; x++){
 
-            const pointX = coordinate.xStart + (x * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
-            const pointY = coordinate.yStart + (y * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
-            resultCircles.push(createCircle(pointX, pointY, x + 1, y + 1));
+            for (let y = 0; y < countCircleGrid.countY; y++){
+
+                const pointX = coordinate.xStart + (x * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
+                const pointY = coordinate.yStart + (y * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
+                resultCircles.push(createCircle(pointX, pointY, x + 1, y + 1));
+            }
         }
-    }
-
-    return resultCircles
+        resolve(resultCircles);
+    })
 }
 
 export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CircleReducerType, dispatch: Dispatch) => {

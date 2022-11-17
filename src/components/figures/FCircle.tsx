@@ -25,8 +25,7 @@ export const SIZE_CIRCLE = 20;
 export const SIZE_IDENT_CIRCLE = 5;
 
 export const FCircle: FC<PropsType> = memo(({idCircle}) => {
-
-    console.log('FCircle');
+    console.log('FCIRCLE')
     const circle = useSelector<RootState, CirclesType>(state => state.circles[idCircle])
 
     const {numCol, x, y, isSelected} = circle;

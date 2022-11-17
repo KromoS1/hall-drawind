@@ -11,8 +11,8 @@ export const selectorIsDrawGrid = createSelector(selectionArea, items => {
     return items.isDrawGrid;
 })
 
-export const selectorCountCirclesDraw = createSelector(selectionArea, items => {
-    return items.countCirclesDraw;
-})
+// export const selectorCountCirclesDraw = createSelector(selectionArea, items => {
+//     return items.countCirclesDraw;
+// })
 
 

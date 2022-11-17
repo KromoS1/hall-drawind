@@ -1,23 +1,18 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export type CountCirclesDrawType = {
-    countX: number,
-    countY: number
-}
-
 export type SelectionAreaReducerType = {
     isSelection: boolean,
     isDrawGrid: boolean,
-    countCirclesDraw: CountCirclesDrawType
+    // countCirclesDraw: CountCirclesDrawType
 }
 
 const initialState: SelectionAreaReducerType = {
     isSelection: false,
     isDrawGrid: false,
-    countCirclesDraw: {
-        countX: 0,
-        countY: 0
-    },
+    // countCirclesDraw: {
+    //     countX: 0,
+    //     countY: 0
+    // },
 }
 
 const sliceSelectionArea = createSlice({
@@ -32,10 +27,10 @@ const sliceSelectionArea = createSlice({
             state.isDrawGrid = action.payload.isDrawGrid;
             return state;
         },
-        setCountCirclesDraw: (state, action: PayloadAction<CountCirclesDrawType>) => {
-            state.countCirclesDraw = action.payload;
-            return state;
-        },
+        // setCountCirclesDraw: (state, action: PayloadAction<CountCirclesDrawType>) => {
+        //     state.countCirclesDraw = action.payload;
+        //     return state;
+        // },
         resetParamSelection: (state) => {
             state.isSelection = false;
             state.isDrawGrid = false;
@@ -59,5 +54,5 @@ const sliceSelectionArea = createSlice({
 //     }
 // })
 
-export const {setIsSelection, setIsDrawGrid, setCountCirclesDraw, resetParamSelection} = sliceSelectionArea.actions;
+export const {setIsSelection, setIsDrawGrid} = sliceSelectionArea.actions;
 export default sliceSelectionArea.reducer;

@@ -7,9 +7,7 @@ export const zoomStage = (e:KonvaEventObject<WheelEvent>) => {
 
     e.evt.preventDefault();
 
-    let isZoom = true;
     const stage = e.currentTarget;
-
     const oldScale = stage.scaleX();
 
     const center =  {
@@ -26,10 +24,6 @@ export const zoomStage = (e:KonvaEventObject<WheelEvent>) => {
 
     const newScale = direction > 0 ? oldScale * SCALE : oldScale / SCALE;
 
-    if (newScale === 1){
-        isZoom = false;
-    }
-
     stage.scale({ x: newScale, y: newScale });
 
     const newPos = {
@@ -38,7 +32,6 @@ export const zoomStage = (e:KonvaEventObject<WheelEvent>) => {
     };
 
     stage.position(newPos);
-    return {pos:newPos, isZoom, scale: newScale};
 }
 
 export const moveStage = (e:KonvaEventObject<MouseEvent>) => {

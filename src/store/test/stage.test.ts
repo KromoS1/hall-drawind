@@ -15,6 +15,7 @@ beforeEach(() => {
         draggable: false,
         isZoom: false,
         scale: 1,
+        stage:null
     }
 });
 

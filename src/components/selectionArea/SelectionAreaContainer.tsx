@@ -1,17 +1,18 @@
-import React, {memo, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store/store";
+import React, {FC, memo, useEffect} from "react";
+import {useDispatch} from "react-redux";
 import {GridDraw} from "./GridDraw";
 import {setIsSelection} from "../../store/reducers/selectionAreaReducer";
 import {observerStage} from "../../observer/observerStage";
 import {PointType} from "../../store/mainType";
 
-export const SelectionAreaContainer = memo(() => {
+type PropsType = {
+    move: PointType,
+    mouseDown: PointType,
+    isDown: boolean,
+    isSelection: boolean,
+}
 
-    const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
-    const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
-    const isSelection = useSelector<RootState, boolean>(state => state.selectionArea.isSelection);
-    const move = useSelector<RootState, PointType>(state => state.mouse.move);
+export const SelectionAreaContainer: FC<PropsType> = memo(({move, mouseDown, isSelection, isDown}) => {
 
     const dispatch = useDispatch();
 

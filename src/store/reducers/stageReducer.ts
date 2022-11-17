@@ -1,9 +1,7 @@
 import {PointType} from "../mainType";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Konva from "konva";
-import {moveStage, zoomStage} from "../calculateDateEvents/zoom";
-import {setIsDrawGrid, setIsSelection} from "./selectionAreaReducer";
-import KonvaEventObject = Konva.KonvaEventObject;
+
 
 export type StageReducerType = {
     stagePositionZoom: PointType,
@@ -11,9 +9,11 @@ export type StageReducerType = {
     draggable: boolean,
     isZoom: boolean,
     scale:number
+    stage: any
 }
 
 const initialState: StageReducerType = {
+    stage: null,
     stagePositionZoom: {x: 0, y: 0},
     stagePositionMove: {x: 0, y: 0},
     draggable:false,
@@ -21,10 +21,16 @@ const initialState: StageReducerType = {
     scale: 1.00,
 }
 
+// пока не нужен, используется только в тестах
+
 const sliceStage = createSlice({
     name: 'mouse',
     initialState,
     reducers: {
+        setStage: (state, action: PayloadAction<{stage: any}>) => { //TODO need to fix
+            state.stage = action.payload.stage;
+            return state;
+        },
         setStageMove: (state,action:PayloadAction<PointType>) => {
             state.stagePositionMove.x = action.payload.x;
             state.stagePositionMove.y = action.payload.y;
@@ -50,26 +56,5 @@ const sliceStage = createSlice({
     }
 })
 
-export const stageMoveThunk = createAsyncThunk('stage/stageMove',async (e:KonvaEventObject<MouseEvent>,{dispatch}) => {
-
-    const moveSetting = moveStage(e);
-    dispatch(setStageMove({x: moveSetting.x, y: moveSetting.y}));
-})
-
-export const stageZoomThunk = createAsyncThunk('stage/stageZoom', async (e: KonvaEventObject<WheelEvent>,{dispatch}) => {
-
-    const zoomSetting = zoomStage(e);
-    dispatch(setZoomPosition(zoomSetting.pos));
-    dispatch(setIsZoom({isZoom: zoomSetting.isZoom}));
-    dispatch(setScale({scale: zoomSetting.scale}));
-})
-
-export const toggleMoteStageThunk = createAsyncThunk('stage/toggleMoteStage', async (valueToggle:boolean,{dispatch}) => {
-
-    dispatch(setDraggable({draggable: valueToggle}));
-    dispatch(setIsSelection({isSelection: false}));
-    dispatch(setIsDrawGrid({isDrawGrid: false}));
-})
-
 export default sliceStage.reducer;
-export const {setZoomPosition, setIsZoom, setScale, setDraggable, setStageMove} = sliceStage.actions;
+export const {setZoomPosition, setIsZoom, setScale, setDraggable, setStageMove, setStage} = sliceStage.actions;

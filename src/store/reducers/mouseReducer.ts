@@ -58,8 +58,6 @@ export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
 
     const mousePos = e.currentTarget.getRelativePointerPosition();
     dispatch(setMousePosition(mousePos));
-
-    // dispatch(selectedCircle('1'));
 })
 
 export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
