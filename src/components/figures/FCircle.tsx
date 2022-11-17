@@ -88,15 +88,15 @@ const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({id, x, y}) => {
     return <></>
 })
 
-const CircleElement: FC<CircleElementType> = memo(({
-                                                       positionCircle,
-                                                       isSelected,
-                                                       onDragStart,
-                                                       onDragEnd,
-                                                       numCol,
-                                                       offset
-                                                   }) => {
-
+const CircleElement: FC<CircleElementType> = memo((props) => {
+    const {
+        positionCircle,
+        isSelected,
+        onDragStart,
+        onDragEnd,
+        numCol,
+        offset
+    } = props
     return (
         <>
             <Circle
