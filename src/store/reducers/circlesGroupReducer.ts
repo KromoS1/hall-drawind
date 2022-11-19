@@ -9,27 +9,30 @@ export type CirclesType = PointType & {
     isSelected: boolean
 }
 
-export type CircleReducerType = {
-    [id:string]: CirclesType
+export type CircleGroupReducerType = {
+    [idGroup: string]: {
+        [id:string]: CirclesType
+    }
 }
 
-const initialState: CircleReducerType = {}
+const initialState: CircleGroupReducerType = {}
 
 const sliceCircles = createSlice({
-    name: 'mouse',
+    name: 'circlesGroup',
     initialState,
     reducers: {
-        setCirclePosition: (state, action: PayloadAction<CirclesType[]>) => {
+        setCirclePosition: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
 
-            action.payload.forEach(circle => {
+            state[action.payload.idGroup] = {};
+            action.payload.circles.forEach(circle => {
 
-                state[circle.id] = circle
+                state[action.payload.idGroup][circle.id] = circle
             })
             return state;
         },
-        toggleSelect: (state, action:PayloadAction<{id:string, value: boolean}>) => {
+        toggleSelect: (state, action:PayloadAction<{idGroup: string,idCircle:string, value: boolean}>) => {
 
-           state[action.payload.id].isSelected = action.payload.value;
+           state[action.payload.idGroup][action.payload.idCircle].isSelected = action.payload.value;
            return state
         },
         resetSelected:(state) => {

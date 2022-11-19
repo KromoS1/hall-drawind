@@ -50,8 +50,6 @@ export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
     const state = getState() as RootState;
 
     checkTypeActionForCursor({
-        draggable: state.stage.draggable,
-        isDown: state.mouse.isDown,
         isSelection: state.selectionArea.isSelection,
         isDrawGrid: state.selectionArea.isDrawGrid
     })

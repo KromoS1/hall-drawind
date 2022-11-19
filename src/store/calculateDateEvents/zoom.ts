@@ -24,16 +24,21 @@ export const zoomStage = (e:KonvaEventObject<WheelEvent>) => {
 
     const newScale = direction > 0 ? oldScale * SCALE : oldScale / SCALE;
 
-    stage.scale({ x: newScale, y: newScale });
+    if (newScale > 0.5 && newScale < 2) {
 
-    const newPos = {
-        x: center.x - mousePointTo.x * newScale,
-        y: center.y - mousePointTo.y * newScale,
-    };
+        stage.scale({ x: newScale, y: newScale });
 
-    stage.position(newPos);
+        const newPos = {
+            x: center.x - mousePointTo.x * newScale,
+            y: center.y - mousePointTo.y * newScale,
+        };
+
+        stage.position(newPos);
+    }
 }
 
+
+// пока не используется
 export const moveStage = (e:KonvaEventObject<MouseEvent>) => {
 
     const stage = e.currentTarget;

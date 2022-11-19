@@ -1,6 +1,5 @@
 import {PointType} from "../mainType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import Konva from "konva";
 
 
 export type StageReducerType = {
@@ -24,7 +23,7 @@ const initialState: StageReducerType = {
 // пока не нужен, используется только в тестах
 
 const sliceStage = createSlice({
-    name: 'mouse',
+    name: 'stage',
     initialState,
     reducers: {
         setStage: (state, action: PayloadAction<{stage: any}>) => { //TODO need to fix

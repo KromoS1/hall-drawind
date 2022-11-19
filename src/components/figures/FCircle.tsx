@@ -1,15 +1,16 @@
 import React, {FC, memo, useCallback, useEffect, useState} from 'react';
 import Konva from "konva";
-import {Circle, Text} from 'react-konva';
+import {Circle, Group, Text} from 'react-konva';
 import {PointType} from "../../store/mainType";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {useAppDispatch} from "../../store/hooks";
-import {CirclesType, toggleSelect} from "../../store/reducers/circlesReducer";
+import {CirclesType, toggleSelect} from "../../store/reducers/circlesGroupReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 type PropsType = {
-    idCircle: string
+    idGroup: string,
+    idCircle: string,
 }
 
 type CircleElementType = {
@@ -24,9 +25,11 @@ type CircleElementType = {
 export const SIZE_CIRCLE = 20;
 export const SIZE_IDENT_CIRCLE = 5;
 
-export const FCircle: FC<PropsType> = memo(({idCircle}) => {
+export const FCircle: FC<PropsType> = memo(({idGroup, idCircle}) => {
+
     console.log('FCIRCLE')
-    const circle = useSelector<RootState, CirclesType>(state => state.circles[idCircle])
+
+    const circle = useSelector<RootState, CirclesType>(state => state.circlesGroup[idGroup][idCircle])
 
     const {numCol, x, y, isSelected} = circle;
 
@@ -58,11 +61,9 @@ export const FCircle: FC<PropsType> = memo(({idCircle}) => {
     )
 })
 
-type CheckIsSelectCircleType = PointType & {
-    id: string
-}
+type CheckIsSelectCircleType = PointType & PropsType
 
-const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({id, x, y}) => {
+const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({idGroup, idCircle, x, y}) => {
 
     const move = useSelector<RootState, PointType>(state => state.mouse.move);
     const isSelection = useSelector<RootState, boolean>(state => state.selectionArea.isSelection);
@@ -74,7 +75,7 @@ const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({id, x, y}) => {
 
         if (isDown && isSelection) {
             if (x + 10 < move.x && x - 10 > mouseDown.x && y + 10 < move.y && y - 10 > mouseDown.y) {
-                dispatch(toggleSelect({id: id, value: true}));
+                dispatch(toggleSelect({idGroup, idCircle, value: true}));
             }
 
             // if (isSelected) {
@@ -98,7 +99,7 @@ const CircleElement: FC<CircleElementType> = memo((props) => {
         offset
     } = props
     return (
-        <>
+        <Group listening={false}>
             <Circle
                 x={positionCircle.x}
                 y={positionCircle.y}
@@ -107,10 +108,10 @@ const CircleElement: FC<CircleElementType> = memo((props) => {
                 fill={isSelected ? '#ff4000' : '#dd4814'}
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
-                shadowBlur={isSelected ? 4 : 2}
+                // shadowBlur={isSelected ? 4 : 2}
+                perfectDrawEnabled={false}
             />
-            <Text x={positionCircle.x} y={positionCircle.y} text={`${numCol}`} fontSize={10} fill={'#fff'}
-                  offset={offset}/>
-        </>
+            <Text x={positionCircle.x} y={positionCircle.y} text={`${numCol}`} fontSize={10} fill={'#fff'} offset={offset} perfectDrawEnabled={false}/>
+        </Group>
     )
 })

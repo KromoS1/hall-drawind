@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
-import {removeAllCircles} from "../../store/reducers/circlesReducer";
+import {removeAllCircles} from "../../store/reducers/circlesGroupReducer";
 import {RootState} from "../../store/store";
 
 export const RightAside = memo(() => {

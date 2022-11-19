@@ -1,5 +1,5 @@
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/FCircle";
-import {CircleReducerType, CirclesType, toggleSelect} from "../reducers/circlesReducer";
+import {CircleGroupReducerType, CirclesType, toggleSelect} from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
@@ -66,18 +66,18 @@ export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: 
     })
 }
 
-export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CircleReducerType, dispatch: Dispatch) => {
+export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CircleGroupReducerType, dispatch: Dispatch) => {
 
     const keys = Object.keys(circles)
 
-    keys.forEach(id => {
-        const circle = circles[id];
-
-        if (circle.x + 10 < endPoint.x && circle.x - 10 > startPoint.x && circle.y + 10 < endPoint.y && circle.y -10 > startPoint.y){
-            dispatch(toggleSelect({id: circle.id, value: true}));
-        }else{
-            dispatch(toggleSelect({id: circle.id, value: false}));
-        }
-    })
+    // keys.forEach(id => {
+    //     const circle = circles[id];
+    //
+    //     if (circle.x + 10 < endPoint.x && circle.x - 10 > startPoint.x && circle.y + 10 < endPoint.y && circle.y -10 > startPoint.y){
+    //         dispatch(toggleSelect({id: circle.id, value: true}));
+    //     }else{
+    //         dispatch(toggleSelect({id: circle.id, value: false}));
+    //     }
+    // })
 
 }

@@ -1,16 +1,19 @@
 import circlesReducer, {
-    CircleReducerType,
-    CirclesType, removeAllCircles,
+    CircleGroupReducerType,
+    CirclesType,
+    removeAllCircles,
     setCirclePosition,
     toggleSelect
-} from "../reducers/circlesReducer";
+} from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 
-let circleState: CircleReducerType;
+let circleState: CircleGroupReducerType;
 
 const createCirclesObj = () => {
 
-    let result: CircleReducerType = {};
+    let result: CircleGroupReducerType = {};
+
+    const idGroup = uuid();
 
     for (let i = 0; i < 100; i++) {
         const id = uuid();
@@ -25,7 +28,7 @@ const createCirclesObj = () => {
             isDraggable: false
         }
 
-        result[id] = circle;
+        result[idGroup][id] = circle;
     }
     return result;
 }
@@ -60,37 +63,41 @@ beforeEach(() => {
 test('set circles', () => {
 
     const circles = createCircleArr();
+    const idGroup = uuid();
 
-    const endState = circlesReducer(circleState, setCirclePosition(circles));
+    const endState = circlesReducer(circleState, setCirclePosition({idGroup,circles}));
 
-    const keys = Object.keys(circles);
+    const keys = Object.keys(endState);
+    const keysCircle = Object.keys(endState[keys[0]]);
 
-    keys.forEach(key => {
-        expect(endState[key]).toBe(circleState[key]);
-    })
+    expect(keys.length).toBe(1);
+    expect(keysCircle.length).toBe(10);
 });
 
 test('set toggleSelect', () => {
 
     const circles = createCircleArr();
+    const idGroup = uuid();
 
-    const middleState = circlesReducer(circleState, setCirclePosition(circles));
+    const middleState = circlesReducer(circleState, setCirclePosition({idGroup,circles}));
 
-    const keys = Object.keys(middleState);
+    const keysGroup = Object.keys(middleState);
+    const keysCircle = Object.keys(middleState[keysGroup[0]]);
 
-    keys.forEach(key => {
-        const endState = circlesReducer(middleState, toggleSelect({id: key, value: true}));
+    keysCircle.forEach(key => {
+        const endState = circlesReducer(middleState, toggleSelect({idGroup,idCircle: key, value: true}));
 
 
-        expect(endState[key].isSelected).toBe(true);
+        expect(endState[idGroup][key].isSelected).toBe(true);
     })
 });
 
 test('set remove all circles', () => {
 
     const circles = createCircleArr();
+    const idGroup = uuid();
 
-    const middleState = circlesReducer(circleState, setCirclePosition(circles));
+    const middleState = circlesReducer(circleState, setCirclePosition({idGroup,circles}));
 
     const endState = circlesReducer(middleState, removeAllCircles())
 

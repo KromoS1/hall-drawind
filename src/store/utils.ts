@@ -1,23 +1,15 @@
 
 type checkTypeActionAction = {
-    draggable:boolean, isDown: boolean, isSelection:boolean, isDrawGrid:boolean
+    isSelection:boolean, isDrawGrid:boolean
 }
-export const checkTypeActionForCursor = ({draggable, isDown, isSelection, isDrawGrid}:checkTypeActionAction) => {
+export const checkTypeActionForCursor = ({ isSelection, isDrawGrid}:checkTypeActionAction) => {
 
     const container = document.getElementById('section_container');
 
     if (container){
-        typeCursorMove(container, draggable, isDown);
         typeCursorSelectArea(container, isSelection)
         typeCursorGrid(container, isDrawGrid)
     }
-}
-
-const typeCursorMove  = (container: HTMLElement, draggable:boolean, isDown: boolean) => {
-
-    draggable && isDown
-        ? container.classList.add('cursor-move')
-        : container.classList.remove('cursor-move');
 }
 
 const typeCursorSelectArea = (container: HTMLElement, isSelection:boolean) => {

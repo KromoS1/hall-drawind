@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
-import {removeAllCircles} from "../../store/reducers/circlesReducer";
+import {removeAllCircles} from "../../store/reducers/circlesGroupReducer";
 
 export const Header = memo(() => {
 

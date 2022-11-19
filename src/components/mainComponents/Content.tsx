@@ -9,12 +9,13 @@ import {LayerSelectionArea} from "./layers/LayerSelectionArea";
 import {useAppDispatch} from "../../store/hooks";
 import {LayerCircle} from "./layers/LayerCircle";
 import {zoomStage} from "../../store/calculateDateEvents/zoom";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {setStage} from "../../store/reducers/stageReducer";
+import {LayerDecart} from "./layers/LayerDecart";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
-    const [draggable,setDraggable] = useState<boolean>(false);
+    const [draggable, setDraggable] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
     const stageRef = useRef(null);
@@ -24,10 +25,18 @@ export const Content = memo(() => {
     const handlerMouseUp = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseUp(e);
     const handlerWheel = (e: KonvaEventObject<WheelEvent>) => observerStage.wheel(e);
 
+    const setCursorDrag = () => {
+        if (draggable) document.getElementById('section_container')?.classList.add('cursor-move');
+    }
+
+    const removeCursorDrag = () => {
+        if (draggable) document.getElementById('section_container')?.classList.remove('cursor-move');
+    }
+
     useEffect(() => {
 
-        if (stageRef.current){
-            dispatch(setStage({stage:stageRef.current}));
+        if (stageRef.current) {
+            dispatch(setStage({stage: stageRef.current}));
         }
 
         observerDoc.subscribeEventDoc('ctrlKeyDown', (e: KeyboardEvent) => {
@@ -68,6 +77,16 @@ export const Content = memo(() => {
         }
     }, [])
 
+    useEffect(() => {
+        observerStage.subscribeEventStage("mouseDown", setCursorDrag);
+        observerStage.subscribeEventStage("mouseUp", removeCursorDrag);
+
+        return () => {
+            observerStage.removeSubscriber("mouseDown", setCursorDrag);
+            observerStage.removeSubscriber("mouseUp", removeCursorDrag);
+        }
+    }, [draggable])
+
     return (
         <section id={'section_container'} className={"section-container"} style={{height: '100%', width: '100%'}}>
             <ShowCoordinate/>
@@ -76,6 +95,7 @@ export const Content = memo(() => {
                    height={window.innerHeight - 77}
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}>
+                <LayerDecart/>
                 <LayerCircle/>
                 <LayerSelectionArea/>
             </Stage>
