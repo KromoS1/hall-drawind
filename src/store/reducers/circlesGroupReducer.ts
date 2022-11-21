@@ -35,13 +35,6 @@ const sliceCircles = createSlice({
            state[action.payload.idGroup][action.payload.idCircle].isSelected = action.payload.value;
            return state
         },
-        resetSelected:(state) => {
-            // state = state.map(circle => {
-            //     circle.isSelected = false;
-            //     return circle;
-            // })
-            return state;
-        },
         removeAllCircles: (state) => {
             state = {};
             return state;
@@ -49,6 +42,6 @@ const sliceCircles = createSlice({
     }
 })
 
-export const {setCirclePosition, removeAllCircles, toggleSelect, resetSelected} = sliceCircles.actions;
+export const {setCirclePosition, removeAllCircles, toggleSelect} = sliceCircles.actions;
 export default sliceCircles.reducer
 

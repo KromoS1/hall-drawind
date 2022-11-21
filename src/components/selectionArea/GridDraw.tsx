@@ -1,7 +1,7 @@
 import {FC, memo} from "react";
 import {Shape, Text} from "react-konva";
 import {RectType} from "../../store/mainType";
-import {CountCirclesDrawType} from "../mainComponents/layers/LayerSelectionArea";
+import {CountCirclesDrawType} from "./SelectionAreaGrid";
 
 type PropsType = RectType & {
     isDrawGrid?: boolean
@@ -31,8 +31,7 @@ export const GridDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircl
                        context.fillStrokeShape(shape);
                    }}>
             </Shape>
-            {isDrawGrid &&
-            <Text x={xText} y={yText} text={`${countCircles?.countX}x${countCircles?.countY}`} fontSize={20}/>}
+            {isDrawGrid && <Text x={xText} y={yText} text={`${countCircles?.countX}x${countCircles?.countY}`} fontSize={20}/>}
         </>
 
     )

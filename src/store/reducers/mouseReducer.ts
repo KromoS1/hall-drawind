@@ -54,8 +54,7 @@ export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
         isDrawGrid: state.selectionArea.isDrawGrid
     })
 
-    const mousePos = e.currentTarget.getRelativePointerPosition();
-    dispatch(setMousePosition(mousePos));
+    dispatch(setMousePosition(e.currentTarget.getRelativePointerPosition()));
 })
 
 export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
@@ -66,10 +65,8 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
     const state = getState() as RootState;
     const mouse = state.mouse.move;
 
-    const mousePos = {x: mouse.x, y: mouse.y}
-
     dispatch(setValueDown({isDown: true}));
-    dispatch(setMousePointDown(mousePos));
+    dispatch(setMousePointDown({x: mouse.x, y: mouse.y}));
 })
 
 export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
@@ -80,10 +77,8 @@ export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaE
     const state = getState() as RootState;
     const mouse = state.mouse.move;
 
-    const mousePos = {x: mouse.x, y: mouse.y}
-
     dispatch(setValueDown({isDown: false}));
-    dispatch(setMousePointUp(mousePos));
+    dispatch(setMousePointUp({x: mouse.x, y: mouse.y}));
 })
 
 export const {setMousePosition, setMousePointDown, setMousePointUp, setValueDown} = sliceMouse.actions;

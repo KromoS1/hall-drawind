@@ -1,9 +1,9 @@
-import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/FCircle";
-import {CircleGroupReducerType, CirclesType, toggleSelect} from "../reducers/circlesGroupReducer";
+import {CircleGroupReducerType, CirclesType} from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
-import {CountCirclesDrawType} from "../../components/mainComponents/layers/LayerSelectionArea";
+import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/circles/cacheCircle";
+import {CountCirclesDrawType} from "../../components/selectionArea/SelectionAreaGrid";
 
 type CoordinateCalcType = {
     xStart: number,
@@ -66,6 +66,7 @@ export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: 
     })
 }
 
+// функция для определения выделенных кругов
 export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CircleGroupReducerType, dispatch: Dispatch) => {
 
     const keys = Object.keys(circles)

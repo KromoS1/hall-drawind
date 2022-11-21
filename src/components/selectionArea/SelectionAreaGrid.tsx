@@ -5,9 +5,13 @@ import {calcCountCircleGrid, createCirclesForGrid} from "../../store/calculateDa
 import {setCirclePosition} from "../../store/reducers/circlesGroupReducer";
 import {observerStage} from "../../observer/observerStage";
 import {PointType} from "../../store/mainType";
-import {CountCirclesDrawType} from "../mainComponents/layers/LayerSelectionArea";
 import {setIsDrawGrid} from "../../store/reducers/selectionAreaReducer";
 import uuid from "react-uuid";
+
+export type CountCirclesDrawType = {
+    countX: number,
+    countY: number
+}
 
 type PropsType = {
     move: PointType,
@@ -28,8 +32,8 @@ export const SelectionAreaGrid: FC<PropsType> = memo(({move, mouseDown, isDown, 
             const gridCircles = await createCirclesForGrid({xStart: mouseDown.x, yStart: mouseDown.y}, countCircles);
 
             dispatch(setCirclePosition({idGroup: uuid(), circles: gridCircles}));
-            setCountCircles({countX: 0, countY: 0})
             dispatch(setIsDrawGrid({isDrawGrid: false}));
+            setCountCircles({countX: 0, countY: 0})
         }
     },[countCircles.countX, countCircles.countY])
 

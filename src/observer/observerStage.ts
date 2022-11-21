@@ -47,10 +47,6 @@ function removeSubscriber(eventName: eventMouse, callback: Function) {
     subscribers[eventName] = subscribers[eventName].filter(cb => cb !== callback);
 }
 
-function cleanSubscribers(eventName: eventMouse) {
-    subscribers[eventName] = [];
-}
-
 function cleanSubscribersAll() {
     subscribers['move'] = [];
     subscribers['mouseDown'] = [];
@@ -67,6 +63,5 @@ export const observerStage = {
     subscribeEventStage,
     removeSubscriber,
     moveStage,
-    cleanSubscribers,
     cleanSubscribersAll
 }

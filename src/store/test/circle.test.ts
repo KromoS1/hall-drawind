@@ -9,30 +9,6 @@ import uuid from "react-uuid";
 
 let circleState: CircleGroupReducerType;
 
-const createCirclesObj = () => {
-
-    let result: CircleGroupReducerType = {};
-
-    const idGroup = uuid();
-
-    for (let i = 0; i < 100; i++) {
-        const id = uuid();
-
-        const circle: CirclesType = {
-            id,
-            x: i,
-            y: i,
-            numCol: i,
-            numRow: i,
-            isSelected: false,
-            isDraggable: false
-        }
-
-        result[idGroup][id] = circle;
-    }
-    return result;
-}
-
 const createCircleArr = () => {
 
     let result = [];

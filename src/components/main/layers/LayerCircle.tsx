@@ -2,7 +2,7 @@ import React, {memo, useMemo} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {CircleGroupReducerType} from "../../../store/reducers/circlesGroupReducer";
-import {FCircle} from "../../figures/FCircle";
+import {FCircle} from "../../figures/circles/FCircle";
 import {Group, Layer} from "react-konva";
 import uuid from "react-uuid";
 
@@ -10,55 +10,71 @@ export const LayerCircle = memo(() => {
 
     const circlesGroup = useSelector<RootState, CircleGroupReducerType>(state => state.circlesGroup);
 
-    const circlesDraw = useMemo(() => {
+    const createGroup = (idGroup: string) => {
 
-        const keysGroup = Object.keys(circlesGroup);
-        let groupsElement: JSX.Element[] = [];
+        const keysCirclesInGroup = Object.keys(circlesGroup[idGroup]);
+        const fCircles = keysCirclesInGroup.map((id: string) => <FCircle key={id} idGroup={idGroup} idCircle={id}/>);
+
+        return (
+            <Group key={idGroup} listening={false}>
+                {fCircles}
+            </Group>
+        )
+    }
+
+    const checkCountGroups = (keysGroup: string[]) => {
+
         let sizeCircles = 0;
-        let maxLayerCount = 1000;
-        let countCircleInGroups = 0;
-        let result: any = [];
-
-        if (keysGroup.length === 0) return [];
 
         keysGroup.forEach(idGroup => {
             const keysCirclesInGroup = Object.keys(circlesGroup[idGroup]);
             sizeCircles += keysCirclesInGroup.length;
         })
 
-        const createGroup = (idGroup: string) => {
+        return sizeCircles
+    }
 
-            const keysCirclesInGroup = Object.keys(circlesGroup[idGroup]);
-            const fCircles = keysCirclesInGroup.map((id: string) => <FCircle key={id} idGroup={idGroup} idCircle={id}/>);
+    const renderOneLayer = (keysGroup: string[]) => {
 
-            return (
-                <Group key={idGroup} listening={false}>
-                    {fCircles}
-                </Group>
-            )
-        }
+        const resultGroup = keysGroup.map(idGroup => createGroup(idGroup));
+
+        return (
+            <Layer listening={false}>
+                {resultGroup}
+            </Layer>
+        )
+    }
+
+    const circlesDraw = useMemo(() => {
+
+        const keysGroup = Object.keys(circlesGroup);
+        let groupsElement: JSX.Element[] = [];
+        let resultGroups: JSX.Element[] = [];
+        let maxLayerCount = 1500;
+        let countCircleInGroups = 0;
+        let sizeCircles = checkCountGroups(keysGroup);
+
+        if (keysGroup.length === 0) return [];
 
         if (sizeCircles < maxLayerCount) {
 
-            const resultGroup = keysGroup.map(idGroup => createGroup(idGroup));
+            return renderOneLayer(keysGroup);
+        }
 
-            return (
-                <Layer listening={false}>
-                    {resultGroup}
-                </Layer>
-            )
+        const cleanResultGroup = () => {
+
+            countCircleInGroups = 0;
+            groupsElement = [];
         }
 
         const createResultLayer = () => {
 
-            result.push(
+            resultGroups.push(
                 <Layer key={uuid()} listening={false}>
                     {groupsElement}
                 </Layer>
             )
-
-            countCircleInGroups = 0;
-            groupsElement = [];
+            cleanResultGroup();
         }
 
         for(let i = 0; i < keysGroup.length; i++) {
@@ -66,6 +82,7 @@ export const LayerCircle = memo(() => {
             countCircleInGroups += Object.keys(circlesGroup[keysGroup[i]]).length;
 
             let countCircleInGroupsNext = countCircleInGroups;
+
             if (keysGroup[i + 1]) {
                 countCircleInGroupsNext += Object.keys(circlesGroup[keysGroup[i + 1]]).length;
             }
@@ -83,7 +100,7 @@ export const LayerCircle = memo(() => {
             }
         }
 
-        return result;
+        return resultGroups;
     }, [circlesGroup]);
 
     return (

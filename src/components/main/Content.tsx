@@ -10,8 +10,8 @@ import {useAppDispatch} from "../../store/hooks";
 import {LayerCircle} from "./layers/LayerCircle";
 import {zoomStage} from "../../store/calculateDateEvents/zoom";
 import {setStage} from "../../store/reducers/stageReducer";
-import {LayerDecart} from "./layers/LayerDecart";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {addCacheElement, cleanCircleCache} from "../figures/circles/cacheCircle";
 
 export const Content = memo(() => {
 
@@ -37,6 +37,7 @@ export const Content = memo(() => {
 
         if (stageRef.current) {
             dispatch(setStage({stage: stageRef.current}));
+            addCacheElement(stageRef.current);
         }
 
         observerDoc.subscribeEventDoc('ctrlKeyDown', (e: KeyboardEvent) => {
@@ -74,6 +75,7 @@ export const Content = memo(() => {
 
         return () => {
             observerStage.cleanSubscribersAll();
+            cleanCircleCache();
         }
     }, [])
 
@@ -95,7 +97,6 @@ export const Content = memo(() => {
                    height={window.innerHeight - 77}
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}>
-                <LayerDecart/>
                 <LayerCircle/>
                 <LayerSelectionArea/>
             </Stage>

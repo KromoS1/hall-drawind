@@ -6,11 +6,6 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {PointType} from "../../../store/mainType";
 
-export type CountCirclesDrawType = {
-    countX: number,
-    countY: number
-}
-
 export const LayerSelectionArea = memo(() => {
 
     const move = useSelector<RootState, PointType>(state => state.mouse.move);

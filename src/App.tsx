@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {Header} from "./components/mainComponents/Header";
 import {observerDoc} from "./observer/observerDoc";
-import {Content} from "./components/mainComponents/Content";
+import {Content} from "./components/main/Content";
+import {Header} from './components/main/Header';
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
         return () => {
             observerDoc.cleanSubscribersAll();
         }
-    },[])
+    }, [])
 
     return (
         <div className={"show-scrollbar layout-fixed"}>
