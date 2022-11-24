@@ -9,10 +9,12 @@ export type CirclesType = PointType & {
     isSelected: boolean
 }
 
+export type GroupCircleType = {
+    [id:string]: CirclesType
+}
+
 export type CircleGroupReducerType = {
-    [idGroup: string]: {
-        [id:string]: CirclesType
-    }
+    [idGroup: string]: GroupCircleType
 }
 
 const initialState: CircleGroupReducerType = {}

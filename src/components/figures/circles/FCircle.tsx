@@ -16,7 +16,7 @@ type PropsType = {
 }
 
 export const FCircle: FC<PropsType> = memo(({idGroup, idCircle}) => {
-
+    console.log("FCircle")
     const {
         numCol,
         x,
