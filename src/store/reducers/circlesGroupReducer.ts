@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
+import {calculateLayerForAllGroups, calculateLayers} from "../calculate/calculateLayers";
 
 export type CirclesType = PointType & {
     id: string,
@@ -9,12 +10,12 @@ export type CirclesType = PointType & {
     isSelected: boolean
 }
 
-export type GroupCircleType = {
-    [id:string]: CirclesType
+export type GroupCirclesType = {
+    [idGroup: string]: CirclesType[]
 }
 
 export type CircleGroupReducerType = {
-    [idGroup: string]: GroupCircleType
+    [idLayer: string]: GroupCirclesType
 }
 
 const initialState: CircleGroupReducerType = {}
@@ -23,19 +24,23 @@ const sliceCircles = createSlice({
     name: 'circlesGroup',
     initialState,
     reducers: {
-        setCirclePosition: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
+        setCircle: (state, action: PayloadAction<{groups: GroupCirclesType}>) => {
 
-            state[action.payload.idGroup] = {};
-            action.payload.circles.forEach(circle => {
+            state = calculateLayerForAllGroups(action.payload.groups);
+            return state;
+        },
+        setCircleGroup: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
 
-                state[action.payload.idGroup][circle.id] = circle
-            })
+            const newGroup = {
+                [action.payload.idGroup]: action.payload.circles
+            }
+            state = calculateLayers(state, newGroup);
             return state;
         },
         toggleSelect: (state, action:PayloadAction<{idGroup: string,idCircle:string, value: boolean}>) => {
-
-           state[action.payload.idGroup][action.payload.idCircle].isSelected = action.payload.value;
-           return state
+           //
+           // state[action.payload.idGroup][action.payload.idCircle].isSelected = action.payload.value;
+           return state;
         },
         removeAllCircles: (state) => {
             state = {};
@@ -44,6 +49,6 @@ const sliceCircles = createSlice({
     }
 })
 
-export const {setCirclePosition, removeAllCircles, toggleSelect} = sliceCircles.actions;
+export const {setCircle, setCircleGroup, removeAllCircles, toggleSelect} = sliceCircles.actions;
 export default sliceCircles.reducer
 

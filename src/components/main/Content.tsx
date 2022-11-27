@@ -8,10 +8,10 @@ import {observerDoc} from "../../observer/observerDoc";
 import {LayerSelectionArea} from "./layers/LayerSelectionArea";
 import {useAppDispatch} from "../../store/hooks";
 import {LayerCircle} from "./layers/LayerCircle";
-import {zoomStage} from "../../store/calculateDateEvents/zoom";
 import {setStage} from "../../store/reducers/stageReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 import {addCacheElement, cleanCircleCache} from "../figures/circles/cacheCircle";
+import {zoomStage} from "../../store/calculate/zoom";
 
 export const Content = memo(() => {
 

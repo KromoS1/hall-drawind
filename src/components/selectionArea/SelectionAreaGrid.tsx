@@ -1,12 +1,12 @@
 import React, {FC, memo, useCallback, useEffect, useState} from "react";
 import {GridDraw} from "./GridDraw";
 import {useDispatch} from "react-redux";
-import {calcCountCircleGrid, createCirclesForGrid} from "../../store/calculateDateEvents/calculateGrid";
-import {setCirclePosition} from "../../store/reducers/circlesGroupReducer";
+import {setCircleGroup} from "../../store/reducers/circlesGroupReducer";
 import {observerStage} from "../../observer/observerStage";
 import {PointType} from "../../store/mainType";
 import {setIsDrawGrid} from "../../store/reducers/selectionAreaReducer";
 import uuid from "react-uuid";
+import {calcCountCircleGrid, createCirclesForGrid} from "../../store/calculate/calculateGrid";
 
 export type CountCirclesDrawType = {
     countX: number,
@@ -31,7 +31,7 @@ export const SelectionAreaGrid: FC<PropsType> = memo(({move, mouseDown, isDown, 
 
             const gridCircles = await createCirclesForGrid({xStart: mouseDown.x, yStart: mouseDown.y}, countCircles);
 
-            dispatch(setCirclePosition({idGroup: uuid(), circles: gridCircles}));
+            dispatch(setCircleGroup({idGroup: uuid(), circles: gridCircles}));
             dispatch(setIsDrawGrid({isDrawGrid: false}));
             setCountCircles({countX: 0, countY: 0})
         }

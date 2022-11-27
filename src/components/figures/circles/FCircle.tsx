@@ -2,27 +2,20 @@ import React, {FC, memo, useCallback, useEffect, useRef, useState} from 'react';
 import Konva from "konva";
 import {Group} from 'react-konva';
 import {PointType} from "../../../store/mainType";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../store/store";
-import {useAppDispatch} from "../../../store/hooks";
-import {CirclesType, toggleSelect} from "../../../store/reducers/circlesGroupReducer";
-import KonvaEventObject = Konva.KonvaEventObject;
+import {CirclesType} from "../../../store/reducers/circlesGroupReducer";
 import {CircleElementType, cloningElement} from "./cacheCircle";
+import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaGroup = Konva.Group;
 
 type PropsType = {
-    idGroup: string,
-    idCircle: string,
+    circle: CirclesType
 }
 
-export const FCircle: FC<PropsType> = memo(({idGroup, idCircle}) => {
+export const FCircle: FC<PropsType> = memo(({circle}) => {
+
     console.log("FCircle")
-    const {
-        numCol,
-        x,
-        y,
-        isSelected
-    } = useSelector<RootState, CirclesType>(state => state.circlesGroup[idGroup][idCircle])
+
+    const {numCol, x, y, isSelected } = circle;
     const [positionCircle, setPositionCircle] = useState<PointType & { isDragging: boolean }>({
         x: x,
         y: y,
@@ -71,30 +64,30 @@ const CircleElement: FC<CircleElementType> = memo((props) => {
 
 
 
-type CheckIsSelectCircleType = PointType & PropsType
+// type CheckIsSelectCircleType = PointType & PropsType
 
-const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({idGroup, idCircle, x, y}) => {
-
-    const move = useSelector<RootState, PointType>(state => state.mouse.move);
-    const isSelection = useSelector<RootState, boolean>(state => state.selectionArea.isSelection);
-    const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
-    const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
-
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-
-        if (isDown && isSelection) {
-            if (x + 10 < move.x && x - 10 > mouseDown.x && y + 10 < move.y && y - 10 > mouseDown.y) {
-                dispatch(toggleSelect({idGroup, idCircle, value: true}));
-            }
-
-            // if (isSelected) {
-            //     if (circle.x + 10 > move.x && circle.x - 10 < mouseDown.x && circle.y + 10 > move.y && circle.y - 10 < mouseDown.y) {
-            //         dispatch(toggleSelect({id: circle.id, value: false}));
-            //     }
-            // }
-        }
-    }, [move])
-
-    return <></>
-})
+// const CheckIsSelectCircle: FC<CheckIsSelectCircleType> = memo(({idGroup, idCircle, x, y}) => {
+//
+//     const move = useSelector<RootState, PointType>(state => state.mouse.move);
+//     const isSelection = useSelector<RootState, boolean>(state => state.selectionArea.isSelection);
+//     const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
+//     const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
+//
+//     const dispatch = useAppDispatch();
+//     useEffect(() => {
+//
+//         if (isDown && isSelection) {
+//             if (x + 10 < move.x && x - 10 > mouseDown.x && y + 10 < move.y && y - 10 > mouseDown.y) {
+//                 dispatch(toggleSelect({idGroup, idCircle, value: true}));
+//             }
+//
+//             if (isSelected) {
+//                 if (circle.x + 10 > move.x && circle.x - 10 < mouseDown.x && circle.y + 10 > move.y && circle.y - 10 < mouseDown.y) {
+//                     dispatch(toggleSelect({id: circle.id, value: false}));
+//                 }
+//             }
+//         }
+//     }, [move])
+//
+//     return <></>
+// })
