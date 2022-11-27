@@ -1,8 +1,9 @@
 import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store/store";
-import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../store/reducers/selectionAreaReducer";
-import {removeAllCircles} from "../../store/reducers/circlesGroupReducer";
+import {RootState} from "../../../store/store";
+import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../../store/reducers/selectionAreaReducer";
+import {removeAllCircles} from "../../../store/reducers/circlesGroupReducer";
+import {UndoRedoContainer} from "./UndoRedo";
 
 export const Header = memo(() => {
 
@@ -32,6 +33,7 @@ export const Header = memo(() => {
     return (
         <header className={"topnavbar-wrapper"}>
             <nav className={"navbar topnavbar pr-4 pl-4 justify-content-start"}>
+                <UndoRedoContainer/>
                 <div className={'btn btn-secondary mr-2'} onClick={selectionArea}>
                     <i className={"fa-2x far fa-hand-pointer"} style={{color: isSelection ? 'green' : '#000'}}/>
                 </div>

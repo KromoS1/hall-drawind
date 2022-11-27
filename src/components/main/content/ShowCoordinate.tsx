@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {useSelector} from "react-redux";
-import {RootState} from "../../store/store";
-import {MouseReducerType} from "../../store/reducers/mouseReducer";
+import {RootState} from "../../../store/store";
+import {MouseReducerType} from "../../../store/reducers/mouseReducer";
 
 export const ShowCoordinate = memo(() => {
 

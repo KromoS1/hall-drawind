@@ -1,17 +1,17 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
 import {Stage} from 'react-konva';
-import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../store/reducers/mouseReducer";
+import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../../store/reducers/mouseReducer";
 import Konva from 'konva';
-import {observerStage} from "../../observer/observerStage";
+import {observerStage} from "../../../observer/observerStage";
 import {ShowCoordinate} from "./ShowCoordinate";
-import {observerDoc} from "../../observer/observerDoc";
-import {LayerSelectionArea} from "./layers/LayerSelectionArea";
-import {useAppDispatch} from "../../store/hooks";
-import {LayerCircle} from "./layers/LayerCircle";
-import {setStage} from "../../store/reducers/stageReducer";
+import {observerDoc} from "../../../observer/observerDoc";
+import {LayerSelectionArea} from "../layers/LayerSelectionArea";
+import {useAppDispatch} from "../../../store/hooks";
+import {LayerCircle} from "../layers/LayerCircle";
+import {setStage} from "../../../store/reducers/stageReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
-import {addCacheElement, cleanCircleCache} from "../figures/circles/cacheCircle";
-import {zoomStage} from "../../store/calculate/zoom";
+import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
+import {zoomStage} from "../../../store/calculate/zoom";
 
 export const Content = memo(() => {
 

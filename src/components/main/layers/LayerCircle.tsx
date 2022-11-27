@@ -17,7 +17,7 @@ type GroupDrawType = {
 
 export const LayerCircle = memo(() => {
 
-    const circlesGroup = useSelector<RootState, CircleGroupReducerType>(state => state.circlesGroup);
+    const circlesGroup = useSelector<RootState, CircleGroupReducerType>(state => state.circlesGroup.present);
     const keysLayer = Object.keys(circlesGroup);
 
     const resultLayer = keysLayer.map(layerId => <LayerDraw key={layerId} layerId={layerId} groups={circlesGroup[layerId]}/>)
@@ -40,7 +40,7 @@ const LayerDraw: FC<LayerDrawType> = memo(function ({layerId, groups}) {
 
 const GroupDraw:FC<GroupDrawType> = memo(function ({layerId, idGroup}){
 
-    const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.circlesGroup[layerId][idGroup]);
+    const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.circlesGroup.present[layerId][idGroup]);
 
     const fCircles = useMemo(() => circlesInGroup.map(circle => <FCircle key={circle.id} circle={circle} />),[layerId, idGroup]);
 

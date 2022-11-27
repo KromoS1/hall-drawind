@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {observerDoc} from "./observer/observerDoc";
-import {Content} from "./components/main/Content";
-import {Header} from './components/main/Header';
+import {Content} from "./components/main/content/Content";
+import {Header} from './components/main/nav/Header';
 
 function App() {
 
