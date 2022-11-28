@@ -38,8 +38,7 @@ const sliceCircles = createSlice({
             return state;
         },
         toggleSelect: (state, action:PayloadAction<{idGroup: string,idCircle:string, value: boolean}>) => {
-           //
-           // state[action.payload.idGroup][action.payload.idCircle].isSelected = action.payload.value;
+
            return state;
         },
         removeAllCircles: (state) => {

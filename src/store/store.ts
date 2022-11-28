@@ -5,12 +5,14 @@ import selectionAreaReducer from "./reducers/selectionAreaReducer";
 import stageReducer from "./reducers/stageReducer";
 import thunk from "redux-thunk";
 import undoable from "redux-undo";
+import listInfoReducer from "./reducers/listInfoReducer";
 
 const rootReducer = combineReducers({
    stage: stageReducer,
    mouse: mouseReducer,
    selectionArea: selectionAreaReducer,
    circlesGroup: undoable(circlesGroupReducer),
+   listInfo: undoable(listInfoReducer)
 })
 
 const immutableStateInvariant = require('redux-immutable-state-invariant').default()

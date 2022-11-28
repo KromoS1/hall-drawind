@@ -2,7 +2,9 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {observerDoc} from "./observer/observerDoc";
 import {Content} from "./components/main/content/Content";
-import {Header} from './components/main/nav/Header';
+import {Header} from './components/main/nav/header/Header';
+import {LeftAside} from "./components/main/nav/left/LeftAside";
+import {RightAside} from "./components/main/nav/right/RightAside";
 
 function App() {
 
@@ -20,9 +22,9 @@ function App() {
         <div className={"show-scrollbar layout-fixed"}>
             <div className={"wrapper"}>
                 <Header/>
-                <div>
-                    <Content/>
-                </div>
+                <LeftAside/>
+                <Content/>
+                <RightAside/>
             </div>
         </div>
     )

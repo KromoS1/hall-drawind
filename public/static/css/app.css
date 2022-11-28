@@ -117,10 +117,12 @@ body {
   body {
     min-height: 100%; }
   .wrapper .section-container,
+  .wrapper .footer-container {
+    margin-left: 220px; }
   .wrapper .section-container.has-sidebar-right {
     margin-right: 240px; }
-    .wrapper .section-container.has-sidebar-right + .offsidebar {
-      z-index: 1; } }
+  .wrapper .section-container.has-sidebar-right + .offsidebar {
+    z-index: 1; } }
 
 @media (max-width: 767.98px) {
   .wrapper .aside-container {

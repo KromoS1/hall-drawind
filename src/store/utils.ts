@@ -25,3 +25,46 @@ const typeCursorGrid = (container: HTMLElement, isDrawGrid:boolean) => {
         ? container.classList.add('cursor-draw-grid')
         : container.classList.remove('cursor-draw-grid');
 }
+
+
+export const addScript = function(url: string, callback: Function  ) {
+
+    const u = url.split('/');
+    const id = u[u.length-1];
+    const el = document.getElementById(id);
+
+    if(!document.getElementById(id)) {
+        const el = document.createElement('script');
+        el.type = 'text/javascript';
+        el.src = url;
+        el.id = id;
+        document.getElementsByTagName('head')[0].appendChild(el);
+        //@ts-ignore
+        if(typeof callback == 'function') { el.onload = callback; }
+
+    } else {
+        if(typeof callback == 'function') { callback(); }
+    }
+
+}
+
+export const addCSS = function(url: string, callback: Function) {
+
+    const u = url.split('/');
+    const id = u[u.length-1];
+    const el = document.getElementById(id);
+
+    if(!document.getElementById(id)) {
+        const el = document.createElement("link");
+        el.type = "text/css";
+        el.rel = "stylesheet";
+        el.href = url;
+        el.id = id;
+        document.getElementsByTagName("head")[0].appendChild(el);
+        //@ts-ignore
+        if(typeof callback == 'function') { el.onload = callback; }
+
+    } else {
+        if(typeof callback == 'function') { callback(); }
+    }
+}
