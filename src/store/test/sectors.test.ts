@@ -1,13 +1,13 @@
 import circlesReducer, {
-    CircleGroupReducerType,
+    SectorsReducerType,
     CirclesType,
     removeAllCircles,
     setCircle,
-    setCircleGroup
+    setCircleSector
 } from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 
-let circleState: CircleGroupReducerType;
+let circleState: SectorsReducerType;
 
 const createCircleArr = (count: number) => {
 
@@ -52,7 +52,7 @@ beforeEach(() => {
     circleState = {};
 });
 
-test('set all groups', () => {
+test('set all sectors', () => {
 
     const groups = createGroups();
 
@@ -71,12 +71,12 @@ test('set all groups', () => {
     expect(keysCircleLast.length).toBe(99);
 })
 
-test('set new group circle', () => {
+test('set new sector', () => {
 
     const circles = createCircleArr(10);
     const idGroup = uuid();
 
-    const endState = circlesReducer(circleState, setCircleGroup({idGroup,circles}));
+    const endState = circlesReducer(circleState, setCircleSector({idGroup,circles}));
 
     const keysLayer = Object.keys(endState);
     const keysGroup = Object.keys(endState[keysLayer[0]]);
@@ -105,12 +105,12 @@ test('set toggleSelect', () => {
     // })
 });
 
-test('set remove all circles', () => {
+test('set remove all sectors', () => {
 
     const circles = createCircleArr(10);
     const idGroup = uuid();
 
-    const middleState = circlesReducer(circleState, setCircleGroup({idGroup,circles}));
+    const middleState = circlesReducer(circleState, setCircleSector({idGroup,circles}));
 
     const endState = circlesReducer(middleState, removeAllCircles())
 

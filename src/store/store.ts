@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
    stage: stageReducer,
    mouse: mouseReducer,
    selectionArea: selectionAreaReducer,
-   circlesGroup: undoable(circlesGroupReducer),
+   sectors: undoable(circlesGroupReducer),
    listInfo: undoable(listInfoReducer)
 })
 

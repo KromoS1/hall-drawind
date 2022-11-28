@@ -1,4 +1,4 @@
-import {CircleGroupReducerType, CirclesType} from "../reducers/circlesGroupReducer";
+import {SectorsReducerType, CirclesType} from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
@@ -67,7 +67,7 @@ export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: 
 }
 
 // функция для определения выделенных кругов
-export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: CircleGroupReducerType, dispatch: Dispatch) => {
+export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: SectorsReducerType, dispatch: Dispatch) => {
 
     const keys = Object.keys(circles)
 

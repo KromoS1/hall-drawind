@@ -10,26 +10,26 @@ export type CirclesType = PointType & {
     isSelected: boolean
 }
 
-export type GroupCirclesType = {
+export type SectorsCirclesType = {
     [idGroup: string]: CirclesType[]
 }
 
-export type CircleGroupReducerType = {
-    [idLayer: string]: GroupCirclesType
+export type SectorsReducerType = {
+    [idLayer: string]: SectorsCirclesType
 }
 
-const initialState: CircleGroupReducerType = {}
+const initialState: SectorsReducerType = {}
 
 const sliceCircles = createSlice({
     name: 'circlesGroup',
     initialState,
     reducers: {
-        setCircle: (state, action: PayloadAction<{groups: GroupCirclesType}>) => {
+        setCircle: (state, action: PayloadAction<{groups: SectorsCirclesType}>) => {
 
             state = calculateLayerForAllGroups(action.payload.groups);
             return state;
         },
-        setCircleGroup: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
+        setCircleSector: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
 
             const newGroup = {
                 [action.payload.idGroup]: action.payload.circles
@@ -48,6 +48,6 @@ const sliceCircles = createSlice({
     }
 })
 
-export const {setCircle, setCircleGroup, removeAllCircles, toggleSelect} = sliceCircles.actions;
+export const {setCircle, setCircleSector, removeAllCircles, toggleSelect} = sliceCircles.actions;
 export default sliceCircles.reducer
 

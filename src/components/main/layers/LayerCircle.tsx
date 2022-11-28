@@ -1,13 +1,13 @@
 import React, {FC, memo, useMemo} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {CircleGroupReducerType, CirclesType, GroupCirclesType} from "../../../store/reducers/circlesGroupReducer";
+import {SectorsReducerType, CirclesType, SectorsCirclesType} from "../../../store/reducers/circlesGroupReducer";
 import {FCircle} from "../../figures/circles/FCircle";
 import {Group, Layer} from "react-konva";
 
 type LayerDrawType = {
     layerId: string
-    groups: GroupCirclesType
+    groups: SectorsCirclesType
 }
 
 type GroupDrawType = {
@@ -17,7 +17,7 @@ type GroupDrawType = {
 
 export const LayerCircle = memo(() => {
 
-    const circlesGroup = useSelector<RootState, CircleGroupReducerType>(state => state.circlesGroup.present);
+    const circlesGroup = useSelector<RootState, SectorsReducerType>(state => state.sectors.present);
     const keysLayer = Object.keys(circlesGroup);
 
     const resultLayer = keysLayer.map(layerId => <LayerDraw key={layerId} layerId={layerId} groups={circlesGroup[layerId]}/>)
@@ -40,7 +40,7 @@ const LayerDraw: FC<LayerDrawType> = memo(function ({layerId, groups}) {
 
 const GroupDraw:FC<GroupDrawType> = memo(function ({layerId, idGroup}){
 
-    const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.circlesGroup.present[layerId][idGroup]);
+    const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.sectors.present[layerId][idGroup]);
 
     const fCircles = useMemo(() => circlesInGroup.map(circle => <FCircle key={circle.id} circle={circle} />),[layerId, idGroup]);
 

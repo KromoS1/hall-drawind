@@ -2,7 +2,7 @@ import React, {FC, memo, useCallback, useEffect} from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../../store/store";
-import {CircleGroupReducerType} from "../../../../store/reducers/circlesGroupReducer";
+import {SectorsReducerType} from "../../../../store/reducers/circlesGroupReducer";
 import {observerDoc} from "../../../../observer/observerDoc";
 
 type PropsType = {
@@ -27,8 +27,8 @@ const UndoRedo:FC<PropsType> = ({canUndo, canRedo, onUndo, onRedo}) => {
 
 export const UndoRedoContainer = memo(() => {
 
-    const canUndo = useSelector<RootState,CircleGroupReducerType[]>(state => state.circlesGroup.past).length > 0;
-    const canRedo = useSelector<RootState,CircleGroupReducerType[]>(state => state.circlesGroup.future).length > 0;
+    const canUndo = useSelector<RootState,SectorsReducerType[]>(state => state.sectors.past).length > 0;
+    const canRedo = useSelector<RootState,SectorsReducerType[]>(state => state.sectors.future).length > 0;
     const dispatch = useDispatch();
 
     const onUndo = useCallback(() => {
