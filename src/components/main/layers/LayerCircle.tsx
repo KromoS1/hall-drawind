@@ -19,7 +19,6 @@ export const LayerCircle = memo(() => {
 
     const circlesGroup = useSelector<RootState, SectorsReducerType>(state => state.sectors.present);
     const keysLayer = Object.keys(circlesGroup);
-
     const resultLayer = keysLayer.map(layerId => <LayerDraw key={layerId} layerId={layerId} groups={circlesGroup[layerId]}/>)
 
     return <>{resultLayer}</>
@@ -28,7 +27,6 @@ export const LayerCircle = memo(() => {
 const LayerDraw: FC<LayerDrawType> = memo(function ({layerId, groups}) {
 
     const keys = Object.keys(groups);
-
     const resultGroup = useMemo(() => keys.map(idGroup => <GroupDraw key={idGroup} layerId={layerId} idGroup={idGroup}/>),[keys.length])
 
     return (
@@ -41,7 +39,6 @@ const LayerDraw: FC<LayerDrawType> = memo(function ({layerId, groups}) {
 const GroupDraw:FC<GroupDrawType> = memo(function ({layerId, idGroup}){
 
     const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.sectors.present[layerId][idGroup]);
-
     const fCircles = useMemo(() => circlesInGroup.map(circle => <FCircle key={circle.id} circle={circle} />),[layerId, idGroup]);
 
     return (

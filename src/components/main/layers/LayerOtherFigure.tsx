@@ -10,24 +10,14 @@ import {
     TypesFigureType
 } from "../../../store/mainType";
 import {setFigure, setFigureDraw,} from "../../../store/reducers/otherFigureReducer";
-import {Ellipse, Layer} from "react-konva";
+import {Layer} from "react-konva";
 import {FRect} from "../../figures/rect/FRect";
-import {GridDraw} from "../../selectionArea/GridDraw";
+import {RectDraw} from "../../selectionArea/prevDrawElement/RectDraw";
 import {observerStage} from "../../../observer/observerStage";
 import uuid from "react-uuid";
 import {FEllipse} from "../../figures/ellipse/FEllipse";
 import {FText} from "../../figures/text/FText";
-
-type PropsType = PointType & {
-    radiusX: number
-    radiusY: number
-}
-
-const DrawEllipse: FC<PropsType> = ({x, y, radiusX, radiusY}) => {
-    return (
-        <Ellipse x={x} y={y} radiusX={radiusX} radiusY={radiusY} fill={'#c9e5f5'}/>
-    )
-}
+import {EllipseDraw} from "../../selectionArea/prevDrawElement/EllipseDraw";
 
 export const LayerOtherFigure = memo(() => {
 
@@ -93,22 +83,6 @@ export const LayerOtherFigure = memo(() => {
         }
     }
 
-    const drawRects = useMemo(() => {
-        return rect.map(rect => {
-            return <FRect key={rect.id} x={rect.x} y={rect.y} w={rect.w} h={rect.h}/>
-        })
-    },[rect.length])
-
-    const drawEllipses = useMemo(() => {
-        return ellipses.map(ellipse => {
-            return <FEllipse key={ellipse.id} ellipse={ellipse}/>
-        })
-    },[ellipses.length])
-
-    const drawTexts = useMemo(() => {
-        return texts.map(text => <FText key={text.id} textFigure={text}/>)
-    },[texts.length])
-
     useEffect(() => {
 
         observerStage.subscribeEventStage('mouseUp',drawFigure);
@@ -120,19 +94,70 @@ export const LayerOtherFigure = memo(() => {
 
     return (
         <Layer>
-            {drawRects}
-            {drawEllipses}
-            {drawTexts}
+            <DrawRects rect={rect}/>
+            <DrawEllipses ellipses={ellipses}/>
+            <DrawTexts texts={texts}/>
             {isDown && typeFigure === Figures.RECT ?
-                <GridDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
             {isDown && typeFigure === Figures.ELLIPSE ?
-            <DrawEllipse x={mouseDown.x} y={mouseDown.y}
-                         radiusX={move.x - mouseDown.x}
-                         radiusY={move.y - mouseDown.y}
-
-            /> : <></>}
+            <EllipseDraw x={mouseDown.x} y={mouseDown.y} radiusX={move.x - mouseDown.x} radiusY={move.y - mouseDown.y} /> : <></>}
             {isDown && typeFigure === Figures.TEXT ?
-                <GridDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
         </Layer>
     )
 })
+
+type DrawRectsType = {
+    rect: RectFigureType[]
+}
+
+type DrawEllipseType = {
+    ellipses: EllipseFigureType[]
+}
+
+type DrawTextsType = {
+    texts: TextFigureType[]
+}
+
+const DrawRects: FC<DrawRectsType> = function ({rect}) {
+
+    const drawRects = useMemo(() => {
+        return rect.map(rect => {
+            return <FRect key={rect.id} x={rect.x} y={rect.y} w={rect.w} h={rect.h}/>
+        })
+    },[rect.length])
+
+    return (
+        <>
+            {drawRects}
+        </>
+    )
+}
+
+const DrawEllipses: FC<DrawEllipseType> = function ({ellipses}) {
+
+    const drawEllipses = useMemo(() => {
+        return ellipses.map(ellipse => {
+            return <FEllipse key={ellipse.id} ellipse={ellipse}/>
+        })
+    },[ellipses.length])
+
+    return (
+        <>
+            {drawEllipses}
+        </>
+    )
+}
+
+const DrawTexts: FC<DrawTextsType> = function ({texts}) {
+
+    const drawTexts = useMemo(() => {
+        return texts.map(text => <FText key={text.id} textFigure={text}/>)
+    },[texts.length])
+
+    return (
+        <>
+            {drawTexts}
+        </>
+    )
+}

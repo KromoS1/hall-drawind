@@ -1,6 +1,6 @@
 import React, {FC, memo, useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {GridDraw} from "./GridDraw";
+import {RectDraw} from "./prevDrawElement/RectDraw";
 import {setIsSelection} from "../../store/reducers/selectionAreaReducer";
 import {observerStage} from "../../observer/observerStage";
 import {PointType} from "../../store/mainType";
@@ -32,7 +32,7 @@ export const SelectionAreaContainer: FC<PropsType> = memo(({move, mouseDown, isS
     return (
         <>
             {isDown && isSelection ?
-                <GridDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
         </>
     )
 })

@@ -1,5 +1,5 @@
 import React, {FC, memo, useCallback, useEffect, useState} from "react";
-import {GridDraw} from "./GridDraw";
+import {RectDraw} from "./prevDrawElement/RectDraw";
 import {useDispatch} from "react-redux";
 import {setCircleSector} from "../../store/reducers/circlesGroupReducer";
 import {observerStage} from "../../observer/observerStage";
@@ -64,7 +64,7 @@ export const SelectionAreaGrid: FC<PropsType> = memo(({move, mouseDown, isDown, 
     return (
         <>
             {isDown && isDrawGrid ?
-                <GridDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}
                           isDrawGrid={isDrawGrid} countCircles={countCircles}/> : <></>}
         </>
     )

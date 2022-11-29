@@ -1,7 +1,7 @@
 import {FC, memo} from "react";
 import {Shape, Text} from "react-konva";
-import {CountCirclesDrawType} from "./SelectionAreaGrid";
-import {PointType} from "../../store/mainType";
+import {CountCirclesDrawType} from "../SelectionAreaGrid";
+import {PointType} from "../../../store/mainType";
 
 type PropsType = PointType & {
     w: number,
@@ -10,7 +10,7 @@ type PropsType = PointType & {
     countCircles?: CountCirclesDrawType
 }
 
-export const GridDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircles}) => {
+export const RectDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircles}) => {
 
     let xText = 0;
     let yText = 0;
