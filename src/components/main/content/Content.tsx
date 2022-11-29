@@ -12,6 +12,7 @@ import {setStage} from "../../../store/reducers/stageReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
 import {zoomStage} from "../../../store/calculate/zoom";
+import {LayerOtherFigure} from "../layers/LayerOtherFigure";
 
 export const Content = memo(() => {
 
@@ -99,6 +100,7 @@ export const Content = memo(() => {
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}>
                 <LayerCircle/>
                 <LayerSelectionArea/>
+                <LayerOtherFigure/>
             </Stage>
         </section>
     )

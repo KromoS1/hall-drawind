@@ -13,8 +13,6 @@ type PropsType = {
 
 export const FCircle: FC<PropsType> = memo(({circle}) => {
 
-    console.log("FCircle")
-
     const {numCol, x, y, isSelected } = circle;
     const [positionCircle, setPositionCircle] = useState<PointType & { isDragging: boolean }>({
         x: x,

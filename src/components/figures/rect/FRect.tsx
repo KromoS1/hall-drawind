@@ -1,8 +1,9 @@
-import React, {memo, useState} from 'react';
+import React, {FC, memo, useState} from 'react';
 import Konva from "konva";
 import { Rect } from 'react-konva';
 
 import KonvaEventObject = Konva.KonvaEventObject;
+import {PointType} from "../../../store/mainType";
 
 type PositionRectType = {
     isDragging:boolean,
@@ -10,9 +11,14 @@ type PositionRectType = {
     y: number
 }
 
-export const FRect = memo(() => {
+type PropsType = PointType & {
+    w: number,
+    h: number
+}
 
-    const [positionRect, setPositionRect] = useState<PositionRectType>({x:20, y:20, isDragging:false});
+export const FRect: FC<PropsType> = memo(({x, y, w, h}) => {
+
+    const [positionRect, setPositionRect] = useState<PositionRectType>({x, y , isDragging:false});
 
     const onDragStart = () => {
         setPositionRect(position => ({...position,isDragging: true}));
@@ -27,12 +33,11 @@ export const FRect = memo(() => {
             x={positionRect.x}
             y={positionRect.y}
             draggable
-            width={100}
-            height={100}
+            width={w}
+            height={h}
             fill={positionRect.isDragging ? "green" : "red"}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
-            shadowBlur={10}
         />
     )
 })

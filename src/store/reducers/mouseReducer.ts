@@ -51,7 +51,8 @@ export const mouseMoveThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
 
     checkTypeActionForCursor({
         isSelection: state.selectionArea.isSelection,
-        isDrawGrid: state.selectionArea.isDrawGrid
+        isDrawGrid: state.selectionArea.isDrawGrid,
+        figure: state.otherFigure.present.drawFigure
     })
 
     dispatch(setMousePosition(e.currentTarget.getRelativePointerPosition()));

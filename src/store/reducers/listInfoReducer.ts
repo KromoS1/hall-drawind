@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {CirclesType, removeAllCircles, setCircleSector} from "./circlesGroupReducer";
+import undoable from "redux-undo";
 
 export type listInfoReducerType = {
     idGroup: string
@@ -32,5 +33,5 @@ const slice = createSlice({
 
 })
 
-export default slice.reducer
+export default undoable(slice.reducer);
 

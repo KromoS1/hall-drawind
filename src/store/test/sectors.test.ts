@@ -1,9 +1,9 @@
-import circlesReducer, {
+import {
     SectorsReducerType,
     CirclesType,
     removeAllCircles,
     setCircle,
-    setCircleSector
+    setCircleSector, sectorsReducerForTest
 } from "../reducers/circlesGroupReducer";
 import uuid from "react-uuid";
 
@@ -56,7 +56,7 @@ test('set all sectors', () => {
 
     const groups = createGroups();
 
-    const endState = circlesReducer(circleState, setCircle({groups}));
+    const endState = sectorsReducerForTest(circleState, setCircle({groups}));
 
     const keysLayer = Object.keys(endState);
     const keysGroupFirst = Object.keys(endState[keysLayer[0]]);
@@ -76,7 +76,7 @@ test('set new sector', () => {
     const circles = createCircleArr(10);
     const idGroup = uuid();
 
-    const endState = circlesReducer(circleState, setCircleSector({idGroup,circles}));
+    const endState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
 
     const keysLayer = Object.keys(endState);
     const keysGroup = Object.keys(endState[keysLayer[0]]);
@@ -110,9 +110,9 @@ test('set remove all sectors', () => {
     const circles = createCircleArr(10);
     const idGroup = uuid();
 
-    const middleState = circlesReducer(circleState, setCircleSector({idGroup,circles}));
+    const middleState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
 
-    const endState = circlesReducer(middleState, removeAllCircles())
+    const endState = sectorsReducerForTest(middleState, removeAllCircles())
 
     const keys = Object.keys(endState);
 

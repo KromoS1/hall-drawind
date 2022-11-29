@@ -1,9 +1,11 @@
 import {FC, memo} from "react";
 import {Shape, Text} from "react-konva";
-import {RectType} from "../../store/mainType";
 import {CountCirclesDrawType} from "./SelectionAreaGrid";
+import {PointType} from "../../store/mainType";
 
-type PropsType = RectType & {
+type PropsType = PointType & {
+    w: number,
+    h: number,
     isDrawGrid?: boolean
     countCircles?: CountCirclesDrawType
 }
@@ -20,7 +22,7 @@ export const GridDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircl
 
     return (
         <>
-            <Shape x={x} y={y} width={w} height={h} fill={'rgba(213,141,141,0.53)'} stroke={'#dd4814'} strokeWidth={1}
+            <Shape x={x} y={y} width={w} height={h} fill={'#c9e5f5'}
                    sceneFunc={function (context, shape) {
 
                        context.beginPath();

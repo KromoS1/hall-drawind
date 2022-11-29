@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 import {calculateLayerForAllGroups, calculateLayers} from "../calculate/calculateLayers";
+import undoable from "redux-undo";
 
 export type CirclesType = PointType & {
     id: string,
@@ -49,5 +50,6 @@ const sliceCircles = createSlice({
 })
 
 export const {setCircle, setCircleSector, removeAllCircles, toggleSelect} = sliceCircles.actions;
-export default sliceCircles.reducer
+export const sectorsReducerForTest = sliceCircles.reducer;
+export default undoable(sliceCircles.reducer)
 

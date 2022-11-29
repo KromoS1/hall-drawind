@@ -1,9 +1,9 @@
 import React, {FC, memo, useCallback, useEffect} from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../../store/store";
-import {SectorsReducerType} from "../../../../store/reducers/circlesGroupReducer";
-import {observerDoc} from "../../../../observer/observerDoc";
+import {RootState} from "../../../store/store";
+import {SectorsReducerType} from "../../../store/reducers/circlesGroupReducer";
+import {observerDoc} from "../../../observer/observerDoc";
 
 type PropsType = {
     canUndo: boolean
