@@ -5,7 +5,7 @@ import undoable, {includeAction} from "redux-undo";
 
 export type AllFiguresType = RectFigureType | EllipseFigureType | TextFigureType
 
-type OtherFigureReducerType = {
+export type OtherFigureReducerType = {
     drawFigure: TypesFigureType | null
     figures: {
         rect: RectFigureType[],
@@ -60,4 +60,5 @@ const slice = createSlice({
 })
 
 export const {setFigureDraw, setFigure} = slice.actions
+export const otherFigureReducerForTest = slice.reducer;
 export default undoable(slice.reducer, {filter: includeAction(setFigureDraw)})
