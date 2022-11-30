@@ -2,15 +2,19 @@ import {FC, memo} from "react";
 import {Shape, Text} from "react-konva";
 import {CountCirclesDrawType} from "../SelectionAreaGrid";
 import {PointType} from "../../../store/mainType";
+import {COLORS} from "../../../store/constantsColor";
 
 type PropsType = PointType & {
     w: number,
     h: number,
-    isDrawGrid?: boolean
-    countCircles?: CountCirclesDrawType
+    isDrawGrid?: boolean,
+    countCircles?: CountCirclesDrawType,
+    bgColor?: string,
+    borderWidth?: number
+    borderColor?: string
 }
 
-export const RectDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircles}) => {
+export const RectDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircles, bgColor, borderWidth, borderColor}) => {
 
     let xText = 0;
     let yText = 0;
@@ -22,7 +26,8 @@ export const RectDraw: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCircl
 
     return (
         <>
-            <Shape x={x} y={y} width={w} height={h} fill={'#c9e5f5'}
+            <Shape x={x} y={y} width={w} height={h} fill={bgColor ? bgColor : COLORS.bgSelected} stroke={borderColor ? borderColor : COLORS.borderSelected}
+                   strokeWidth={borderWidth ? borderWidth : 2}
                    sceneFunc={function (context, shape) {
 
                        context.beginPath();

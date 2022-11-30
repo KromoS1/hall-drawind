@@ -14,11 +14,15 @@ export type TypesFigureType = typeof Figures.RECT | typeof Figures.ELLIPSE | typ
 export type MainParamFigureType = {
     id: string,
     typeFigure: TypesFigureType,
+    isSelected: boolean
 }
 
 export type RectFigureType = PointType & MainParamFigureType & {
     w: number,
     h: number,
+    bgColor:string
+    borderWidth:number,
+    borderColor: string
 }
 
 export type EllipseFigureType = PointType & MainParamFigureType & {

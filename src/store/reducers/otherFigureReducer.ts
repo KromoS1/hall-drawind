@@ -23,6 +23,14 @@ const initialState: OtherFigureReducerType = {
     }
 }
 
+const checkFigure = (figure: TypesFigureType) => {
+    switch (figure) {
+        case Figures.RECT: return 'rect';
+        case Figures.ELLIPSE: return 'ellipses';
+        case Figures.TEXT: return 'text';
+    }
+}
+
 const slice = createSlice({
     name: 'otherFigure',
     initialState,
@@ -46,7 +54,31 @@ const slice = createSlice({
                     return state;
                 }
             }
-        }
+        },
+        updateFigureRect: (state,action:PayloadAction<{rect: RectFigureType}>) => {
+            state.figures.rect = state.figures.rect.map(f => {
+                if (f.id === action.payload.rect.id) {
+                    return action.payload.rect;
+                }
+                return f;
+            })
+            return state;
+        },
+        offAllSelected: (state) => {
+            state.figures.rect = state.figures.rect.map(figure => {
+                figure.isSelected = false;
+                return figure;
+            });
+            state.figures.ellipses = state.figures.ellipses.map(figure => {
+                figure.isSelected = false;
+                return figure;
+            })
+            state.figures.text = state.figures.text.map(figure => {
+                figure.isSelected = false;
+                return figure;
+            })
+            return state;
+        },
     },
     extraReducers: builder => {
         builder.addCase(removeAllCircles, (state) => {
@@ -59,6 +91,6 @@ const slice = createSlice({
     }
 })
 
-export const {setFigureDraw, setFigure} = slice.actions
+export const {setFigureDraw, setFigure, updateFigureRect, offAllSelected} = slice.actions
 export const otherFigureReducerForTest = slice.reducer;
 export default undoable(slice.reducer, {filter: includeAction(setFigureDraw)})

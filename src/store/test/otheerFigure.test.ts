@@ -26,10 +26,14 @@ test('set rect', () => {
     const rect: RectFigureType = {
         id: uuid(),
         typeFigure: Figures.RECT,
+        isSelected: false,
         x: 10,
         y: 10,
         w: 100,
-        h: 100
+        h: 100,
+        bgColor:'gray',
+        borderWidth: 0,
+        borderColor:'transparent'
     }
 
     const endState = otherFigureReducerForTest(initState, setFigure({figure: rect}));
@@ -43,6 +47,7 @@ test('set ellipse', () => {
     const ellipse: EllipseFigureType = {
         id: uuid(),
         typeFigure: Figures.ELLIPSE,
+        isSelected: false,
         x: 10,
         y: 10,
         radiusX: 20,
@@ -61,6 +66,7 @@ test('set text', () => {
     const text: TextFigureType = {
         id: uuid(),
         typeFigure: Figures.TEXT,
+        isSelected: false,
         x: 20,
         y: 25,
         text: 'Hello'

@@ -1,43 +1,51 @@
 import React, {FC, memo, useState} from 'react';
 import Konva from "konva";
-import { Rect } from 'react-konva';
-
+import {Rect} from 'react-konva';
+import {RectFigureType} from "../../../store/mainType";
+import {useDispatch} from "react-redux";
+import {COLORS} from "../../../store/constantsColor";
+import {updateFigureRect} from "../../../store/reducers/otherFigureReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
-import {PointType} from "../../../store/mainType";
 
 type PositionRectType = {
-    isDragging:boolean,
+    isDragging: boolean,
     x: number
     y: number
 }
 
-type PropsType = PointType & {
-    w: number,
-    h: number
+type PropsType = {
+    rect: RectFigureType
 }
 
-export const FRect: FC<PropsType> = memo(({x, y, w, h}) => {
+export const FRect: FC<PropsType> = memo(({rect}) => {
 
-    const [positionRect, setPositionRect] = useState<PositionRectType>({x, y , isDragging:false});
+    const [positionRect, setPositionRect] = useState<PositionRectType>({x: rect.x, y: rect.y, isDragging: false});
+    const dispatch = useDispatch();
 
     const onDragStart = () => {
-        setPositionRect(position => ({...position,isDragging: true}));
+        setPositionRect(position => ({...position, isDragging: true}));
     }
 
-    const onDragEnd = (e:KonvaEventObject<DragEvent>) => {
+    const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
         setPositionRect({x: e.target.x(), y: e.target.y(), isDragging: false});
+    }
+
+    const toggleSelectRect = () => {
+        dispatch(updateFigureRect({rect:{...rect,isSelected: true}}))
     }
 
     return (
         <Rect
             x={positionRect.x}
             y={positionRect.y}
-            draggable
-            width={w}
-            height={h}
-            fill={positionRect.isDragging ? "green" : "red"}
+            width={rect.w}
+            height={rect.h}
+            fill={rect.bgColor}
+            stroke={rect.isSelected ? COLORS.borderSelected : ''}
+            strokeWidth={rect.isSelected ? 3 : 0}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
+            onClick={toggleSelectRect}
         />
     )
 })

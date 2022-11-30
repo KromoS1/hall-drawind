@@ -13,6 +13,7 @@ import KonvaEventObject = Konva.KonvaEventObject;
 import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
 import {zoomStage} from "../../../store/calculate/zoom";
 import {LayerOtherFigure} from "../layers/LayerOtherFigure";
+import {offAllSelected} from "../../../store/reducers/otherFigureReducer";
 
 export const Content = memo(() => {
 
@@ -25,6 +26,7 @@ export const Content = memo(() => {
     const handlerMouseDown = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseDown(e);
     const handlerMouseUp = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseUp(e);
     const handlerWheel = (e: KonvaEventObject<WheelEvent>) => observerStage.wheel(e);
+    const handlerClick = (e: KonvaEventObject<WheelEvent>) => observerStage.click(e);
 
     const setCursorDrag = () => {
         if (draggable) document.getElementById('section_container')?.classList.add('cursor-move');
@@ -74,6 +76,12 @@ export const Content = memo(() => {
             dispatch(mouseUpThunk(e));
         })
 
+        observerStage.subscribeEventStage("click", (e: KonvaEventObject<MouseEvent>) => {
+            if (e.target.attrs.id === 'stage_container') {
+                dispatch(offAllSelected());
+            }
+        })
+
         return () => {
             observerStage.cleanSubscribersAll();
             cleanCircleCache();
@@ -97,7 +105,8 @@ export const Content = memo(() => {
                    width={window.innerWidth}
                    height={window.innerHeight - 77}
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
-                   onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}>
+                   onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
+                   onClick={handlerClick}>
                 <LayerCircle/>
                 <LayerSelectionArea/>
                 <LayerOtherFigure/>

@@ -18,6 +18,7 @@ import uuid from "react-uuid";
 import {FEllipse} from "../../figures/ellipse/FEllipse";
 import {FText} from "../../figures/text/FText";
 import {EllipseDraw} from "../../selectionArea/prevDrawElement/EllipseDraw";
+import {COLORS} from "../../../store/constantsColor";
 
 export const LayerOtherFigure = memo(() => {
 
@@ -34,10 +35,14 @@ export const LayerOtherFigure = memo(() => {
         return {
             id: uuid(),
             typeFigure: Figures.RECT,
+            isSelected: false,
             x: mouseDown.x,
             y: mouseDown.y,
             w: move.x - mouseDown.x,
-            h: move.y - mouseDown.y
+            h: move.y - mouseDown.y,
+            bgColor: COLORS.bgFigure,
+            borderWidth: 0,
+            borderColor: COLORS.transparent
         }
     }
 
@@ -45,6 +50,7 @@ export const LayerOtherFigure = memo(() => {
         return {
             id: uuid(),
             typeFigure: Figures.ELLIPSE,
+            isSelected: false,
             x: mouseDown.x,
             y: mouseDown.y,
             radiusX: move.x - mouseDown.x,
@@ -56,6 +62,7 @@ export const LayerOtherFigure = memo(() => {
         return {
             id: uuid(),
             typeFigure: Figures.TEXT,
+            isSelected: false,
             x: mouseDown.x,
             y: mouseDown.y,
             text:'Hello'
@@ -98,7 +105,7 @@ export const LayerOtherFigure = memo(() => {
             <DrawEllipses ellipses={ellipses}/>
             <DrawTexts texts={texts}/>
             {isDown && typeFigure === Figures.RECT ?
-                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y} bgColor={COLORS.bgFigure} /> : <></>}
             {isDown && typeFigure === Figures.ELLIPSE ?
             <EllipseDraw x={mouseDown.x} y={mouseDown.y} radiusX={move.x - mouseDown.x} radiusY={move.y - mouseDown.y} /> : <></>}
             {isDown && typeFigure === Figures.TEXT ?
@@ -123,9 +130,9 @@ const DrawRects: FC<DrawRectsType> = function ({rect}) {
 
     const drawRects = useMemo(() => {
         return rect.map(rect => {
-            return <FRect key={rect.id} x={rect.x} y={rect.y} w={rect.w} h={rect.h}/>
+            return <FRect key={rect.id} rect={rect}/>
         })
-    },[rect.length])
+    },[rect])
 
     return (
         <>
@@ -140,7 +147,7 @@ const DrawEllipses: FC<DrawEllipseType> = function ({ellipses}) {
         return ellipses.map(ellipse => {
             return <FEllipse key={ellipse.id} ellipse={ellipse}/>
         })
-    },[ellipses.length])
+    },[ellipses])
 
     return (
         <>
@@ -153,7 +160,7 @@ const DrawTexts: FC<DrawTextsType> = function ({texts}) {
 
     const drawTexts = useMemo(() => {
         return texts.map(text => <FText key={text.id} textFigure={text}/>)
-    },[texts.length])
+    },[texts])
 
     return (
         <>

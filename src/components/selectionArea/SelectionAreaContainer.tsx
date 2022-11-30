@@ -32,7 +32,7 @@ export const SelectionAreaContainer: FC<PropsType> = memo(({move, mouseDown, isS
     return (
         <>
             {isDown && isSelection ?
-                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y} /> : <></>}
         </>
     )
 })
