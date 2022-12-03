@@ -9,11 +9,11 @@ import {LayerSelectionArea} from "../layers/LayerSelectionArea";
 import {useAppDispatch} from "../../../store/hooks";
 import {LayerCircle} from "../layers/LayerCircle";
 import {setStage} from "../../../store/reducers/stageReducer";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
 import {zoomStage} from "../../../store/calculate/zoom";
 import {LayerOtherFigure} from "../layers/LayerOtherFigure";
-import {offAllSelected} from "../../../store/reducers/otherFigureReducer";
+import {offSelectFigure} from "../../../store/reducers/otherDataFigureReducer";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
@@ -78,7 +78,7 @@ export const Content = memo(() => {
 
         observerStage.subscribeEventStage("click", (e: KonvaEventObject<MouseEvent>) => {
             if (e.target.attrs.id === 'stage_container') {
-                dispatch(offAllSelected());
+                dispatch(offSelectFigure());
             }
         })
 

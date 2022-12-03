@@ -9,8 +9,8 @@ import {
     TextFigureType,
     TypesFigureType
 } from "../../../store/mainType";
-import {setFigure, setFigureDraw,} from "../../../store/reducers/otherFigureReducer";
-import {Layer} from "react-konva";
+import {setFigureDraw} from "../../../store/reducers/otherDataFigureReducer";
+import {Layer, Transformer} from "react-konva";
 import {FRect} from "../../figures/rect/FRect";
 import {RectDraw} from "../../selectionArea/prevDrawElement/RectDraw";
 import {observerStage} from "../../../observer/observerStage";
@@ -19,16 +19,17 @@ import {FEllipse} from "../../figures/ellipse/FEllipse";
 import {FText} from "../../figures/text/FText";
 import {EllipseDraw} from "../../selectionArea/prevDrawElement/EllipseDraw";
 import {COLORS} from "../../../store/constantsColor";
+import {setRectFigure} from "../../../store/reducers/rectsReducer";
 
 export const LayerOtherFigure = memo(() => {
 
     const move = useSelector<RootState, PointType>(state => state.mouse.move);
     const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
     const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
-    const typeFigure = useSelector<RootState,TypesFigureType | null>(state => state.otherFigure.present.drawFigure);
-    const rect = useSelector<RootState,RectFigureType[]>(state => state.otherFigure.present.figures.rect);
-    const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
-    const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
+    const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.otherDataFigure.drawFigure);
+    const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
+    // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
+    // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
     const dispatch = useDispatch();
 
     const createRect = (): RectFigureType => {
@@ -58,14 +59,14 @@ export const LayerOtherFigure = memo(() => {
         }
     }
 
-    const createText = ():TextFigureType => {
+    const createText = (): TextFigureType => {
         return {
             id: uuid(),
             typeFigure: Figures.TEXT,
             isSelected: false,
             x: mouseDown.x,
             y: mouseDown.y,
-            text:'Hello'
+            text: 'Hello'
         }
     }
 
@@ -73,17 +74,17 @@ export const LayerOtherFigure = memo(() => {
 
         switch (typeFigure) {
             case 1: {
-                dispatch(setFigure({figure: createRect()}));
+                dispatch(setRectFigure({rect: createRect()}));
                 dispatch(setFigureDraw({typeFigure: null}));
                 break;
             }
             case 2: {
-                dispatch(setFigure({figure: createEllipse()}));
+                // dispatch(setFigure({figure: createEllipse()}));
                 dispatch(setFigureDraw({typeFigure: null}));
                 break;
             }
-            case 3:{
-                dispatch(setFigure({figure: createText()}));
+            case 3: {
+                // dispatch(setFigure({figure: createText()}));
                 dispatch(setFigureDraw({typeFigure: null}));
                 break;
             }
@@ -92,22 +93,24 @@ export const LayerOtherFigure = memo(() => {
 
     useEffect(() => {
 
-        observerStage.subscribeEventStage('mouseUp',drawFigure);
+        observerStage.subscribeEventStage('mouseUp', drawFigure);
 
         return () => {
             observerStage.removeSubscriber('mouseUp', drawFigure);
         }
-    },[move])
+    }, [move])
 
     return (
         <Layer>
-            <DrawRects rect={rect}/>
-            <DrawEllipses ellipses={ellipses}/>
-            <DrawTexts texts={texts}/>
+            <DrawRects rects={rects}/>
+            {/*<DrawEllipses ellipses={ellipses}/>*/}
+            {/*<DrawTexts texts={texts}/>*/}
             {isDown && typeFigure === Figures.RECT ?
-                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y} bgColor={COLORS.bgFigure} /> : <></>}
+                <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}
+                          bgColor={COLORS.bgFigure}/> : <></>}
             {isDown && typeFigure === Figures.ELLIPSE ?
-            <EllipseDraw x={mouseDown.x} y={mouseDown.y} radiusX={move.x - mouseDown.x} radiusY={move.y - mouseDown.y} /> : <></>}
+                <EllipseDraw x={mouseDown.x} y={mouseDown.y} radiusX={move.x - mouseDown.x}
+                             radiusY={move.y - mouseDown.y}/> : <></>}
             {isDown && typeFigure === Figures.TEXT ?
                 <RectDraw x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}/> : <></>}
         </Layer>
@@ -115,7 +118,7 @@ export const LayerOtherFigure = memo(() => {
 })
 
 type DrawRectsType = {
-    rect: RectFigureType[]
+    rects: RectFigureType[]
 }
 
 type DrawEllipseType = {
@@ -126,13 +129,13 @@ type DrawTextsType = {
     texts: TextFigureType[]
 }
 
-const DrawRects: FC<DrawRectsType> = function ({rect}) {
+const DrawRects: FC<DrawRectsType> = function ({rects}) {
 
     const drawRects = useMemo(() => {
-        return rect.map(rect => {
-            return <FRect key={rect.id} rect={rect}/>
+        return rects.map(rect => {
+            return (<FRect key={rect.id} rect={rect}/>)
         })
-    },[rect])
+    }, [rects])
 
     return (
         <>
@@ -147,7 +150,7 @@ const DrawEllipses: FC<DrawEllipseType> = function ({ellipses}) {
         return ellipses.map(ellipse => {
             return <FEllipse key={ellipse.id} ellipse={ellipse}/>
         })
-    },[ellipses])
+    }, [ellipses])
 
     return (
         <>
@@ -160,7 +163,7 @@ const DrawTexts: FC<DrawTextsType> = function ({texts}) {
 
     const drawTexts = useMemo(() => {
         return texts.map(text => <FText key={text.id} textFigure={text}/>)
-    },[texts])
+    }, [texts])
 
     return (
         <>

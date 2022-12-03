@@ -5,13 +5,13 @@ import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../../
 import {removeAllCircles} from "../../../store/reducers/circlesGroupReducer";
 import {UndoRedoContainer} from "./UndoRedo";
 import {Figures, TypesFigureType} from "../../../store/mainType";
-import {setFigureDraw} from "../../../store/reducers/otherFigureReducer";
+import {setFigureDraw} from "../../../store/reducers/otherDataFigureReducer";
 
 export const Header = memo(() => {
 
     const dispatch = useDispatch();
     const {isSelection, isDrawGrid} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
-    const figure = useSelector<RootState, TypesFigureType | null>(state => state.otherFigure.present.drawFigure);
+    const figure = useSelector<RootState, TypesFigureType | null>(state => state.otherDataFigure.drawFigure);
 
     const resetSelectAction = () => {
         dispatch(setIsSelection({isSelection: false}));

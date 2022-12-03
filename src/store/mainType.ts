@@ -33,3 +33,5 @@ export type EllipseFigureType = PointType & MainParamFigureType & {
 export type TextFigureType = PointType & MainParamFigureType &{
     text: string,
 }
+
+export type GeneralFigureType = RectFigureType | EllipseFigureType | TextFigureType
