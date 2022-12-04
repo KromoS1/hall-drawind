@@ -19,13 +19,11 @@ function App() {
     }, [])
 
     return (
-        <div className={"show-scrollbar layout-fixed"}>
-            <div className={"wrapper"}>
-                <Header/>
-                <LeftAside/>
-                <Content/>
-                <RightAside/>
-            </div>
+        <div>
+            <Header/>
+            <LeftAside/>
+            <Content/>
+            <RightAside/>
         </div>
     )
 }
