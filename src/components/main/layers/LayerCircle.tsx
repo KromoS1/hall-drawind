@@ -49,3 +49,24 @@ const GroupDraw:FC<GroupDrawType> = memo(function ({layerId, idGroup}){
         </>
     )
 })
+
+// пример кода для изгиба сетки
+// lineCap={"round"}
+// sceneFunc={function (context, shape) {
+//
+//         context.beginPath();
+//
+//         // context.rect(0, 0, rect.w, rect.h);
+//         context.moveTo(0,0)
+//         context.quadraticCurveTo(rect.w/2,200,rect.w, 0);
+//         // context.lineTo(rect.w, 0);
+//         context.lineTo(rect.w, rect.h);
+//         context.quadraticCurveTo(rect.w/2,200+ 200, 0, rect.h);
+//
+//         // context.lineTo(0, rect.h);
+//         context.lineTo(0, 0);
+//
+//         // context.closePath();
+//
+//         context.fillStrokeShape(shape);
+//     }}

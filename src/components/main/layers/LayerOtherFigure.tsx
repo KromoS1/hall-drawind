@@ -10,16 +10,16 @@ import {
     TypesFigureType
 } from "../../../store/mainType";
 import {setFigureDraw} from "../../../store/reducers/otherDataFigureReducer";
-import {Layer, Transformer} from "react-konva";
+import {Layer} from "react-konva";
 import {FRect} from "../../figures/rect/FRect";
 import {RectDraw} from "../../selectionArea/prevDrawElement/RectDraw";
 import {observerStage} from "../../../observer/observerStage";
-import uuid from "react-uuid";
 import {FEllipse} from "../../figures/ellipse/FEllipse";
 import {FText} from "../../figures/text/FText";
 import {EllipseDraw} from "../../selectionArea/prevDrawElement/EllipseDraw";
 import {COLORS} from "../../../store/constantsColor";
 import {setRectFigure} from "../../../store/reducers/rectsReducer";
+import {createRect} from "../../../store/utils";
 
 export const LayerOtherFigure = memo(() => {
 
@@ -32,49 +32,11 @@ export const LayerOtherFigure = memo(() => {
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
     const dispatch = useDispatch();
 
-    const createRect = (): RectFigureType => {
-        return {
-            id: uuid(),
-            typeFigure: Figures.RECT,
-            isSelected: false,
-            x: mouseDown.x,
-            y: mouseDown.y,
-            w: move.x - mouseDown.x,
-            h: move.y - mouseDown.y,
-            bgColor: COLORS.bgFigure,
-            borderWidth: 0,
-            borderColor: COLORS.transparent
-        }
-    }
-
-    const createEllipse = (): EllipseFigureType => {
-        return {
-            id: uuid(),
-            typeFigure: Figures.ELLIPSE,
-            isSelected: false,
-            x: mouseDown.x,
-            y: mouseDown.y,
-            radiusX: move.x - mouseDown.x,
-            radiusY: move.y - mouseDown.y,
-        }
-    }
-
-    const createText = (): TextFigureType => {
-        return {
-            id: uuid(),
-            typeFigure: Figures.TEXT,
-            isSelected: false,
-            x: mouseDown.x,
-            y: mouseDown.y,
-            text: 'Hello'
-        }
-    }
-
     const drawFigure = () => {
 
         switch (typeFigure) {
             case 1: {
-                dispatch(setRectFigure({rect: createRect()}));
+                dispatch(setRectFigure({rect: createRect(move, mouseDown)}));
                 dispatch(setFigureDraw({typeFigure: null}));
                 break;
             }

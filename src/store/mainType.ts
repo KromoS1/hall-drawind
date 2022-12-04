@@ -1,13 +1,21 @@
-
 export type PointType = {
     x: number,
     y: number,
 }
 
 export enum Figures {
-    "RECT"= 1,
+    "RECT" = 1,
     "ELLIPSE",
     "TEXT"
+}
+
+export const stringNamesForUpdateNumber = {
+    x: 'x',
+    y: 'x',
+    w: 'w',
+    h: 'h',
+    rotation: 'rotation',
+    cornerRadius: 'cornerRadius',
 }
 
 export type TypesFigureType = typeof Figures.RECT | typeof Figures.ELLIPSE | typeof Figures.TEXT
@@ -20,9 +28,11 @@ export type MainParamFigureType = {
 export type RectFigureType = PointType & MainParamFigureType & {
     w: number,
     h: number,
-    bgColor:string
-    borderWidth:number,
-    borderColor: string
+    bgColor: string
+    borderWidth: number,
+    borderColor: string,
+    rotation: number,
+    cornerRadius: number
 }
 
 export type EllipseFigureType = PointType & MainParamFigureType & {
@@ -30,7 +40,7 @@ export type EllipseFigureType = PointType & MainParamFigureType & {
     radiusY: number,
 }
 
-export type TextFigureType = PointType & MainParamFigureType &{
+export type TextFigureType = PointType & MainParamFigureType & {
     text: string,
 }
 

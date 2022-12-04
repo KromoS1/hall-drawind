@@ -1,6 +1,6 @@
 import React, {FC, memo, useEffect, useRef, useState} from 'react';
 import Konva from "konva";
-import {Rect, Transformer} from 'react-konva';
+import {Rect, Shape, Transformer} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
 import {toggleSelectFigure} from "../../../store/reducers/otherDataFigureReducer";
@@ -21,7 +21,12 @@ type PropsType = {
 
 export const FRect: FC<PropsType> = memo(({rect}) => {
 
-    const [rectUpdate, setRectUpdate] = useState<PositionRectType>({x: rect.x, y: rect.y, w: rect.w, h: rect.h});
+    const [rectUpdate, setRectUpdate] = useState<PositionRectType>({
+        x: rect.x,
+        y: rect.y,
+        w: rect.w,
+        h: rect.h,
+    });
 
     const transformerRef = useRef<Konva.Transformer | null>(null);
     const rectRef = useRef<Konva.Rect | null>(null);
@@ -40,6 +45,7 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
     const transformEnd = (e: KonvaEventObject<Event>) => {
 
         const node = rectRef.current;
+
         if (node) {
             const scaleX = node.scaleX();
             const scaleY = node.scaleY();
@@ -49,10 +55,10 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
 
             setRectUpdate(value => ({
                 ...value,
-                x: node.x(),
-                y: node.y(),
+                x: Math.round(node.x()),
+                y: Math.round(node.y()),
                 w: Math.round(Math.max(5, node.width() * scaleX)),
-                h: Math.round(Math.max(node.height() * scaleY))
+                h: Math.round(Math.max(node.height() * scaleY)),
             }))
 
         }
@@ -80,13 +86,16 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
         <>
             <Rect
                 ref={rectRef}
+                id={rect.id}
                 x={rect.x}
                 y={rect.y}
                 width={rect.w}
                 height={rect.h}
+                rotation={rect.rotation}
                 fill={rect.bgColor}
                 stroke={strokeRect}
                 strokeWidth={strokeWidth}
+                cornerRadius={rect.cornerRadius}
                 draggable={rect.isSelected}
                 onDragEnd={onDragEnd}
                 onTransformEnd={transformEnd}
@@ -96,9 +105,9 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
             <Transformer ref={transformerRef}
                          keepRatio={false}
                          anchorCornerRadius={10}
-                         rotateAnchorOffset={30}
+                         rotateEnabled={false}
                          centeredScaling
-                         boundBoxFunc={(oldBox, newBox) => {
+                         boundBoxFunc={(oldBox, newBox) => { //TODO проверить что делает, может и не надо эта функция
                              // limit resize
                              if (newBox.width < 5 || newBox.height < 5) {
                                  return oldBox;

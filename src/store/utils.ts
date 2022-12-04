@@ -1,4 +1,55 @@
-import {TypesFigureType} from "./mainType";
+import {
+    EllipseFigureType,
+    Figures,
+    PointType,
+    RectFigureType,
+    stringNamesForUpdateNumber,
+    TextFigureType,
+    TypesFigureType
+} from "./mainType";
+import uuid from "react-uuid";
+import {COLORS} from "./constantsColor";
+
+export const createRect = (move: PointType, mouseDown:PointType): RectFigureType => {
+    return {
+        id: uuid(),
+        typeFigure: Figures.RECT,
+        isSelected: false,
+        x: mouseDown.x,
+        y: mouseDown.y,
+        w: move.x - mouseDown.x,
+        h: move.y - mouseDown.y,
+        bgColor: COLORS.bgFigure,
+        borderWidth: 0,
+        borderColor: COLORS.transparent,
+        rotation: 0,
+        cornerRadius: 0,
+    }
+}
+
+export const createEllipse = (move: PointType, mouseDown:PointType): EllipseFigureType => {
+    return {
+        id: uuid(),
+        typeFigure: Figures.ELLIPSE,
+        isSelected: false,
+        x: mouseDown.x,
+        y: mouseDown.y,
+        radiusX: move.x - mouseDown.x,
+        radiusY: move.y - mouseDown.y,
+    }
+}
+
+export const createText = (mouseDown:PointType): TextFigureType => {
+    return {
+        id: uuid(),
+        typeFigure: Figures.TEXT,
+        isSelected: false,
+        x: mouseDown.x,
+        y: mouseDown.y,
+        text: 'Hello'
+    }
+}
+
 
 type checkTypeActionAction = {
     isSelection: boolean, isDrawGrid: boolean,
@@ -78,4 +129,11 @@ export const addCSS = function (url: string, callback: Function) {
             callback();
         }
     }
+}
+
+export const checkNameFigureForNumber = (name: string | undefined) => {
+
+    const valueNames = Object.values(stringNamesForUpdateNumber);
+
+    return valueNames.some(el => el === name);
 }
