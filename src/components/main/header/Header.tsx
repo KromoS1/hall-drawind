@@ -22,21 +22,11 @@ import GridOnIcon from '@material-ui/icons/GridOn';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import {FigureButton} from "./FigureButton";
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-    }),
-);
-
 export const Header = memo(() => {
-    const classes = useStyles();
 
-    const dispatch = useDispatch();
     const {isSelection, isDrawGrid} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
+    const dispatch = useDispatch();
+    const styles = useStyles();
 
     const resetSelectAction = () => {
         dispatch(setIsSelection({isSelection: false}));
@@ -65,26 +55,26 @@ export const Header = memo(() => {
     };
 
     return (
-        <div className={classes.root}>
+        <div className={styles.box}>
             <AppBar position="static">
                 <Toolbar>
                     <Box flexGrow={1}>
                         <UndoRedoContainer/>
                         <Tooltip title={'Выделение'}>
-                            <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={selectionArea}
+                            <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={selectionArea}
                                         style={{color: isSelection ? 'green' : ''}}>
                                 <AspectRatioIcon/>
                             </IconButton>
                         </Tooltip>
                         <Tooltip title={'Нарисовать сектор'}>
-                            <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={drawGrid}
+                            <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={drawGrid}
                                         style={{color: isDrawGrid ? 'green' : ''}}>
                                 <GridOnIcon/>
                             </IconButton>
                         </Tooltip>
                         <FigureButton drawFigure={drawFigure}/>
                         <Tooltip title={'Очистить весь холст'}>
-                            <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={clearCanvas}>
+                            <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={clearCanvas}>
                                 <ClearAllIcon/>
                             </IconButton>
                         </Tooltip>
@@ -97,3 +87,14 @@ export const Header = memo(() => {
         </div>
     )
 })
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+        box: {
+            flexGrow: 1,
+            height: '65px'
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+        },
+    }),
+);

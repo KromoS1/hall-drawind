@@ -3,10 +3,13 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../../store/store";
 import {Figures, GeneralFigureType, RectFigureType, TypesFigureType} from "../../../../store/mainType";
 import {UpdateFigure} from "./UpdateFigure";
+import {Box, createStyles, makeStyles} from "@material-ui/core";
+import {WIDTH_ASIDE} from "../../../../App";
 
 export const RightAside = memo(() => {
 
-    const [figure, setFigure] = useState<GeneralFigureType>()
+    const [figure, setFigure] = useState<GeneralFigureType>();
+    const styles = useStyles();
 
     const idChangeFigure = useSelector<RootState, string>(state => state.otherDataFigure.idSelectFigure);
     const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.otherDataFigure.typeFigureSelected);
@@ -23,11 +26,20 @@ export const RightAside = memo(() => {
                 }
             }
         }
-    }, [idChangeFigure,rects])
+    }, [idChangeFigure, rects])
 
     return (
-        <aside className={"offsidebar"}>
+        <Box className={styles.box}>
             {idChangeFigure && figure ? <UpdateFigure figure={figure}/> : <></>}
-        </aside>
+        </Box>
     )
 })
+
+const useStyles = makeStyles(() => createStyles({
+        box: {
+            borderLeft: '2px solid #e6e6e6',
+            width: WIDTH_ASIDE,
+            padding: '5px'
+        },
+    }),
+);

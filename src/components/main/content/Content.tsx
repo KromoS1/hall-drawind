@@ -3,7 +3,6 @@ import {Stage} from 'react-konva';
 import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../../store/reducers/mouseReducer";
 import Konva from 'konva';
 import {observerStage} from "../../../observer/observerStage";
-import {ShowCoordinate} from "./ShowCoordinate";
 import {observerDoc} from "../../../observer/observerDoc";
 import {LayerSelectionArea} from "../layers/LayerSelectionArea";
 import {useAppDispatch} from "../../../store/hooks";
@@ -13,12 +12,15 @@ import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCirc
 import {zoomStage} from "../../../store/calculate/zoom";
 import {LayerOtherFigure} from "../layers/LayerOtherFigure";
 import {offSelectFigure} from "../../../store/reducers/otherDataFigureReducer";
+import {Box, createStyles, makeStyles} from "@material-ui/core";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {HEIGHT_APP_BAR, WIDTH_ASIDE} from "../../../App";
 
 export const Content = memo(() => {
 
     const [draggable, setDraggable] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const styles = useStyles();
 
     const stageRef = useRef(null);
 
@@ -99,11 +101,10 @@ export const Content = memo(() => {
     }, [draggable])
 
     return (
-        <section id={'section_container'} className={"section-container"} style={{height: '100%', width: '100%'}}>
-            <ShowCoordinate/>
+        <Box className={styles.content}>
             <Stage id={'stage_container'} draggable={draggable} ref={stageRef}
-                   width={window.innerWidth}
-                   height={window.innerHeight - 77}
+                   width={window.innerWidth - WIDTH_ASIDE}
+                   height={window.innerHeight - HEIGHT_APP_BAR}
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onClick={handlerClick}>
@@ -111,6 +112,13 @@ export const Content = memo(() => {
                 <LayerSelectionArea/>
                 <LayerOtherFigure/>
             </Stage>
-        </section>
+        </Box>
     )
 })
+
+const useStyles = makeStyles(() => createStyles({
+        content: {
+            width: `calc(100vw - ${WIDTH_ASIDE*2}px)`
+        },
+    }),
+);

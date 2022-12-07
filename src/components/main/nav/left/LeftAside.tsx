@@ -3,18 +3,30 @@ import {GroupInfo} from "./GroupInfo";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../store/store";
 import {listInfoReducerType} from "../../../../store/reducers/listInfoReducer";
+import {Box, createStyles, makeStyles, Theme} from "@material-ui/core";
+import {WIDTH_ASIDE} from "../../../../App";
 
 export const LeftAside = memo(() => {
 
-    const listInfoGroup = useSelector<RootState,listInfoReducerType[]>(state => state.listInfo.present);
+    const listInfoGroup = useSelector<RootState, listInfoReducerType[]>(state => state.listInfo.present);
+    const styles = useStyles();
 
     return (
-        <aside className={"aside-container"}>
-            <div className={"aside-inner"}>
-                <nav className={"sidebar p-1 pr-2"} data-sidebar-anyclick-close="">
-                    {listInfoGroup.map(el => <GroupInfo key={el.idGroup} idGroup={el.idGroup} name={el.name} count={el.count}/>)}
-                </nav>
-            </div>
-        </aside>
+        <Box className={styles.root}>
+            {listInfoGroup.map(el => <GroupInfo key={el.idGroup} idGroup={el.idGroup} name={el.name}
+                                                count={el.count}/>)}
+        </Box>
     )
 })
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+        root: {
+            borderRight: '2px solid #e6e6e6',
+            width: WIDTH_ASIDE,
+            padding: '5px'
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+        },
+    }),
+);
