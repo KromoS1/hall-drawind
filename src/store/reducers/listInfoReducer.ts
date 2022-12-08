@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CirclesType, removeAllCircles, setCircleSector} from "./circlesGroupReducer";
+import {PlaceType, removeAllCircles, setCircleSector} from "./sectorsReducer";
 import undoable from "redux-undo";
 
 export type listInfoReducerType = {
@@ -16,7 +16,7 @@ const slice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(setCircleSector, (state, action:PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
+            .addCase(setCircleSector, (state, action:PayloadAction<{idGroup: string, circles: PlaceType[]}>) => {
                 const info = {
                     idGroup: action.payload.idGroup,
                     name: `Group ${state.length + 1}`,

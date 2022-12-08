@@ -2,13 +2,13 @@ import React, {FC, memo, useCallback, useEffect, useRef, useState} from 'react';
 import Konva from "konva";
 import {Group} from 'react-konva';
 import {PointType} from "../../../store/mainType";
-import {CirclesType} from "../../../store/reducers/circlesGroupReducer";
+import {PlaceType} from "../../../store/reducers/sectorsReducer";
 import {CircleElementType, cloningElement} from "./cacheCircle";
 import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaGroup = Konva.Group;
 
 type PropsType = {
-    circle: CirclesType
+    circle: PlaceType
 }
 
 export const FCircle: FC<PropsType> = memo(({circle}) => {

@@ -1,7 +1,7 @@
 import React, {FC, memo, useCallback, useEffect, useState} from "react";
 import {PreDrawRect} from "./prevDrawElement/PreDrawRect";
 import {useDispatch} from "react-redux";
-import {setCircleSector} from "../../../../../../store/reducers/circlesGroupReducer";
+import {setCircleSector} from "../../../../../../store/reducers/sectorsReducer";
 import {observerStage} from "../../../../../../observer/observerStage";
 import {PointType} from "../../../../../../store/mainType";
 import {setIsDrawGrid} from "../../../../../../store/reducers/selectionAreaReducer";

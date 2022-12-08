@@ -3,7 +3,7 @@ import {PointType} from "../mainType";
 import {calculateLayerForAllGroups, calculateLayers} from "../calculate/calculateLayers";
 import undoable from "redux-undo";
 
-export type CirclesType = PointType & {
+export type PlaceType = PointType & {
     id: string,
     numRow: number
     numCol: number
@@ -11,26 +11,26 @@ export type CirclesType = PointType & {
     isSelected: boolean
 }
 
-export type SectorsCirclesType = {
-    [idGroup: string]: CirclesType[]
+export type SectorsPlacesType = {
+    [idGroup: string]: PlaceType[]
 }
 
 export type SectorsReducerType = {
-    [idLayer: string]: SectorsCirclesType
+    [idLayer: string]: SectorsPlacesType
 }
 
 const initialState: SectorsReducerType = {}
 
 const sliceCircles = createSlice({
-    name: 'circlesGroup',
+    name: 'sectorsGroup',
     initialState,
     reducers: {
-        setCircle: (state, action: PayloadAction<{groups: SectorsCirclesType}>) => {
+        setCircle: (state, action: PayloadAction<{ groups: SectorsPlacesType }>) => {
 
             state = calculateLayerForAllGroups(action.payload.groups);
             return state;
         },
-        setCircleSector: (state, action: PayloadAction<{idGroup: string, circles: CirclesType[]}>) => {
+        setCircleSector: (state, action: PayloadAction<{ idGroup: string, circles: PlaceType[] }>) => {
 
             const newGroup = {
                 [action.payload.idGroup]: action.payload.circles
@@ -38,9 +38,15 @@ const sliceCircles = createSlice({
             state = calculateLayers(state, newGroup);
             return state;
         },
-        toggleSelect: (state, action:PayloadAction<{idGroup: string,idCircle:string, value: boolean}>) => {
+        toggleSelectPlace: (state, action: PayloadAction<{ idLayer: string, idGroup: string, idPlace: string, value: boolean }>) => {
 
-           return state;
+            const place = state[action.payload.idLayer][action.payload.idGroup].find(place => place.id === action.payload.idPlace);
+
+            if (place) {
+                place.isSelected = action.payload.value;
+            }
+
+            return state;
         },
         removeAllCircles: (state) => {
             state = {};
@@ -49,7 +55,7 @@ const sliceCircles = createSlice({
     }
 })
 
-export const {setCircle, setCircleSector, removeAllCircles, toggleSelect} = sliceCircles.actions;
+export const {setCircle, setCircleSector, removeAllCircles, toggleSelectPlace} = sliceCircles.actions;
 export const sectorsReducerForTest = sliceCircles.reducer;
 export default undoable(sliceCircles.reducer)
 

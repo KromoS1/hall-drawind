@@ -1,15 +1,15 @@
-import {SectorsReducerType, SectorsCirclesType} from "../reducers/circlesGroupReducer";
+import {SectorsReducerType, SectorsPlacesType} from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
 
 const MAX_LAYER_SIZE = 1500;
 
-const createNewLayer = (newGroup: SectorsCirclesType) => {
+const createNewLayer = (newGroup: SectorsPlacesType) => {
     return {
         [uuid()]: newGroup
     }
 }
 
-export const calculateLayers = (layers: SectorsReducerType, newGroup: SectorsCirclesType): SectorsReducerType => {
+export const calculateLayers = (layers: SectorsReducerType, newGroup: SectorsPlacesType): SectorsReducerType => {
 
     const keysLayers = Object.keys(layers);
     let result = {};
@@ -61,7 +61,7 @@ export const calculateLayers = (layers: SectorsReducerType, newGroup: SectorsCir
     return result;
 }
 
-export const calculateLayerForAllGroups = (groups: SectorsCirclesType) => {
+export const calculateLayerForAllGroups = (groups: SectorsPlacesType) => {
 
     const keysGroup = Object.keys(groups);
     let layerResult:SectorsReducerType = {}

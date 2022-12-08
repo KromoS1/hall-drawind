@@ -2,7 +2,7 @@ import React, {memo, useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../../store/reducers/selectionAreaReducer";
-import {removeAllCircles} from "../../../store/reducers/circlesGroupReducer";
+import {removeAllCircles} from "../../../store/reducers/sectorsReducer";
 import {UndoRedoContainer} from "./UndoRedo";
 import {TypesFigureType} from "../../../store/mainType";
 import {setFigureDraw} from "../../../store/reducers/dataFigureReducer";

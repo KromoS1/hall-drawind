@@ -1,7 +1,7 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import thunk from "redux-thunk";
 import mouseReducer from "./reducers/mouseReducer";
-import circlesGroupReducer from "./reducers/circlesGroupReducer";
+import circlesGroupReducer from "./reducers/sectorsReducer";
 import selectionAreaReducer from "./reducers/selectionAreaReducer";
 import stageReducer from "./reducers/stageReducer";
 import listInfoReducer from "./reducers/listInfoReducer";

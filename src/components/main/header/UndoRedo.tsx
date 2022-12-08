@@ -2,7 +2,7 @@ import React, {FC, memo, useCallback, useEffect} from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {SectorsReducerType} from "../../../store/reducers/circlesGroupReducer";
+import {SectorsReducerType} from "../../../store/reducers/sectorsReducer";
 import {observerDoc} from "../../../observer/observerDoc";
 import {createStyles, IconButton, makeStyles, Theme, Tooltip} from "@material-ui/core";
 import {IconsMui} from "../iconsMui/iconsMui";

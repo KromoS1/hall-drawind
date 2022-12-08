@@ -1,4 +1,4 @@
-import {SectorsReducerType, CirclesType} from "../reducers/circlesGroupReducer";
+import {SectorsReducerType, PlaceType} from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
@@ -13,7 +13,7 @@ type CoordinateCalcType = {
 }
 const sizeCircleWithIdent = SIZE_CIRCLE + SIZE_IDENT_CIRCLE;
 
-const createCircle = (x: number, y: number, numberRow: number, numberColumn: number): CirclesType => {
+const createCircle = (x: number, y: number, numberRow: number, numberColumn: number): PlaceType => {
     return {
         id: uuid(),
         x, y,
@@ -47,7 +47,7 @@ export const calcCountCircleGrid = (coordinate: CoordinateCalcType) => {
     return {countX, countY};
 }
 
-export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: number}, countCircleGrid: CountCirclesDrawType): Promise<CirclesType[]> => {
+export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: number}, countCircleGrid: CountCirclesDrawType): Promise<PlaceType[]> => {
 
     return new Promise((resolve) => {
 

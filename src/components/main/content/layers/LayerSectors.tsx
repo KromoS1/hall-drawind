@@ -1,13 +1,13 @@
 import React, {FC, memo, useMemo} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../store/store";
-import {SectorsReducerType, CirclesType, SectorsCirclesType} from "../../../../store/reducers/circlesGroupReducer";
+import {SectorsReducerType, PlaceType, SectorsPlacesType} from "../../../../store/reducers/sectorsReducer";
 import {FCircle} from "../../../figures/circles/FCircle";
 import {Group, Layer} from "react-konva";
 
 type LayerDrawType = {
     layerId: string
-    groups: SectorsCirclesType
+    groups: SectorsPlacesType
 }
 
 type GroupDrawType = {
@@ -38,7 +38,7 @@ const LayerDraw: FC<LayerDrawType> = memo(function ({layerId, groups}) {
 
 const GroupDraw:FC<GroupDrawType> = memo(function ({layerId, idGroup}){
 
-    const circlesInGroup = useSelector<RootState, CirclesType[]>(state => state.sectors.present[layerId][idGroup]);
+    const circlesInGroup = useSelector<RootState, PlaceType[]>(state => state.sectors.present[layerId][idGroup]);
     const fCircles = useMemo(() => circlesInGroup.map(circle => <FCircle key={circle.id} circle={circle} />),[layerId, idGroup]);
 
     return (

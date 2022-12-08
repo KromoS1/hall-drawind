@@ -2,7 +2,7 @@ import {Figures, GeneralFigureType, TypesFigureType} from "../mainType";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../store";
 import {setRectFigure} from "./rectsReducer";
-import {removeAllCircles} from "./circlesGroupReducer";
+import {removeAllCircles} from "./sectorsReducer";
 
 export type DataFigureReducerType = {
     drawFigure: TypesFigureType | null,

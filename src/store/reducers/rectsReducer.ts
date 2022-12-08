@@ -1,6 +1,6 @@
 import {RectFigureType} from "../mainType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {removeAllCircles} from "./circlesGroupReducer";
+import {removeAllCircles} from "./sectorsReducer";
 import {toggleSelectFigure} from "./dataFigureReducer";
 import undoable from "redux-undo";
 
@@ -31,4 +31,5 @@ const slice = createSlice({
 })
 
 export const {setRectFigure} = slice.actions;
+export const RectsReducerForTest = slice.reducer;
 export default undoable(slice.reducer);
