@@ -3,7 +3,7 @@ import {
     Figures,
     PointType,
     RectFigureType,
-    stringNamesForUpdateNumber,
+    NamesForUpdate,
     TextFigureType,
     TypesFigureType
 } from "./mainType";
@@ -133,7 +133,7 @@ export const addCSS = function (url: string, callback: Function) {
 
 export const checkNameFigureForNumber = (name: string | undefined) => {
 
-    const valueNames = Object.values(stringNamesForUpdateNumber);
+    const valueNames = Object.values(NamesForUpdate);
 
     return valueNames.some(el => el === name);
 }

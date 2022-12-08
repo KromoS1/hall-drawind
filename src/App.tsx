@@ -3,7 +3,7 @@ import './App.css';
 import {observerDoc} from "./observer/observerDoc";
 import {Header} from './components/main/header/Header';
 import {LeftAside} from "./components/main/nav/left/LeftAside";
-import {Box, createStyles, makeStyles} from "@material-ui/core";
+import {Box, createStyles, CssBaseline, makeStyles} from "@material-ui/core";
 import {Content} from "./components/main/content/Content";
 import {RightAside} from "./components/main/nav/right/RightAside";
 
@@ -26,6 +26,7 @@ function App() {
 
     return (
         <Box className={styles.root}>
+            <CssBaseline/>
             <Header/>
             <Box className={styles.box}>
                 <LeftAside/>

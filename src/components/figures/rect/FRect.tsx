@@ -1,19 +1,11 @@
-import React, {FC, memo, useEffect, useRef, useState} from 'react';
+import React, {FC, memo, useEffect, useRef} from 'react';
 import Konva from "konva";
-import {Rect, Shape, Transformer} from 'react-konva';
+import {Rect, Transformer} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
-import {toggleSelectFigure} from "../../../store/reducers/otherDataFigureReducer";
+import {changeDataFigure, selectedFigure} from "../../../store/reducers/dataFigureReducer";
 import {useAppDispatch} from "../../../store/hooks";
-import {changeDataRect} from "../../../store/reducers/rectsReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
-
-type PositionRectType = {
-    x: number
-    y: number
-    w: number
-    h: number
-}
 
 type PropsType = {
     rect: RectFigureType
@@ -21,28 +13,21 @@ type PropsType = {
 
 export const FRect: FC<PropsType> = memo(({rect}) => {
 
-    const [rectUpdate, setRectUpdate] = useState<PositionRectType>({
-        x: rect.x,
-        y: rect.y,
-        w: rect.w,
-        h: rect.h,
-    });
-
     const transformerRef = useRef<Konva.Transformer | null>(null);
     const rectRef = useRef<Konva.Rect | null>(null);
     const dispatch = useAppDispatch();
 
     const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-        setRectUpdate(value => ({...value, x: e.target.x(), y: e.target.y()}));
+        dispatch(changeDataFigure({figure: {...rect, x: e.target.x(), y: e.target.y()}}))
     }
 
     const toggleSelectRect = () => {
         if (!rect.isSelected) {
-            dispatch(toggleSelectFigure({idFigure: rect.id, isSelected: !rect.isSelected, typeFigure: rect.typeFigure}))
+            dispatch(selectedFigure(rect));
         }
     }
 
-    const transformEnd = (e: KonvaEventObject<Event>) => {
+    const transformEnd = () => {
 
         const node = rectRef.current;
 
@@ -53,22 +38,17 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
             node.scaleX(1);
             node.scaleY(1);
 
-            setRectUpdate(value => ({
-                ...value,
-                x: Math.round(node.x()),
-                y: Math.round(node.y()),
-                w: Math.round(Math.max(5, node.width() * scaleX)),
-                h: Math.round(Math.max(node.height() * scaleY)),
+            dispatch(changeDataFigure({
+                figure: {
+                    ...rect,
+                    x: Math.round(node.x()),
+                    y: Math.round(node.y()),
+                    w: Math.round(Math.max(5, node.width() * scaleX)),
+                    h: Math.round(Math.max(node.height() * scaleY)),
+                }
             }))
-
         }
     }
-
-    useEffect(() => {
-
-        dispatch(changeDataRect({rect: {...rect, ...rectUpdate}}));
-
-    }, [rectUpdate])
 
     useEffect(() => {
         if (rect.isSelected && transformerRef.current && rectRef.current) {

@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/circles/cacheCircle";
-import {CountCirclesDrawType} from "../../components/selectionArea/SelectionAreaGrid";
+import {CountCirclesDrawType} from "../../components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
 
 type CoordinateCalcType = {
     xStart: number,

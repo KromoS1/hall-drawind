@@ -9,7 +9,7 @@ export enum Figures {
     "TEXT"
 }
 
-export const stringNamesForUpdateNumber = {
+export const NamesForUpdate = {
     x: 'x',
     y: 'x',
     w: 'w',

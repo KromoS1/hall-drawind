@@ -8,29 +8,30 @@ import {WIDTH_ASIDE} from "../../../../App";
 
 export const RightAside = memo(() => {
 
-    const [figure, setFigure] = useState<GeneralFigureType>();
+    // const [figure, setFigure] = useState<GeneralFigureType>();
     const styles = useStyles();
 
-    const idChangeFigure = useSelector<RootState, string>(state => state.otherDataFigure.idSelectFigure);
-    const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.otherDataFigure.typeFigureSelected);
-    const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
+    // const idChangeFigure = useSelector<RootState, string>(state => state.dataFigure.idSelectFigure);
+    // const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.dataFigure.typeFigureSelected);
+    const figure = useSelector<RootState, GeneralFigureType | null>(state => state.dataFigure.changeFigure);
+    // const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
     // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
 
-    useEffect(() => {
-        if (idChangeFigure && typeFigure) {
-            if (typeFigure === Figures.RECT) {
-                const rect = rects.find(r => r.id === idChangeFigure)
-                if (rect) {
-                    setFigure(rect);
-                }
-            }
-        }
-    }, [idChangeFigure, rects])
+    // useEffect(() => {
+    //     if (idChangeFigure && typeFigure) {
+    //         if (typeFigure === Figures.RECT) {
+    //             const rect = rects.find(r => r.id === idChangeFigure)
+    //             if (rect) {
+    //                 setFigure(rect);
+    //             }
+    //         }
+    //     }
+    // }, [idChangeFigure, rects])
 
     return (
         <Box className={styles.box}>
-            {idChangeFigure && figure ? <UpdateFigure figure={figure}/> : <></>}
+            {figure ? <UpdateFigure figure={figure}/> : <></>}
         </Box>
     )
 })

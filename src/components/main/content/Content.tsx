@@ -1,20 +1,21 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
-import {Stage} from 'react-konva';
+import {Layer, Stage} from 'react-konva';
 import {mouseDownThunk, mouseMoveThunk, mouseUpThunk,} from "../../../store/reducers/mouseReducer";
 import Konva from 'konva';
 import {observerStage} from "../../../observer/observerStage";
 import {observerDoc} from "../../../observer/observerDoc";
-import {LayerSelectionArea} from "../layers/LayerSelectionArea";
+import {SelectionArea} from "./layers/commonLayer/SelectionArea";
 import {useAppDispatch} from "../../../store/hooks";
-import {LayerCircle} from "../layers/LayerCircle";
+import {LayerSectors} from "./layers/LayerSectors";
 import {setStage} from "../../../store/reducers/stageReducer";
 import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
 import {zoomStage} from "../../../store/calculate/zoom";
-import {LayerOtherFigure} from "../layers/LayerOtherFigure";
-import {offSelectFigure} from "../../../store/reducers/otherDataFigureReducer";
+import {LayerFigure} from "./layers/commonLayer/LayerFigure";
+import {offSelectedFigureChange} from "../../../store/reducers/dataFigureReducer";
 import {Box, createStyles, makeStyles} from "@material-ui/core";
-import KonvaEventObject = Konva.KonvaEventObject;
 import {HEIGHT_APP_BAR, WIDTH_ASIDE} from "../../../App";
+import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
+import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
 
@@ -80,7 +81,7 @@ export const Content = memo(() => {
 
         observerStage.subscribeEventStage("click", (e: KonvaEventObject<MouseEvent>) => {
             if (e.target.attrs.id === 'stage_container') {
-                dispatch(offSelectFigure());
+                dispatch(offSelectedFigureChange());
             }
         })
 
@@ -108,9 +109,12 @@ export const Content = memo(() => {
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onClick={handlerClick}>
-                <LayerCircle/>
-                <LayerSelectionArea/>
-                <LayerOtherFigure/>
+                <LayerSectors/>
+                <Layer>
+                    <SelectionArea/>
+                    <LayerFigure/>
+                    <ChangeFigure/>
+                </Layer>
             </Stage>
         </Box>
     )

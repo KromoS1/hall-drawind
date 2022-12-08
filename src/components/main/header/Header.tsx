@@ -5,7 +5,7 @@ import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../../
 import {removeAllCircles} from "../../../store/reducers/circlesGroupReducer";
 import {UndoRedoContainer} from "./UndoRedo";
 import {TypesFigureType} from "../../../store/mainType";
-import {setFigureDraw} from "../../../store/reducers/otherDataFigureReducer";
+import {setFigureDraw} from "../../../store/reducers/dataFigureReducer";
 import {
     AppBar,
     Box,
