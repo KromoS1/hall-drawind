@@ -4,11 +4,8 @@ import {Figures, GeneralFigureType, RectFigureType} from "../../../../store/main
 import {checkNameFigureForNumber} from "../../../../store/utils";
 import {Box, createStyles, makeStyles, TextField, Theme} from "@material-ui/core";
 import {Color, ColorPicker, ColorType, createColor} from 'material-ui-color';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Rotate90DegreesCcwIcon from '@material-ui/icons/Rotate90DegreesCcw';
-import BorderOuterIcon from '@material-ui/icons/BorderOuter';
-import LineWeightIcon from '@material-ui/icons/LineWeight';
 import {changeDataFigure} from "../../../../store/reducers/dataFigureReducer";
+import {IconsMui} from "../../iconsMui/iconsMui";
 
 type PropsType = {
     figure: GeneralFigureType
@@ -83,17 +80,17 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
                 </div>
                 <div className={style.flex}>
                     <InputUpdateGroup value={rect.rotation} name={'rotation'} onChange={onChange}>
-                        <Rotate90DegreesCcwIcon/>
+                        <IconsMui.Rotate90DegreesCcwIcon/>
                     </InputUpdateGroup>
                     <InputUpdateGroup value={rect.cornerRadius} name={'cornerRadius'} onChange={onChange}>
-                        <BorderOuterIcon/>
+                        <IconsMui.BorderOuterIcon/>
                     </InputUpdateGroup>
                 </div>
             </Box>
 
             <div className={style.flex}>
                 <InputUpdateGroup value={rect.borderWidth} name={'borderWidth'} onChange={onChange}>
-                    <LineWeightIcon/>
+                    <IconsMui.LineWeightIcon/>
                 </InputUpdateGroup>
             </div>
 
@@ -130,9 +127,9 @@ const InputUpdateGroup: FC<InputUpdateGroupProps> = memo((props) => {
             value={props.value}
             InputProps={{
                 startAdornment: (
-                    <InputAdornment position="start">
+                    <IconsMui.InputAdornment position="start">
                         {props.children}
-                    </InputAdornment>
+                    </IconsMui.InputAdornment>
                 ),
             }}
         />

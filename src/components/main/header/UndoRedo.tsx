@@ -5,8 +5,7 @@ import {RootState} from "../../../store/store";
 import {SectorsReducerType} from "../../../store/reducers/circlesGroupReducer";
 import {observerDoc} from "../../../observer/observerDoc";
 import {createStyles, IconButton, makeStyles, Theme, Tooltip} from "@material-ui/core";
-import UndoIcon from "@material-ui/icons/Undo";
-import RedoIcon from "@material-ui/icons/Redo";
+import {IconsMui} from "../iconsMui/iconsMui";
 
 type PropsType = {
     canUndo: boolean
@@ -29,12 +28,12 @@ const UndoRedo:FC<PropsType> = ({canUndo, canRedo, onUndo, onRedo}) => {
         <>
             <Tooltip title={'Назад'}>
                 <IconButton edge="start" disabled={!canUndo} color="inherit" aria-label="Назад" onClick={onUndo}>
-                    <UndoIcon />
+                    <IconsMui.UndoIcon/>
                 </IconButton>
             </Tooltip>
             <Tooltip title={'Вперед'}>
                 <IconButton className={classes.menuButton} edge="start" disabled={!canRedo} color="inherit" aria-label="Вперед" onClick={onRedo}>
-                    <RedoIcon />
+                    <IconsMui.RedoIcon/>
                 </IconButton>
             </Tooltip>
         </>

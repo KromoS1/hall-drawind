@@ -17,10 +17,8 @@ import {
     Tooltip,
     Typography
 } from "@material-ui/core";
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import GridOnIcon from '@material-ui/icons/GridOn';
-import ClearAllIcon from '@material-ui/icons/ClearAll';
 import {FigureButton} from "./FigureButton";
+import {IconsMui} from "../iconsMui/iconsMui";
 
 export const Header = memo(() => {
 
@@ -63,19 +61,19 @@ export const Header = memo(() => {
                         <Tooltip title={'Выделение'}>
                             <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={selectionArea}
                                         style={{color: isSelection ? 'green' : ''}}>
-                                <AspectRatioIcon/>
+                                <IconsMui.AspectRatioIcon/>
                             </IconButton>
                         </Tooltip>
                         <Tooltip title={'Нарисовать сектор'}>
                             <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={drawGrid}
                                         style={{color: isDrawGrid ? 'green' : ''}}>
-                                <GridOnIcon/>
+                                <IconsMui.GridOnIcon/>
                             </IconButton>
                         </Tooltip>
                         <FigureButton drawFigure={drawFigure}/>
                         <Tooltip title={'Очистить весь холст'}>
                             <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={clearCanvas}>
-                                <ClearAllIcon/>
+                                <IconsMui.ClearAllIcon/>
                             </IconButton>
                         </Tooltip>
                     </Box>
