@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import './App.css';
 import {observerDoc} from "./observer/observerDoc";
 import {Header} from './components/main/header/Header';
 import {LeftAside} from "./components/main/nav/left/LeftAside";

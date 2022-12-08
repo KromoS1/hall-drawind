@@ -22,11 +22,11 @@ const slice = createSlice({
     name: 'dataFigure',
     initialState,
     reducers: {
-        changeDataFigure: (state,action: PayloadAction<{figure: GeneralFigureType}>) => {
+        changeDataFigure: (state, action: PayloadAction<{ figure: GeneralFigureType }>) => {
             state.changeFigure = action.payload.figure;
             return state;
         },
-        toggleSelectFigure: (state, action: PayloadAction<{figure: GeneralFigureType }>) => {
+        toggleSelectFigure: (state, action: PayloadAction<{ figure: GeneralFigureType }>) => {
             state.changeFigure = {
                 ...action.payload.figure,
                 isSelected: true,
@@ -44,6 +44,12 @@ const slice = createSlice({
             state.typeFigureSelected = null;
             state.changeFigure = null;
             return state;
+        },
+        removeFigure: (state) => {
+            state.idSelectFigure = '';
+            state.typeFigureSelected = null;
+            state.changeFigure = null;
+            return state;
         }
     },
     extraReducers: builder => builder
@@ -56,7 +62,7 @@ const slice = createSlice({
         })
 })
 
-export const selectedFigure = createAsyncThunk('dataFigure/offSelected', async ( figure: GeneralFigureType,{
+export const selectedFigure = createAsyncThunk('dataFigure/offSelected', async (figure: GeneralFigureType, {
     dispatch,
     getState
 }) => {
@@ -64,15 +70,15 @@ export const selectedFigure = createAsyncThunk('dataFigure/offSelected', async (
     const state = getState() as RootState;
     const currentFigure = state.dataFigure.idSelectFigure;
 
-    if (currentFigure.length < 1){
+    if (currentFigure.length < 1) {
         dispatch(toggleSelectFigure({figure}));
-    }else{
+    } else {
         await dispatch(offSelectedFigureChange());
         dispatch(toggleSelectFigure({figure}));
     }
 })
 
-export const offSelectedFigureChange = createAsyncThunk('dataFigure/offSelected', async (_,{
+export const offSelectedFigureChange = createAsyncThunk('dataFigure/offSelected', async (_, {
     dispatch,
     getState
 }) => {
@@ -83,12 +89,12 @@ export const offSelectedFigureChange = createAsyncThunk('dataFigure/offSelected'
     return new Promise<string>(res => {
         dispatch(offSelectFigure());
 
-        if (changeFigures){
+        if (changeFigures) {
 
-            switch (changeFigures.typeFigure){
-                case Figures.RECT :{
+            switch (changeFigures.typeFigure) {
+                case Figures.RECT : {
                     //@ts-ignore todo
-                    dispatch(setRectFigure({rect: {...changeFigures,isSelected:false}}));
+                    dispatch(setRectFigure({rect: {...changeFigures, isSelected: false}}));
                     res('success');
                 }
             }
@@ -96,5 +102,5 @@ export const offSelectedFigureChange = createAsyncThunk('dataFigure/offSelected'
     })
 })
 
-export const {changeDataFigure,setFigureDraw, toggleSelectFigure, offSelectFigure} = slice.actions
+export const {changeDataFigure, setFigureDraw, toggleSelectFigure, offSelectFigure, removeFigure} = slice.actions
 export default slice.reducer;

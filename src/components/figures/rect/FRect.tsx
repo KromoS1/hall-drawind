@@ -3,8 +3,9 @@ import Konva from "konva";
 import {Rect, Transformer} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
-import {changeDataFigure, selectedFigure} from "../../../store/reducers/dataFigureReducer";
+import {changeDataFigure, removeFigure, selectedFigure} from "../../../store/reducers/dataFigureReducer";
 import {useAppDispatch} from "../../../store/hooks";
+import {observerDoc} from "../../../observer/observerDoc";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 type PropsType = {
@@ -50,12 +51,24 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
         }
     }
 
+    const removeRect = (e: KeyboardEvent) => {
+        if (e.key === 'Delete'){
+            dispatch(removeFigure());
+        }
+    }
+
     useEffect(() => {
         if (rect.isSelected && transformerRef.current && rectRef.current) {
+
+            observerDoc.subscribeEventDoc('ctrlKeyDown', removeRect);
 
             transformerRef.current.nodes([rectRef.current]);
             //@ts-ignore todo fix
             transformerRef.current.getLayer().batchDraw();
+        }
+
+        return () => {
+            observerDoc.removeListener('ctrlKeyDown',removeRect);
         }
     }, [rect.isSelected])
 
