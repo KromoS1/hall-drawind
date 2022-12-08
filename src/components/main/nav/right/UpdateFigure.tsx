@@ -7,6 +7,7 @@ import {Color, ColorPicker, ColorType, createColor} from 'material-ui-color';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Rotate90DegreesCcwIcon from '@material-ui/icons/Rotate90DegreesCcw';
 import BorderOuterIcon from '@material-ui/icons/BorderOuter';
+import LineWeightIcon from '@material-ui/icons/LineWeight';
 import {changeDataFigure} from "../../../../store/reducers/dataFigureReducer";
 
 type PropsType = {
@@ -27,11 +28,8 @@ type PropsUpdateRectType = {
     rect: RectFigureType
 }
 
-//TODO проверить как работает если диспатчить сразу при изменении
 const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
 
-    // const [dataFigure, seDataFigure] = useState<RectFigureType>(rect);
-    // const [bgColor,setBgColor] = useState(createColor(rect.bgColor));
     const dispatch = useDispatch();
     const style = useStyles();
 
@@ -55,8 +53,12 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
         }))
     }
 
-    const onChangeColor = (color: Color | ColorType) => {
+    const onChangeColorBG = (color: Color | ColorType) => {
         dispatch(changeDataFigure({figure: {...rect, bgColor: `#${color.hex}`}}));
+    }
+
+    const onChangeColorBorder = (color: Color | ColorType) => {
+        dispatch(changeDataFigure({figure: {...rect, borderColor: `#${color.hex}`}}));
     }
 
     return (
@@ -87,28 +89,23 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
                         <BorderOuterIcon/>
                     </InputUpdateGroup>
                 </div>
-
-
             </Box>
 
+            <div className={style.flex}>
+                <InputUpdateGroup value={rect.borderWidth} name={'borderWidth'} onChange={onChange}>
+                    <LineWeightIcon/>
+                </InputUpdateGroup>
+            </div>
+
             <div className={`${style.flex} ${style.flexAround}`}>
-                <ColorPicker onChange={onChangeColor} value={createColor(rect.bgColor)} hideTextfield/>
+                <ColorPicker onChange={onChangeColorBG} value={createColor(rect.bgColor)} hideTextfield/>
                 <span>Цвет заливки</span>
             </div>
 
-            {/*<div className={`${style.flex} ${style.flexAround}`}>*/}
-            {/*    Цвет границы:*/}
-            {/*    <ColorPicker onChange={onChangeColor} value={bgColor} hideTextfield />*/}
-            {/*</div>*/}
-
-            {/*<div className={'p-2'}>*/}
-
-            {/*    <div className={'mb-2'}>*/}
-            {/*        Ширина границы:*/}
-            {/*        <input className={'form-control'} value={dataFigure.borderWidth} onChange={onChange} type="text"*/}
-            {/*               onKeyDown={onEnter} onBlur={onChangeFigure} data-name={'borderWidth'}/>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <div className={`${style.flex} ${style.flexAround}`}>
+                <ColorPicker onChange={onChangeColorBorder} value={createColor(rect.borderColor)} hideTextfield/>
+                <span>Цвет границ</span>
+            </div>
         </>
     )
 })
@@ -152,7 +149,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         flexAround: {
             alignItems: 'center',
-            justifyContent: 'space-around'
+            justifyContent: 'flex-start'
         }
     }),
 );

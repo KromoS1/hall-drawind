@@ -60,7 +60,7 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
     }, [rect.isSelected])
 
     const strokeRect = rect.borderColor !== 'transparent' ? rect.borderColor : COLORS.transparent;
-    const strokeWidth = rect.borderWidth !== 0 ? rect.borderWidth : 0;
+    const strokeWidth = rect.borderWidth !== 0 ? +rect.borderWidth : 0;
 
     return (
         <>
