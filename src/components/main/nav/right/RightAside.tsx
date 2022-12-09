@@ -13,7 +13,8 @@ export const RightAside = memo(() => {
 
     // const idChangeFigure = useSelector<RootState, string>(state => state.dataFigure.idSelectFigure);
     // const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.dataFigure.typeFigureSelected);
-    const figure = useSelector<RootState, GeneralFigureType | null>(state => state.dataFigure.changeFigure);
+    //TODO изменить для использования всех фигур
+    const figure = useSelector<RootState, GeneralFigureType | null>(state => state.rects.present.changeRect);
     // const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
     // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);

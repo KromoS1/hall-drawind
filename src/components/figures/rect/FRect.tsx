@@ -3,9 +3,10 @@ import Konva from "konva";
 import {Rect, Transformer} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
-import {changeDataFigure, removeFigure, selectedFigure} from "../../../store/reducers/dataFigureReducer";
+import {removeFigure, toggleSelectFigure} from "../../../store/reducers/dataFigureReducer";
 import {useAppDispatch} from "../../../store/hooks";
 import {observerDoc} from "../../../observer/observerDoc";
+import {changeDataRect} from "../../../store/reducers/rectsReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 type PropsType = {
@@ -19,12 +20,12 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
     const dispatch = useAppDispatch();
 
     const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-        dispatch(changeDataFigure({figure: {...rect, x: e.target.x(), y: e.target.y()}}))
+        dispatch(changeDataRect({rect: {...rect, x: e.target.x(), y: e.target.y()}}))
     }
 
     const toggleSelectRect = () => {
         if (!rect.isSelected) {
-            dispatch(selectedFigure(rect));
+            dispatch(toggleSelectFigure({idSelected:rect.id,typeFigure: rect.typeFigure,figure:{...rect,isSelected: true}}));
         }
     }
 
@@ -39,8 +40,8 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
             node.scaleX(1);
             node.scaleY(1);
 
-            dispatch(changeDataFigure({
-                figure: {
+            dispatch(changeDataRect({
+                rect: {
                     ...rect,
                     x: Math.round(node.x()),
                     y: Math.round(node.y()),

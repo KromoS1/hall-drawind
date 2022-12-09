@@ -4,8 +4,8 @@ import {Figures, GeneralFigureType, RectFigureType} from "../../../../store/main
 import {checkNameFigureForNumber} from "../../../../store/utils";
 import {Box, createStyles, makeStyles, TextField, Theme} from "@material-ui/core";
 import {Color, ColorPicker, ColorType, createColor} from 'material-ui-color';
-import {changeDataFigure} from "../../../../store/reducers/dataFigureReducer";
 import {IconsMui} from "../../iconsMui/iconsMui";
+import {changeDataRect} from "../../../../store/reducers/rectsReducer";
 
 type PropsType = {
     figure: GeneralFigureType
@@ -41,9 +41,9 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
                 value = 0;
             }
         }
-
-        dispatch(changeDataFigure({
-            figure: {
+//TODO изменить на все фигуры
+        dispatch(changeDataRect({
+            rect: {
                 ...rect,
                 [`${name}`]: value
             }
@@ -51,11 +51,11 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
     }
 
     const onChangeColorBG = (color: Color | ColorType) => {
-        dispatch(changeDataFigure({figure: {...rect, bgColor: `#${color.hex}`}}));
+        dispatch(changeDataRect({rect: {...rect, bgColor: `#${color.hex}`}}));
     }
 
     const onChangeColorBorder = (color: Color | ColorType) => {
-        dispatch(changeDataFigure({figure: {...rect, borderColor: `#${color.hex}`}}));
+        dispatch(changeDataRect({rect: {...rect, borderColor: `#${color.hex}`}}));
     }
 
     return (

@@ -9,12 +9,14 @@ import dataFigureReducer from "./reducers/dataFigureReducer";
 import rectsReducer from "./reducers/rectsReducer";
 import ellipsesReducer from "./reducers/ellipsesReducer";
 import textsReducer from "./reducers/textsReducer";
+import changeSectorReducer from "./reducers/changeSectorReducer";
 
 const rootReducer = combineReducers({
     stage: stageReducer,
     mouse: mouseReducer,
     selectionArea: selectionAreaReducer,
     sectors: circlesGroupReducer,
+    changeSector: changeSectorReducer,
     listInfo: listInfoReducer,
     rects: rectsReducer,
     ellipses: ellipsesReducer,

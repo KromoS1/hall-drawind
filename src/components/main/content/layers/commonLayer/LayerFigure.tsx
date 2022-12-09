@@ -17,7 +17,7 @@ export const LayerFigure = memo(() => {
     const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
     const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
     const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.dataFigure.drawFigure);
-    const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
+    const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present.rects);
     // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
     const dispatch = useDispatch();

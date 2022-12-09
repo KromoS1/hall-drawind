@@ -8,13 +8,13 @@ import {SelectionArea} from "./layers/commonLayer/SelectionArea";
 import {useAppDispatch} from "../../../store/hooks";
 import {LayerSectors} from "./layers/LayerSectors";
 import {setStage} from "../../../store/reducers/stageReducer";
-import {addCacheElement, cleanCircleCache} from "../../figures/circles/cacheCircle";
 import {zoomStage} from "../../../store/calculate/zoom";
 import {LayerFigure} from "./layers/commonLayer/LayerFigure";
-import {offSelectedFigureChange} from "../../../store/reducers/dataFigureReducer";
+import {offSelectFigure} from "../../../store/reducers/dataFigureReducer";
 import {Box, createStyles, makeStyles} from "@material-ui/core";
 import {HEIGHT_APP_BAR, WIDTH_ASIDE} from "../../../App";
 import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
+import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCircle";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
@@ -81,7 +81,7 @@ export const Content = memo(() => {
 
         observerStage.subscribeEventStage("click", (e: KonvaEventObject<MouseEvent>) => {
             if (e.target.attrs.id === 'stage_container') {
-                dispatch(offSelectedFigureChange());
+                dispatch(offSelectFigure());
             }
         })
 
@@ -109,12 +109,12 @@ export const Content = memo(() => {
                    onWheel={handlerWheel} onMouseMove={handlerMouseMove}
                    onMouseDown={handlerMouseDown} onMouseUp={handlerMouseUp}
                    onClick={handlerClick}>
-                <LayerSectors/>
                 <Layer>
                     <SelectionArea/>
                     <LayerFigure/>
                     <ChangeFigure/>
                 </Layer>
+                <LayerSectors/>
             </Stage>
         </Box>
     )

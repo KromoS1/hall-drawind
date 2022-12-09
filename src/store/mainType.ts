@@ -1,3 +1,5 @@
+import {PlaceType} from "./reducers/sectorsReducer";
+
 export type PointType = {
     x: number,
     y: number,
@@ -6,7 +8,8 @@ export type PointType = {
 export enum Figures {
     "RECT" = 1,
     "ELLIPSE",
-    "TEXT"
+    "TEXT",
+    "SECTOR"
 }
 
 export const NamesForUpdate = {
@@ -18,7 +21,7 @@ export const NamesForUpdate = {
     cornerRadius: 'cornerRadius',
 }
 
-export type TypesFigureType = typeof Figures.RECT | typeof Figures.ELLIPSE | typeof Figures.TEXT
+export type TypesFigureType = typeof Figures.RECT | typeof Figures.ELLIPSE | typeof Figures.TEXT | Figures.SECTOR
 export type MainParamFigureType = {
     id: string,
     typeFigure: TypesFigureType,
@@ -44,4 +47,4 @@ export type TextFigureType = PointType & MainParamFigureType & {
     text: string,
 }
 
-export type GeneralFigureType = RectFigureType | EllipseFigureType | TextFigureType
+export type GeneralFigureType = RectFigureType | EllipseFigureType | TextFigureType | PlaceType[]
