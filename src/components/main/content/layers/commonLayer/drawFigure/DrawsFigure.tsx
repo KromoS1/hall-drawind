@@ -20,7 +20,7 @@ export const DrawRects: FC<DrawRectsType> = function ({rects}) {
 
     const drawRects = useMemo(() => {
         return rects.map(rect => {
-            return (<FRect key={rect.id} rect={rect}/>)
+            return (<FRect key={rect.id} rect={rect} isChange={false}/>)
         })
     }, [rects])
 

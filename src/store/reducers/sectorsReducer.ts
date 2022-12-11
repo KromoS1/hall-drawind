@@ -2,6 +2,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PointType} from "../mainType";
 import {calculateLayerForAllGroups, calculateLayers} from "../calculate/calculateLayers";
 import undoable from "redux-undo";
+import {ChangeSectorType, setSectorForChange} from "./changeSectorReducer";
+import {cleanCanvas} from "./stageReducer";
 
 export type PlaceType = PointType & {
     id: string,
@@ -38,6 +40,14 @@ const sliceCircles = createSlice({
             state = calculateLayers(state, newGroup);
             return state;
         },
+        setSectorInLayer:(state,action:PayloadAction<ChangeSectorType>) => {
+            state[action.payload.idLayer] = {
+                ...state[action.payload.idLayer],
+                [action.payload.idGroup]: action.payload.sectorPlaces
+            }
+            return state;
+        },
+        //пока не используется
         toggleSelectPlace: (state, action: PayloadAction<{ idLayer: string, idGroup: string, idPlace: string, value: boolean }>) => {
 
             const place = state[action.payload.idLayer][action.payload.idGroup].find(place => place.id === action.payload.idPlace);
@@ -48,14 +58,19 @@ const sliceCircles = createSlice({
 
             return state;
         },
-        removeAllCircles: (state) => {
+    },
+    extraReducers: builder => builder
+        .addCase(setSectorForChange,(state, action) => {
+            delete state[action.payload.idLayer][action.payload.idGroup];
+            return state;
+        })
+        .addCase(cleanCanvas,(state) => {
             state = {};
             return state;
-        }
-    }
+        })
 })
 
-export const {setCircle, setCircleSector, removeAllCircles, toggleSelectPlace} = sliceCircles.actions;
+export const {setCircle, setCircleSector, setSectorInLayer,toggleSelectPlace} = sliceCircles.actions;
 export const sectorsReducerForTest = sliceCircles.reducer;
 export default undoable(sliceCircles.reducer)
 

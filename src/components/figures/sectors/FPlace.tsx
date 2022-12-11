@@ -3,30 +3,30 @@ import Konva from "konva";
 import {Group} from 'react-konva';
 import {PointType} from "../../../store/mainType";
 import {PlaceType} from "../../../store/reducers/sectorsReducer";
-import {CircleElementType, cloningElement} from "./cacheCircle";
+import {cloningElement, PlaceElementType} from "./cacheCircle";
 import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaGroup = Konva.Group;
 
 type PropsType = {
-    circle: PlaceType
+    place: PlaceType
 }
 
-export const FCircle: FC<PropsType> = memo(({circle}) => {
+export const FPlace: FC<PropsType> = memo(({place}) => {
 
-    const {numCol, x, y, isSelected } = circle;
-    const [positionCircle, setPositionCircle] = useState<PointType & { isDragging: boolean }>({
+    const {numCol, x, y, isSelected } = place;
+    const [positionPlace, setPositionPlace] = useState<PointType & { isDragging: boolean }>({
         x: x,
         y: y,
         isDragging: false
     });
 
     const onDragStart = useCallback(() => {
-        setPositionCircle(position => ({...position, isDragging: true}));
-    }, [positionCircle.isDragging])
+        setPositionPlace(position => ({...position, isDragging: true}));
+    }, [positionPlace.isDragging])
 
     const onDragEnd = useCallback((e: KonvaEventObject<DragEvent>) => {
-        setPositionCircle({x: e.target.x(), y: e.target.y(), isDragging: false});
-    }, [positionCircle.isDragging])
+        setPositionPlace({x: e.target.x(), y: e.target.y(), isDragging: false});
+    }, [positionPlace.isDragging])
 
     const offset = {
         x: `${numCol}`.length > 2 ? 8.5 : `${numCol}`.length > 1 ? 6 : 3,
@@ -35,13 +35,13 @@ export const FCircle: FC<PropsType> = memo(({circle}) => {
 
     return (
         <>
-            <CircleElement positionCircle={positionCircle} isSelected={isSelected} numCol={numCol}
+            <PlaceElement positionPlace={positionPlace} isSelected={isSelected} numCol={numCol}
                            offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
         </>
     )
 })
 
-const CircleElement: FC<CircleElementType> = memo((props) => {
+const PlaceElement: FC<PlaceElementType> = memo((props) => {
 
     const groupRef = useRef<KonvaGroup | null>(null);
 
@@ -56,7 +56,7 @@ const CircleElement: FC<CircleElementType> = memo((props) => {
     }, [])
 
     return (
-        <Group listening={false} ref={groupRef}/>
+        <Group ref={groupRef}/>
     )
 })
 

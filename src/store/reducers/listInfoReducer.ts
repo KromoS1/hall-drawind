@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlaceType, removeAllCircles, setCircleSector} from "./sectorsReducer";
+import {PlaceType, setCircleSector} from "./sectorsReducer";
 import undoable from "redux-undo";
+import {cleanCanvas} from "./stageReducer";
 
 export type listInfoReducerType = {
     idGroup: string
@@ -25,7 +26,7 @@ const slice = createSlice({
                 state = [...state,info]
                 return state;
             })
-            .addCase(removeAllCircles, (state, ) => {
+            .addCase(cleanCanvas, (state, ) => {
                 state = [];
                 return state;
             })

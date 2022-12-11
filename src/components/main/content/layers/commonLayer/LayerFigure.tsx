@@ -2,7 +2,6 @@ import React, {memo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../../../store/store";
 import {Figures, PointType, RectFigureType, TypesFigureType} from "../../../../../store/mainType";
-import {setFigureDraw} from "../../../../../store/reducers/dataFigureReducer";
 import {PreDrawRect} from "./selectionArea/prevDrawElement/PreDrawRect";
 import {observerStage} from "../../../../../observer/observerStage";
 import {PreDrawEllipse} from "./selectionArea/prevDrawElement/PreDrawEllipse";
@@ -10,13 +9,14 @@ import {COLORS} from "../../../../../store/constantsColor";
 import {setRectFigure} from "../../../../../store/reducers/rectsReducer";
 import {createRect} from "../../../../../store/utils";
 import {DrawRects} from "./drawFigure/DrawsFigure";
+import {setFigureDraw} from "../../../../../store/reducers/stageReducer";
 
 export const LayerFigure = memo(() => {
 
     const move = useSelector<RootState, PointType>(state => state.mouse.move);
     const isDown = useSelector<RootState, boolean>(state => state.mouse.isDown);
     const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
-    const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.dataFigure.drawFigure);
+    const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.stage.drawFigure);
     const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present.rects);
     // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);

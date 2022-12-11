@@ -3,31 +3,27 @@ import Konva from "konva";
 import {Rect, Transformer} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
-import {removeFigure, toggleSelectFigure} from "../../../store/reducers/dataFigureReducer";
 import {useAppDispatch} from "../../../store/hooks";
 import {observerDoc} from "../../../observer/observerDoc";
-import {changeDataRect} from "../../../store/reducers/rectsReducer";
+import {
+    changeDataRect,
+    removeRects,
+    saveChangedRect, setRectForChange,
+    setRectInChange,
+    toggleSelectRect
+} from "../../../store/reducers/rectsReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 type PropsType = {
-    rect: RectFigureType
+    rect: RectFigureType,
+    isChange: boolean
 }
 
-export const FRect: FC<PropsType> = memo(({rect}) => {
+export const FRect: FC<PropsType> = memo(({rect, isChange}) => {
 
     const transformerRef = useRef<Konva.Transformer | null>(null);
     const rectRef = useRef<Konva.Rect | null>(null);
     const dispatch = useAppDispatch();
-
-    const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-        dispatch(changeDataRect({rect: {...rect, x: e.target.x(), y: e.target.y()}}))
-    }
-
-    const toggleSelectRect = () => {
-        if (!rect.isSelected) {
-            dispatch(toggleSelectFigure({idSelected:rect.id,typeFigure: rect.typeFigure,figure:{...rect,isSelected: true}}));
-        }
-    }
 
     const transformEnd = () => {
 
@@ -52,9 +48,30 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
         }
     }
 
+    const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+        dispatch(changeDataRect({rect: {...rect, x: e.target.x(), y: e.target.y()}}))
+    }
+
+    const onClick = () => {
+        if (!rect.isSelected) {
+            dispatch(toggleSelectRect({idRect: rect.id, value: true}));
+        }
+    }
+
+    const dbClick = () => {
+        dispatch(setRectForChange({...rect,isSelected: true}));
+    }
+
+    const offSelect = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            dispatch(saveChangedRect());
+            dispatch(toggleSelectRect({idRect: rect.id, value: false}));
+        }
+    }
+
     const removeRect = (e: KeyboardEvent) => {
-        if (e.key === 'Delete'){
-            dispatch(removeFigure());
+        if (e.key === 'Delete') {
+            dispatch(removeRects());
         }
     }
 
@@ -62,6 +79,7 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
         if (rect.isSelected && transformerRef.current && rectRef.current) {
 
             observerDoc.subscribeEventDoc('ctrlKeyDown', removeRect);
+            observerDoc.subscribeEventDoc('onkeydown', offSelect)
 
             transformerRef.current.nodes([rectRef.current]);
             //@ts-ignore todo fix
@@ -69,7 +87,8 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
         }
 
         return () => {
-            observerDoc.removeListener('ctrlKeyDown',removeRect);
+            observerDoc.removeListener('ctrlKeyDown', removeRect);
+            observerDoc.removeListener('onkeydown', offSelect);
         }
     }, [rect.isSelected])
 
@@ -90,25 +109,19 @@ export const FRect: FC<PropsType> = memo(({rect}) => {
                 stroke={strokeRect}
                 strokeWidth={strokeWidth}
                 cornerRadius={rect.cornerRadius}
-                draggable={rect.isSelected}
+                draggable={isChange}
                 onDragEnd={onDragEnd}
                 onTransformEnd={transformEnd}
-                onClick={toggleSelectRect}
+                onClick={onClick}
+                onDblClick={dbClick}
             />
             {rect.isSelected &&
             <Transformer ref={transformerRef}
                          keepRatio={false}
+                         anchorSize={isChange ? 10 : 0}
                          anchorCornerRadius={10}
                          rotateEnabled={false}
-                         centeredScaling
-                         boundBoxFunc={(oldBox, newBox) => { //TODO проверить что делает, может и не надо эта функция
-                             // limit resize
-                             if (newBox.width < 5 || newBox.height < 5) {
-                                 return oldBox;
-                             }
-                             return newBox;
-                         }}
-            />}
+                         centeredScaling/>}
         </>
     )
 })

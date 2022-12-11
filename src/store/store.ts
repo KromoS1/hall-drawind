@@ -5,7 +5,6 @@ import circlesGroupReducer from "./reducers/sectorsReducer";
 import selectionAreaReducer from "./reducers/selectionAreaReducer";
 import stageReducer from "./reducers/stageReducer";
 import listInfoReducer from "./reducers/listInfoReducer";
-import dataFigureReducer from "./reducers/dataFigureReducer";
 import rectsReducer from "./reducers/rectsReducer";
 import ellipsesReducer from "./reducers/ellipsesReducer";
 import textsReducer from "./reducers/textsReducer";
@@ -21,7 +20,6 @@ const rootReducer = combineReducers({
     rects: rectsReducer,
     ellipses: ellipsesReducer,
     texts: textsReducer,
-    dataFigure: dataFigureReducer,
 })
 
 const immutableStateInvariant = require('redux-immutable-state-invariant').default()

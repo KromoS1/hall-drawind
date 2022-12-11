@@ -2,10 +2,8 @@ import React, {memo, useCallback} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {SelectionAreaReducerType, setIsDrawGrid, setIsSelection} from "../../../store/reducers/selectionAreaReducer";
-import {removeAllCircles} from "../../../store/reducers/sectorsReducer";
 import {UndoRedoContainer} from "./UndoRedo";
-import {TypesFigureType} from "../../../store/mainType";
-import {setFigureDraw} from "../../../store/reducers/dataFigureReducer";
+import {Figures, TypesFigureType} from "../../../store/mainType";
 import {
     AppBar,
     Box,
@@ -19,10 +17,11 @@ import {
 } from "@material-ui/core";
 import {FigureButton} from "./FigureButton";
 import {IconsMui} from "../iconsMui/iconsMui";
+import {cleanCanvas, setFigureDraw} from "../../../store/reducers/stageReducer";
 
 export const Header = memo(() => {
 
-    const {isSelection, isDrawGrid} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
+    const {isSelection} = useSelector<RootState, SelectionAreaReducerType>(state => state.selectionArea);
     const dispatch = useDispatch();
     const styles = useStyles();
 
@@ -37,19 +36,18 @@ export const Header = memo(() => {
         dispatch(setIsSelection({isSelection: true}));
     };
 
-    const drawGrid = () => {
-        resetSelectAction();
-        dispatch(setIsDrawGrid({isDrawGrid: true}));
-    };
-
     const drawFigure = useCallback((typeFigure: TypesFigureType) => {
         resetSelectAction();
         dispatch(setFigureDraw({typeFigure}));
+
+        if (typeFigure === Figures.SECTOR) {
+            dispatch(setIsDrawGrid({isDrawGrid: true}));
+        }
     }, [])
 
     const clearCanvas = () => {
         resetSelectAction();
-        dispatch(removeAllCircles());
+        dispatch(cleanCanvas());
     };
 
     return (
@@ -62,12 +60,6 @@ export const Header = memo(() => {
                             <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={selectionArea}
                                         style={{color: isSelection ? 'green' : ''}}>
                                 <IconsMui.AspectRatioIcon/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title={'Нарисовать сектор'}>
-                            <IconButton edge="start" className={styles.menuButton} color="inherit" onClick={drawGrid}
-                                        style={{color: isDrawGrid ? 'green' : ''}}>
-                                <IconsMui.GridOnIcon/>
                             </IconButton>
                         </Tooltip>
                         <FigureButton drawFigure={drawFigure}/>

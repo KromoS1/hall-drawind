@@ -10,11 +10,12 @@ import {LayerSectors} from "./layers/LayerSectors";
 import {setStage} from "../../../store/reducers/stageReducer";
 import {zoomStage} from "../../../store/calculate/zoom";
 import {LayerFigure} from "./layers/commonLayer/LayerFigure";
-import {offSelectFigure} from "../../../store/reducers/dataFigureReducer";
 import {Box, createStyles, makeStyles} from "@material-ui/core";
 import {HEIGHT_APP_BAR, WIDTH_ASIDE} from "../../../App";
 import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
 import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCircle";
+import {ChangeSectors} from "./layers/commonLayer/changeFigure/ChangeSectors";
+import {offSelectSector} from "../../../store/reducers/changeSectorReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
@@ -45,6 +46,12 @@ export const Content = memo(() => {
             dispatch(setStage({stage: stageRef.current}));
             addCacheElement(stageRef.current);
         }
+
+        observerDoc.subscribeEventDoc('onkeydown', (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                dispatch(offSelectSector());
+            }
+        })
 
         observerDoc.subscribeEventDoc('ctrlKeyDown', (e: KeyboardEvent) => {
             if (e.ctrlKey) {
@@ -79,12 +86,6 @@ export const Content = memo(() => {
             dispatch(mouseUpThunk(e));
         })
 
-        observerStage.subscribeEventStage("click", (e: KonvaEventObject<MouseEvent>) => {
-            if (e.target.attrs.id === 'stage_container') {
-                dispatch(offSelectFigure());
-            }
-        })
-
         return () => {
             observerStage.cleanSubscribersAll();
             cleanCircleCache();
@@ -103,6 +104,7 @@ export const Content = memo(() => {
 
     return (
         <Box className={styles.content}>
+            {/*<ShowCoordinate/>*/}
             <Stage id={'stage_container'} draggable={draggable} ref={stageRef}
                    width={window.innerWidth - WIDTH_ASIDE}
                    height={window.innerHeight - HEIGHT_APP_BAR}
@@ -113,6 +115,7 @@ export const Content = memo(() => {
                     <SelectionArea/>
                     <LayerFigure/>
                     <ChangeFigure/>
+                    <ChangeSectors/>
                 </Layer>
                 <LayerSectors/>
             </Stage>

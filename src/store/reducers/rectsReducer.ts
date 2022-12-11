@@ -1,15 +1,15 @@
-import {Figures, GeneralFigureType, RectFigureType, TypesFigureType} from "../mainType";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {removeAllCircles} from "./sectorsReducer";
-import {offSelectFigure, removeFigure, toggleSelectFigure} from "./dataFigureReducer";
+import {RectFigureType} from "../mainType";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import undoable from "redux-undo";
+import {cleanCanvas} from "./stageReducer";
+import {RootState} from "../store";
 
 export type RectReducerType = {
-    rects:  RectFigureType[],
+    rects: RectFigureType[],
     changeRect: RectFigureType | null
 }
 
-const initialState:RectReducerType = {
+const initialState: RectReducerType = {
     rects: [],
     changeRect: null
 }
@@ -19,38 +19,60 @@ const slice = createSlice({
     initialState,
     reducers: {
         setRectFigure: (state, action: PayloadAction<{ rect: RectFigureType }>) => {
+
             state.rects = [...state.rects, action.payload.rect];
             return state;
         },
         changeDataRect: (state, action: PayloadAction<{ rect: RectFigureType }>) => {
+
             state.changeRect = action.payload.rect;
             return state;
         },
+        toggleSelectRect: (state, action: PayloadAction<{ idRect: string, value: boolean }>) => {
+
+            state.rects = state.rects.map(rect => {
+                if (rect.id === action.payload.idRect) {
+                    rect.isSelected = action.payload.value;
+                }
+                return rect;
+            });
+            return state;
+        },
+        setRectInChange: (state, action: PayloadAction<{ rect: RectFigureType }>) => {
+
+            state.changeRect = action.payload.rect;
+            state.changeRect.isSelected = true;
+            state.rects = state.rects.filter(rect => rect.id !== action.payload.rect.id);
+
+            return state;
+        },
+        saveChangedRect: (state) => {
+
+            if (state.changeRect) {
+                state.changeRect.isSelected = false;
+                state.rects.push(state.changeRect);
+            }
+
+            state.changeRect = null;
+            return state;
+        },
+        offSelectRectsAll: (state) => {
+
+            state.rects = state.rects.map(rect => {
+                rect.isSelected = false;
+                return rect;
+            })
+            return state;
+        },
+        removeRects: (state) => {
+
+            state.rects = state.rects.filter(rect => !rect.isSelected);
+            return state;
+        }
     },
     extraReducers: builder => {
         builder
-            .addCase(toggleSelectFigure,(state,action) => {
-
-                if (action.payload.typeFigure === Figures.RECT && !Array.isArray(action.payload.figure)){
-                    state.rects = state.rects.filter(rect => rect.id !== action.payload.idSelected);
-                    //@ts-ignore todo
-                    state.changeRect = action.payload.figure;
-                }
-                return state;
-            })
-            .addCase(offSelectFigure,(state) => {
-                if (state.changeRect) {
-                    state.changeRect.isSelected = false;
-                    state.rects = [...state.rects, state.changeRect]
-                    state.changeRect = null;
-                }
-                return state;
-            })
-            .addCase(removeFigure,(state,action) => {
-                state.changeRect = null;
-                return state;
-            })
-            .addCase(removeAllCircles, state => {
+            .addCase(cleanCanvas, state => {
                 state.rects = [];
                 state.changeRect = null;
                 return state;
@@ -58,6 +80,30 @@ const slice = createSlice({
     }
 })
 
-export const {setRectFigure,changeDataRect} = slice.actions;
+export const setRectForChange = createAsyncThunk('rects/setRectForChange', (rect: RectFigureType, {
+    dispatch,
+    getState
+}) => {
+
+    const state = getState() as RootState;
+
+    if (state.rects.present.changeRect) {
+        dispatch(saveChangedRect());
+    }
+
+    dispatch(offSelectRectsAll());
+    dispatch(setRectInChange({rect}));
+
+})
+
+export const {
+    setRectFigure,
+    changeDataRect,
+    toggleSelectRect,
+    setRectInChange,
+    saveChangedRect,
+    removeRects,
+    offSelectRectsAll,
+} = slice.actions;
 export const RectsReducerForTest = slice.reducer;
 export default undoable(slice.reducer);

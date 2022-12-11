@@ -1,11 +1,11 @@
 import {
     SectorsReducerType,
     PlaceType,
-    removeAllCircles,
     setCircle,
     setCircleSector, sectorsReducerForTest, toggleSelectPlace
 } from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
+import {cleanCanvas} from "../reducers/stageReducer";
 
 let circleState: SectorsReducerType;
 
@@ -109,7 +109,7 @@ test('set remove all sectors', () => {
 
     const middleState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
 
-    const endState = sectorsReducerForTest(middleState, removeAllCircles())
+    const endState = sectorsReducerForTest(middleState, cleanCanvas())
 
     const keys = Object.keys(endState);
 

@@ -5,8 +5,8 @@ import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaCircle= Konva.Circle;
 import KonvaText= Konva.Text;
 
-export type CircleElementType = {
-    positionCircle: PointType & { isDragging: boolean },
+export type PlaceElementType = {
+    positionPlace: PointType & { isDragging: boolean },
     isSelected: boolean,
     numCol: number,
     offset: PointType
@@ -54,11 +54,11 @@ export const addCacheElement = (stage: Stage) => {
     cleanCircleCache();
 }
 
-export const cloningElement = (props: CircleElementType) => {
+export const cloningElement = (props: PlaceElementType) => {
 
     const cloneCircle = circleCache.clone({
-        x: props.positionCircle.x,
-        y: props.positionCircle.y,
+        x: props.positionPlace.x,
+        y: props.positionPlace.y,
         radius: SIZE_CIRCLE / 2,
         fill: props.isSelected ? '#ff4000' : '#dd4814',
         onDragStart: props.onDragStart,
@@ -66,8 +66,8 @@ export const cloningElement = (props: CircleElementType) => {
     })
 
     const cloneText = textCache.clone({
-        x: props.positionCircle.x,
-        y: props.positionCircle.y,
+        x: props.positionPlace.x,
+        y: props.positionPlace.y,
         text: `${props.numCol}`,
         fontSize: 10,
         fill: '#fff',

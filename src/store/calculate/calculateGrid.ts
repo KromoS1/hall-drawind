@@ -2,8 +2,8 @@ import {SectorsReducerType, PlaceType} from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
 import {PointType} from "../mainType";
 import {Dispatch} from "redux";
-import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/circles/cacheCircle";
 import {CountCirclesDrawType} from "../../components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
+import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
 
 type CoordinateCalcType = {
     xStart: number,

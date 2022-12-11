@@ -16,6 +16,7 @@ function App() {
     useEffect(() => {
 
         document.addEventListener('keydown', (e) => observerDoc.ctrlKeyDown(e));
+        document.addEventListener('keydown', (e) => observerDoc.onkeydown(e));
         document.addEventListener('keyup', (e) => observerDoc.ctrlKeyUp(e));
 
         return () => {

@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../../store/store";
-import {Figures, GeneralFigureType, RectFigureType} from "../../../../../../store/mainType";
+import {Figures, RectFigureType} from "../../../../../../store/mainType";
 import {FRect} from "../../../../../figures/rect/FRect";
 
 
@@ -13,7 +13,7 @@ export const ChangeFigure = memo(() => {
         <>
             {
                 //@ts-ignore todo
-                changeRect && changeRect.typeFigure === Figures.RECT && <FRect rect={changeRect}/>
+                changeRect && changeRect.typeFigure === Figures.RECT && <FRect rect={changeRect} isChange={true}/>
             }
         </>
     )

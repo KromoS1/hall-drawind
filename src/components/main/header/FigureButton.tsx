@@ -3,6 +3,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {createStyles, IconButton, makeStyles, Menu, Theme, Tooltip} from "@material-ui/core";
 import DialpadIcon from '@material-ui/icons/Dialpad';
 import {Figures, TypesFigureType} from "../../../store/mainType";
+import {IconsMui} from "../iconsMui/iconsMui";
 
 type PropsType = {
     drawFigure: (typeFigure: TypesFigureType) => void
@@ -58,6 +59,7 @@ export const FigureButton: FC<PropsType> = memo(({drawFigure}) => {
                 }}
                 open={open}
                 onClose={handleClose}>
+                <MenuItem onClick={() => handleClose(Figures.SECTOR)}>Сектор</MenuItem>
                 <MenuItem onClick={() => handleClose(Figures.RECT)}>Прямоугольник</MenuItem>
                 <MenuItem onClick={() => handleClose(Figures.ELLIPSE)}>Эллипс</MenuItem>
                 <MenuItem onClick={() => handleClose(Figures.TEXT)}>Текст</MenuItem>
