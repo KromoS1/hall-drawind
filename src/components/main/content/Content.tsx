@@ -15,7 +15,6 @@ import {HEIGHT_APP_BAR, WIDTH_ASIDE} from "../../../App";
 import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
 import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCircle";
 import {ChangeSectors} from "./layers/commonLayer/changeFigure/ChangeSectors";
-import {offSelectSector} from "../../../store/reducers/changeSectorReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 export const Content = memo(() => {
@@ -46,12 +45,6 @@ export const Content = memo(() => {
             dispatch(setStage({stage: stageRef.current}));
             addCacheElement(stageRef.current);
         }
-
-        observerDoc.subscribeEventDoc('onkeydown', (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                dispatch(offSelectSector());
-            }
-        })
 
         observerDoc.subscribeEventDoc('ctrlKeyDown', (e: KeyboardEvent) => {
             if (e.ctrlKey) {

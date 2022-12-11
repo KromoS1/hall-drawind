@@ -1,7 +1,6 @@
-import React, {FC, memo, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, memo, useCallback, useEffect, useRef} from 'react';
 import Konva from "konva";
 import {Group} from 'react-konva';
-import {PointType} from "../../../store/mainType";
 import {PlaceType} from "../../../store/reducers/sectorsReducer";
 import {cloningElement, PlaceElementType} from "./cacheCircle";
 import KonvaEventObject = Konva.KonvaEventObject;
@@ -14,19 +13,14 @@ type PropsType = {
 export const FPlace: FC<PropsType> = memo(({place}) => {
 
     const {numCol, x, y, isSelected } = place;
-    const [positionPlace, setPositionPlace] = useState<PointType & { isDragging: boolean }>({
-        x: x,
-        y: y,
-        isDragging: false
-    });
 
     const onDragStart = useCallback(() => {
-        setPositionPlace(position => ({...position, isDragging: true}));
-    }, [positionPlace.isDragging])
+        // setPositionPlace(position => ({...position, isDragging: true}));
+    }, [])
 
     const onDragEnd = useCallback((e: KonvaEventObject<DragEvent>) => {
-        setPositionPlace({x: e.target.x(), y: e.target.y(), isDragging: false});
-    }, [positionPlace.isDragging])
+        // setPositionPlace({x: e.target.x(), y: e.target.y(), isDragging: false});
+    }, [])
 
     const offset = {
         x: `${numCol}`.length > 2 ? 8.5 : `${numCol}`.length > 1 ? 6 : 3,
@@ -35,7 +29,7 @@ export const FPlace: FC<PropsType> = memo(({place}) => {
 
     return (
         <>
-            <PlaceElement positionPlace={positionPlace} isSelected={isSelected} numCol={numCol}
+            <PlaceElement positionPlace={{x,y}} isSelected={isSelected} numCol={numCol}
                            offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
         </>
     )

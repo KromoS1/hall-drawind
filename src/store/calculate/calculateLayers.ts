@@ -37,7 +37,7 @@ export const calculateLayers = (layers: SectorsReducerType, newGroup: SectorsPla
 
         if (keysLayers.length === i + 1) {
 
-            countCircleInLayer += Object.values(newGroup)[0].length;
+            countCircleInLayer += Object.values(newGroup)[0].places.length;
             const newGroupKV = Object.entries(newGroup);
 
             if (countCircleInLayer < MAX_LAYER_SIZE) {

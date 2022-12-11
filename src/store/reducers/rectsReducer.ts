@@ -3,6 +3,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import undoable from "redux-undo";
 import {cleanCanvas} from "./stageReducer";
 import {RootState} from "../store";
+import {saveChangedSector} from "./changeSectorReducer";
 
 export type RectReducerType = {
     rects: RectFigureType[],
@@ -67,6 +68,7 @@ const slice = createSlice({
         removeRects: (state) => {
 
             state.rects = state.rects.filter(rect => !rect.isSelected);
+            state.changeRect = null;
             return state;
         }
     },
@@ -86,6 +88,10 @@ export const setRectForChange = createAsyncThunk('rects/setRectForChange', (rect
 }) => {
 
     const state = getState() as RootState;
+
+    if (state.changeSector.idGroup) {
+        dispatch(saveChangedSector());
+    }
 
     if (state.rects.present.changeRect) {
         dispatch(saveChangedRect());

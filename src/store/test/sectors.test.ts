@@ -1,8 +1,8 @@
 import {
     SectorsReducerType,
     PlaceType,
-    setCircle,
-    setCircleSector, sectorsReducerForTest, toggleSelectPlace
+    setPlaces,
+    setPlaceSector, sectorsReducerForTest, toggleSelectPlace
 } from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
 import {cleanCanvas} from "../reducers/stageReducer";
@@ -23,7 +23,6 @@ const createCircleArr = (count: number) => {
             numCol: i,
             numRow: i,
             isSelected: false,
-            isDraggable: false
         }
 
         result.push(circle)
@@ -56,7 +55,7 @@ test('set all sectors', () => {
 
     const groups = createGroups();
 
-    const endState = sectorsReducerForTest(circleState, setCircle({groups}));
+    const endState = sectorsReducerForTest(circleState, setPlaces({groups}));
 
     const keysLayer = Object.keys(endState);
     const keysGroupFirst = Object.keys(endState[keysLayer[0]]);
@@ -73,10 +72,10 @@ test('set all sectors', () => {
 
 test('set new sector', () => {
 
-    const circles = createCircleArr(10);
+    const places = createCircleArr(10);
     const idGroup = uuid();
 
-    const endState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
+    const endState = sectorsReducerForTest(circleState, setPlaceSector({idGroup,places}));
 
     const keysLayer = Object.keys(endState);
     const keysGroup = Object.keys(endState[keysLayer[0]]);
@@ -89,25 +88,25 @@ test('set new sector', () => {
 
 test('set toggleSelect', () => {
 
-    const circles = createCircleArr(10);
+    const places = createCircleArr(10);
     const idGroup = uuid();
 
-    const middleState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
+    const middleState = sectorsReducerForTest(circleState, setPlaceSector({idGroup,places}));
 
     const keysLayer = Object.keys(middleState);
 
-    const idPlace = middleState[keysLayer[0]][idGroup][0].id;
+    const idPlace = middleState[keysLayer[0]][idGroup].places[0].id;
 
     const endState = sectorsReducerForTest(middleState, toggleSelectPlace({idLayer:keysLayer[0], idGroup, idPlace, value: true}));
-    expect(endState[keysLayer[0]][idGroup][0].isSelected).toBe(true);
+    expect(endState[keysLayer[0]][idGroup].places[0].isSelected).toBe(true);
 });
 
 test('set remove all sectors', () => {
 
-    const circles = createCircleArr(10);
+    const places = createCircleArr(10);
     const idGroup = uuid();
 
-    const middleState = sectorsReducerForTest(circleState, setCircleSector({idGroup,circles}));
+    const middleState = sectorsReducerForTest(circleState, setPlaceSector({idGroup,places}));
 
     const endState = sectorsReducerForTest(middleState, cleanCanvas())
 

@@ -6,7 +6,7 @@ import KonvaCircle= Konva.Circle;
 import KonvaText= Konva.Text;
 
 export type PlaceElementType = {
-    positionPlace: PointType & { isDragging: boolean },
+    positionPlace: PointType,
     isSelected: boolean,
     numCol: number,
     offset: PointType

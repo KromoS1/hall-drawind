@@ -2,8 +2,11 @@ import React, {memo, useEffect, useRef} from "react";
 import {Group, Transformer} from "react-konva";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../../store/store";
-import {PlaceType} from "../../../../../../store/reducers/sectorsReducer";
+import {PlaceType, removeSector, toggleSelectSector} from "../../../../../../store/reducers/sectorsReducer";
 import {FPlace} from "../../../../../figures/sectors/FPlace";
+import {useAppDispatch} from "../../../../../../store/hooks";
+import {cleanChangeSector, saveChangedSector} from "../../../../../../store/reducers/changeSectorReducer";
+import {observerDoc} from "../../../../../../observer/observerDoc";
 
 export const ChangeSectors = memo(() => {
 
@@ -11,17 +14,39 @@ export const ChangeSectors = memo(() => {
     const sectorPlaces = useSelector<RootState, PlaceType[]>(state => state.changeSector.sectorPlaces);
     const transformerRef = useRef(null);
     const groupRef = useRef(null);
+    const dispatch = useAppDispatch();
 
-    const fPlace = sectorPlaces.map(place => <FPlace key={place.id} place={place}/>)
+    const remove = (e: KeyboardEvent) => {
+        if (e.key === 'Delete') {
+            dispatch(cleanChangeSector())
+        }
+    }
+
+    const saveSector = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            dispatch(saveChangedSector());
+        }
+    }
 
     useEffect(() => {
         if (transformerRef.current && groupRef.current) {
+
+            observerDoc.subscribeEventDoc('onkeydown', remove);
+            observerDoc.subscribeEventDoc('onkeydown', saveSector);
+
             //@ts-ignore todo fix
             transformerRef.current.nodes([groupRef.current]);
             //@ts-ignore todo fix
             transformerRef.current.getLayer().batchDraw();
         }
+
+        return () => {
+            observerDoc.removeListener('onkeydown', remove);
+            observerDoc.removeListener('onkeydown', saveSector);
+        }
     }, [idGroup])
+
+    const fPlace = sectorPlaces.map(place => <FPlace key={place.id} place={place}/>)
 
     return (
         <>
@@ -33,7 +58,7 @@ export const ChangeSectors = memo(() => {
                          keepRatio={false}
                          rotateEnabled={false}
                          centeredScaling
-                         borderStrokeWidth={2}
+                         borderStrokeWidth={3}
                          anchorSize={0}
                          padding={5}
             />}

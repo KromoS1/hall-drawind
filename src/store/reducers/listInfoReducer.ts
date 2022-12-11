@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {PlaceType, setCircleSector} from "./sectorsReducer";
+import {PlaceType, setPlaceSector} from "./sectorsReducer";
 import undoable from "redux-undo";
 import {cleanCanvas} from "./stageReducer";
 
@@ -17,11 +17,11 @@ const slice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(setCircleSector, (state, action:PayloadAction<{idGroup: string, circles: PlaceType[]}>) => {
+            .addCase(setPlaceSector, (state, action:PayloadAction<{idGroup: string, places: PlaceType[]}>) => {
                 const info = {
                     idGroup: action.payload.idGroup,
                     name: `Group ${state.length + 1}`,
-                    count: action.payload.circles.length
+                    count: action.payload.places.length
                 }
                 state = [...state,info]
                 return state;

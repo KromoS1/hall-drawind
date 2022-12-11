@@ -1,7 +1,7 @@
 import React, {FC, memo, useCallback, useEffect, useState} from "react";
 import {PreDrawRect} from "./prevDrawElement/PreDrawRect";
 import {useDispatch} from "react-redux";
-import {setCircleSector} from "../../../../../../store/reducers/sectorsReducer";
+import {setPlaceSector} from "../../../../../../store/reducers/sectorsReducer";
 import {observerStage} from "../../../../../../observer/observerStage";
 import {PointType} from "../../../../../../store/mainType";
 import {setIsDrawGrid} from "../../../../../../store/reducers/selectionAreaReducer";
@@ -31,7 +31,7 @@ export const SelectionAreaGrid: FC<PropsType> = memo(({move, mouseDown, isDown, 
 
             const gridCircles = await createCirclesForGrid({xStart: mouseDown.x, yStart: mouseDown.y}, countCircles);
 
-            dispatch(setCircleSector({idGroup: uuid(), circles: gridCircles}));
+            dispatch(setPlaceSector({idGroup: uuid(), places: gridCircles}));
             dispatch(setIsDrawGrid({isDrawGrid: false}));
             setCountCircles({countX: 0, countY: 0})
         }

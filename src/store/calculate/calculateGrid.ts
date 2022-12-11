@@ -19,7 +19,6 @@ const createCircle = (x: number, y: number, numberRow: number, numberColumn: num
         x, y,
         numCol: numberRow,
         numRow: numberColumn,
-        isDraggable: false,
         isSelected: false,
     }
 }
