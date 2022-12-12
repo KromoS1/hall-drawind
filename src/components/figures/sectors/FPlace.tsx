@@ -1,18 +1,19 @@
 import React, {FC, memo, useCallback, useEffect, useRef} from 'react';
 import Konva from "konva";
-import {Group} from 'react-konva';
+import {Circle, Group, Text} from 'react-konva';
 import {PlaceType} from "../../../store/reducers/sectorsReducer";
-import {cloningElement, PlaceElementType} from "./cacheCircle";
+import {cloningElement, PlaceElementType, SIZE_CIRCLE} from "./cacheCircle";
 import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaGroup = Konva.Group;
 
 type PropsType = {
-    place: PlaceType
+    place: PlaceType,
+    isChange: boolean
 }
 
-export const FPlace: FC<PropsType> = memo(({place}) => {
+export const FPlace: FC<PropsType> = memo(({place, isChange}) => {
 
-    const {numCol, x, y, isSelected } = place;
+    const {numCol, x, y, isSelected} = place;
 
     const onDragStart = useCallback(() => {
         // setPositionPlace(position => ({...position, isDragging: true}));
@@ -29,8 +30,12 @@ export const FPlace: FC<PropsType> = memo(({place}) => {
 
     return (
         <>
-            <PlaceElement positionPlace={{x,y}} isSelected={isSelected} numCol={numCol}
-                           offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
+            {isChange
+                ? <PlaceElementNoCash positionPlace={{x, y}} isSelected={isSelected} numCol={numCol}
+                                      offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
+                : <PlaceElement positionPlace={{x, y}} isSelected={isSelected} numCol={numCol}
+                                offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
+            }
         </>
     )
 })
@@ -54,6 +59,24 @@ const PlaceElement: FC<PlaceElementType> = memo((props) => {
     )
 })
 
+
+const PlaceElementNoCash: FC<PlaceElementType> = memo((props) => {
+    return (
+        <Group>
+            <Circle x={props.positionPlace.x} y={props.positionPlace.y}
+                    radius={SIZE_CIRCLE / 2}
+                    fill={'#dd4814'}
+                    perfectDrawEnabled={false}
+            />
+            <Text x={props.positionPlace.x} y={props.positionPlace.y}
+                  text={`${props.numCol}`}
+                  fontSize={10}
+                  fill={'#fff'}
+                  offset={props.offset}
+            />
+        </Group>
+    )
+})
 
 
 // type CheckIsSelectCircleType = PointType & PropsType

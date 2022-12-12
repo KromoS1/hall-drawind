@@ -99,7 +99,7 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
     }, [isSelectedSector]);
 
     const fPlace = useMemo(() => placeInGroup.map(place =>
-        <FPlace key={place.id} place={place}/>), [idLayer, idGroup]);
+        <FPlace key={place.id} place={place} isChange={false}/>), [idLayer, idGroup]);
 
     return (
         <>

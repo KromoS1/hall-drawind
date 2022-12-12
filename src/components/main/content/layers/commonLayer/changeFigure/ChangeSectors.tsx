@@ -2,7 +2,7 @@ import React, {memo, useEffect, useRef} from "react";
 import {Group, Transformer} from "react-konva";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../../store/store";
-import {PlaceType, removeSector, toggleSelectSector} from "../../../../../../store/reducers/sectorsReducer";
+import {PlaceType} from "../../../../../../store/reducers/sectorsReducer";
 import {FPlace} from "../../../../../figures/sectors/FPlace";
 import {useAppDispatch} from "../../../../../../store/hooks";
 import {cleanChangeSector, saveChangedSector} from "../../../../../../store/reducers/changeSectorReducer";
@@ -44,9 +44,9 @@ export const ChangeSectors = memo(() => {
             observerDoc.removeListener('onkeydown', remove);
             observerDoc.removeListener('onkeydown', saveSector);
         }
-    }, [idGroup])
+    }, [idGroup,sectorPlaces])
 
-    const fPlace = sectorPlaces.map(place => <FPlace key={place.id} place={place}/>)
+    const fPlace = sectorPlaces.map(place => <FPlace key={place.id} place={place} isChange={true}/>)
 
     return (
         <>

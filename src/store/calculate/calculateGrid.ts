@@ -1,7 +1,5 @@
-import {SectorsReducerType, PlaceType} from "../reducers/sectorsReducer";
+import {PlaceType} from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
-import {PointType} from "../mainType";
-import {Dispatch} from "redux";
 import {CountCirclesDrawType} from "../../components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
 
@@ -26,16 +24,16 @@ const createCircle = (x: number, y: number, numberRow: number, numberColumn: num
 export const calcCountCircleGrid = (coordinate: CoordinateCalcType) => {
 
     const width = coordinate.xEnd - coordinate.xStart;
-    const hegth = coordinate.yEnd - coordinate.yStart;
+    const height = coordinate.yEnd - coordinate.yStart;
 
-    let countX = 0;
-    let countY = 0;
+    let countX;
+    let countY;
 
     if (width === sizeCircleWithIdent) countX = 1;
-    if (hegth === sizeCircleWithIdent) countY = 1;
+    if (height === sizeCircleWithIdent) countY = 1;
 
     countX = width % sizeCircleWithIdent === 0 ? width / sizeCircleWithIdent : (width - sizeCircleWithIdent) / sizeCircleWithIdent;
-    countY = hegth % sizeCircleWithIdent === 0 ? hegth / sizeCircleWithIdent : (hegth - sizeCircleWithIdent) / sizeCircleWithIdent;
+    countY = height % sizeCircleWithIdent === 0 ? height / sizeCircleWithIdent : (height - sizeCircleWithIdent) / sizeCircleWithIdent;
 
     countX = Math.round(countX);
     countY = Math.round(countY);
@@ -52,9 +50,9 @@ export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: 
 
         let resultCircles = [];
 
-        for ( let x = 0; x < countCircleGrid.countX; x++){
+        for (let x = 0; x < countCircleGrid.countX; x++) {
 
-            for (let y = 0; y < countCircleGrid.countY; y++){
+            for (let y = 0; y < countCircleGrid.countY; y++) {
 
                 const pointX = coordinate.xStart + (x * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
                 const pointY = coordinate.yStart + (y * sizeCircleWithIdent) + (SIZE_CIRCLE / 2);
@@ -63,21 +61,4 @@ export const createCirclesForGrid = async (coordinate: {xStart: number, yStart: 
         }
         resolve(resultCircles);
     })
-}
-
-// функция для определения выделенных кругов
-export const calcSelectedCircle = (startPoint: PointType, endPoint: PointType, circles: SectorsReducerType, dispatch: Dispatch) => {
-
-    const keys = Object.keys(circles)
-
-    // keys.forEach(id => {
-    //     const circle = circles[id];
-    //
-    //     if (circle.x + 10 < endPoint.x && circle.x - 10 > startPoint.x && circle.y + 10 < endPoint.y && circle.y -10 > startPoint.y){
-    //         dispatch(toggleSelect({id: circle.id, value: true}));
-    //     }else{
-    //         dispatch(toggleSelect({id: circle.id, value: false}));
-    //     }
-    // })
-
 }

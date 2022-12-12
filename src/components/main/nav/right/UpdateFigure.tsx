@@ -60,7 +60,7 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
 
     return (
         <>
-            <h4 className={''}>Rect</h4>
+            <h4 className={''}>Прямоугольник</h4>
             <Box>
                 <div className={style.flex}>
                     <InputUpdateGroup value={rect.x} name={'x'} onChange={onChange}>
