@@ -2,16 +2,18 @@ import React, {FC, memo, useEffect, useMemo, useRef} from "react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../store/store";
 import {
-    PlaceType, removeSector,
+    PlaceType,
+    removeSector,
     SectorsPlacesType,
     SectorsReducerType,
     toggleSelectSector
 } from "../../../../store/reducers/sectorsReducer";
-import {Group, Layer, Rect, Transformer} from "react-konva";
+import {Group, Layer, Rect} from "react-konva";
 import {FPlace} from "../../../figures/sectors/FPlace";
 import {observerDoc} from "../../../../observer/observerDoc";
 import {setSectorInChange} from "../../../../store/reducers/changeSectorReducer";
 import {useAppDispatch} from "../../../../store/hooks";
+import {FTransformer} from "../../../figures/transformer/Transformer";
 
 type LayerDrawType = {
     idLayer: string
@@ -51,7 +53,6 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
     const dispatch = useAppDispatch();
     const placeInGroup = useSelector<RootState, PlaceType[]>(state => state.sectors.present[idLayer][idGroup].places);
     const isSelectedSector = useSelector<RootState, boolean>(state => state.sectors.present[idLayer][idGroup].isSelected);
-    const transformerRef = useRef(null);
     const groupRef = useRef(null);
 
     const onClick = () => {
@@ -88,15 +89,8 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
 
     useEffect(() => {
 
-        if (transformerRef.current && groupRef.current) {
-
-            observerDoc.subscribeEventDoc('onkeydown', remove);
-            observerDoc.subscribeEventDoc('onkeydown', offSelect);
-            //@ts-ignore todo fix
-            transformerRef.current.nodes([groupRef.current]);
-            //@ts-ignore todo fix
-            transformerRef.current.getLayer().batchDraw();
-        }
+        observerDoc.subscribeEventDoc('onkeydown', remove);
+        observerDoc.subscribeEventDoc('onkeydown', offSelect);
 
         return () => {
             observerDoc.removeListener('onkeydown', remove);
@@ -113,14 +107,7 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
                 {fPlace}
                 <Rect {...calcSizeRect()} onMouseDown={onClick} onDblClick={dbClick}/>
             </Group>
-            {isSelectedSector &&
-            <Transformer ref={transformerRef}
-                         keepRatio={false}
-                         anchorSize={0}
-                         padding={5}
-                         borderStrokeWidth={2}
-                         rotateEnabled={false}
-                         centeredScaling/>}
+            {isSelectedSector && <FTransformer refFigure={groupRef} isShow={isSelectedSector} anchorSize={0} padding={5}/>}
         </>
     )
 })

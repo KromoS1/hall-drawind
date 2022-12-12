@@ -1,6 +1,6 @@
 import React, {FC, memo, useEffect, useRef} from 'react';
 import Konva from "konva";
-import {Rect, Transformer} from 'react-konva';
+import {Rect} from 'react-konva';
 import {RectFigureType} from "../../../store/mainType";
 import {COLORS} from "../../../store/constantsColor";
 import {useAppDispatch} from "../../../store/hooks";
@@ -8,10 +8,11 @@ import {observerDoc} from "../../../observer/observerDoc";
 import {
     changeDataRect,
     removeRects,
-    saveChangedRect, setRectForChange,
-    setRectInChange,
+    saveChangedRect,
+    setRectForChange,
     toggleSelectRect
 } from "../../../store/reducers/rectsReducer";
+import {FTransformer} from "../transformer/Transformer";
 import KonvaEventObject = Konva.KonvaEventObject;
 
 type PropsType = {
@@ -21,7 +22,6 @@ type PropsType = {
 
 export const FRect: FC<PropsType> = memo(({rect, isChange}) => {
 
-    const transformerRef = useRef<Konva.Transformer | null>(null);
     const rectRef = useRef<Konva.Rect | null>(null);
     const dispatch = useAppDispatch();
 
@@ -76,15 +76,9 @@ export const FRect: FC<PropsType> = memo(({rect, isChange}) => {
     }
 
     useEffect(() => {
-        if (rect.isSelected && transformerRef.current && rectRef.current) {
 
-            observerDoc.subscribeEventDoc('ctrlKeyDown', removeRect);
-            observerDoc.subscribeEventDoc('onkeydown', offSelect)
-
-            transformerRef.current.nodes([rectRef.current]);
-            //@ts-ignore todo fix
-            transformerRef.current.getLayer().batchDraw();
-        }
+        observerDoc.subscribeEventDoc('ctrlKeyDown', removeRect);
+        observerDoc.subscribeEventDoc('onkeydown', offSelect)
 
         return () => {
             observerDoc.removeListener('ctrlKeyDown', removeRect);
@@ -115,13 +109,7 @@ export const FRect: FC<PropsType> = memo(({rect, isChange}) => {
                 onClick={onClick}
                 onDblClick={dbClick}
             />
-            {rect.isSelected &&
-            <Transformer ref={transformerRef}
-                         keepRatio={false}
-                         anchorSize={isChange ? 10 : 0}
-                         anchorCornerRadius={10}
-                         rotateEnabled={false}
-                         centeredScaling/>}
+            {rect.isSelected && <FTransformer refFigure={rectRef} isShow={isChange} anchorSize={10}/>}
         </>
     )
 })
