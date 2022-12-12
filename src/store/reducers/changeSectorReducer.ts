@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {offAllSelectedSector, PlaceType, removeSector, setSectorInLayer} from "./sectorsReducer";
 import {cleanCanvas} from "./stageReducer";
 import {RootState} from "../store";
-import {saveChangedRect} from "./rectsReducer";
+import {offSelectRectsAll, saveChangedRect} from "./rectsReducer";
 
 export type ChangeSectorType = {
     idLayer: string
@@ -77,6 +77,7 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
         isSelected: sector.isSelected
     }));
 
+    dispatch(offSelectRectsAll())
     dispatch(offAllSelectedSector());
     dispatch(removeSector({idLayer: data.idLayer, idGroup: data.idGroup}));
 })

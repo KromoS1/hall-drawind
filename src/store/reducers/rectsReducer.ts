@@ -4,6 +4,7 @@ import undoable from "redux-undo";
 import {cleanCanvas} from "./stageReducer";
 import {RootState} from "../store";
 import {saveChangedSector} from "./changeSectorReducer";
+import {offAllSelectedSector} from "./sectorsReducer";
 
 export type RectReducerType = {
     rects: RectFigureType[],
@@ -97,6 +98,7 @@ export const setRectForChange = createAsyncThunk('rects/setRectForChange', (rect
         dispatch(saveChangedRect());
     }
 
+    dispatch(offAllSelectedSector());
     dispatch(offSelectRectsAll());
     dispatch(setRectInChange({rect}));
 
