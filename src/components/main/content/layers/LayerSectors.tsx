@@ -78,10 +78,10 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
     const calcSizeRect = () => {
         if (placeInGroup && placeInGroup.length > 1) {
             return {
-                x: placeInGroup[0].x,
-                y: placeInGroup[0].y,
-                width: placeInGroup[placeInGroup.length - 1].x - placeInGroup[0].x,
-                height: placeInGroup[placeInGroup.length - 1].y - placeInGroup[0].y,
+                x: placeInGroup[0].x - 10,
+                y: placeInGroup[0].y - 10,
+                width: placeInGroup[placeInGroup.length - 1].x - placeInGroup[0].x + 20,
+                height: placeInGroup[placeInGroup.length - 1].y - placeInGroup[0].y + 20,
             }
         }
     }

@@ -27,25 +27,6 @@ const slice = createSlice({
     name: 'changeSector',
     initialState,
     reducers: {
-        calcSizeHorizontal: (state, action: PayloadAction<{ size: number }>) => {
-
-            const sizeInterval = SIZE_CIRCLE + action.payload.size;
-            const radius = (SIZE_CIRCLE / 2);
-
-            let startX = 0;
-            state.sectorPlaces = state.sectorPlaces.map((place, ) => {
-
-                if (place.numCol === 1) {
-                    startX = place.x - radius;
-                }else{
-                    place.x = startX + ((place.numCol - 1) * sizeInterval) + radius;
-                }
-
-                return place;
-            })
-
-            return state;
-        },
         setSectorForChange: (state, action: PayloadAction<ChangeSectorType>) => {
             state = action.payload;
             return state;
@@ -55,7 +36,28 @@ const slice = createSlice({
             state.idLayer = '';
             state.sectorPlaces = [];
             return state;
-        }
+        },
+        calcSizeInterval: (state, action: PayloadAction<{ size: number, col_row: 'numCol' | 'numRow', x_y: 'x' | 'y' }>) => {
+
+            const {size, col_row, x_y} = action.payload;
+
+            const sizeInterval = SIZE_CIRCLE + size;
+            const radius = (SIZE_CIRCLE / 2);
+
+            let start = 0;
+            state.sectorPlaces = state.sectorPlaces.map(place => {
+
+                if (place[col_row] === 1) {
+                    start = place[x_y] - radius;
+                }else{
+                    place[x_y] = start + ((place[col_row] - 1) * sizeInterval) + radius;
+                }
+
+                return place;
+            })
+
+            return state;
+        },
     },
     extraReducers: builder => builder
         .addCase(cleanCanvas, (state) => {
@@ -129,10 +131,10 @@ const checkSizeInterval = (places: PlaceType[]) => {
     })
     if (placeOne && placeVert && placeHor) {
         //@ts-ignore todo
-        return {horizontal: placeHor.x - placeOne.x - SIZE_CIRCLE, vertical: placeVert.y - placeOne - SIZE_CIRCLE}
+        return {horizontal: placeHor.x - placeOne.x - SIZE_CIRCLE, vertical: placeVert.y - placeOne.y - SIZE_CIRCLE}
     }
     return {horizontal: SIZE_IDENT_CIRCLE, vertical: SIZE_IDENT_CIRCLE}
 }
 
-export const {setSectorForChange, cleanChangeSector, calcSizeHorizontal} = slice.actions;
+export const {setSectorForChange, cleanChangeSector, calcSizeInterval} = slice.actions;
 export default slice.reducer

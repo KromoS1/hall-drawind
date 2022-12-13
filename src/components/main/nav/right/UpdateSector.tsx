@@ -1,7 +1,6 @@
 import {Box, createStyles, makeStyles, Slider, Theme} from "@material-ui/core";
 import {ChangeEvent, FC, memo, useState} from "react";
-import {calcSizeHorizontal, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
-import {SIZE_IDENT_CIRCLE} from "../../../figures/sectors/cacheCircle";
+import {calcSizeInterval, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
 import {useDispatch} from "react-redux";
 
 type PropsType = {
@@ -10,15 +9,19 @@ type PropsType = {
 
 export const UpdateSector: FC<PropsType> = memo(({sector}) => {
 
-    // const [sizeVertical, setSizeVertical] = useState<number>(SIZE_IDENT_CIRCLE);
     const [sizeHorizontal, setSizeHorizontal] = useState<number>(sector.sizeHorizontal);
+    const [sizeVertical, setSizeVertical] = useState<number>(sector.sizeVertical);
     const dispatch = useDispatch();
     const style = useStyles();
 
-    const change = (event: ChangeEvent<{}>, newValue: number | number[]) => {
-
+    const changeHorizontal = (event: ChangeEvent<{}>, newValue: number | number[]) => {
         setSizeHorizontal(newValue as number);
-        dispatch(calcSizeHorizontal({size: newValue as number}));
+        dispatch(calcSizeInterval({size: newValue as number, col_row: "numCol", x_y: 'x'}));
+    }
+
+    const changeVertical = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+        setSizeVertical(newValue as number);
+        dispatch(calcSizeInterval({size: newValue as number, col_row: "numRow", x_y: 'y'}));
     }
 
     return (
@@ -26,7 +29,11 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
             <h4 className={''}>Сектор</h4>
             <Box className={`${style.padding} ${style.flex}`}>
                 <div>По горизонтали</div>
-                <Slider aria-label="Volume" value={sizeHorizontal} onChange={change} valueLabelDisplay={'auto'}/>
+                <Slider value={sizeHorizontal} onChange={changeHorizontal} valueLabelDisplay={'auto'}/>
+            </Box>
+            <Box className={`${style.padding} ${style.flex}`}>
+                <div>По вертикали</div>
+                <Slider value={sizeVertical} onChange={changeVertical} valueLabelDisplay={'auto'}/>
             </Box>
         </>
     )
@@ -35,8 +42,7 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         padding: {
-            paddingRight: '5px',
-            paddingLeft: '5px',
+            padding: '5px',
         },
         margin: {
             margin: theme.spacing(1),
