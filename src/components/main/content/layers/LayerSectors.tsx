@@ -57,7 +57,6 @@ const GroupDraw: FC<GroupDrawType> = memo(function ({idLayer, idGroup}) {
 
     const onClick = () => {
         dispatch(toggleSelectSector({idLayer, idGroup, value: true}));
-        // dispatch(setSectorForChange({idLayer, idGroup, sectorPlaces: placeInGroup}));
     }
 
     const dbClick = () => {

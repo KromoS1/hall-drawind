@@ -88,7 +88,10 @@ const sliceCircles = createSlice({
         },
         removeSector: (state, action: PayloadAction<{ idLayer: string, idGroup: string, }>) => {
 
-            delete state[action.payload.idLayer][action.payload.idGroup];
+            if (state[action.payload.idLayer][action.payload.idGroup].isSelected) {
+                delete state[action.payload.idLayer][action.payload.idGroup];
+            }
+
             return state;
         }
     },
