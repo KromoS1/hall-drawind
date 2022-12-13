@@ -4,6 +4,8 @@ import {cleanCanvas} from "./stageReducer";
 import {RootState} from "../store";
 import {offSelectRectsAll, saveChangedRect} from "./rectsReducer";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
+import {PointType} from "../mainType";
+import {checkSizeInterval} from "../utils";
 
 export type ChangeSectorType = {
     idLayer: string
@@ -49,12 +51,29 @@ const slice = createSlice({
 
                 if (place[col_row] === 1) {
                     start = place[x_y] - radius;
-                }else{
+                } else {
                     place[x_y] = start + ((place[col_row] - 1) * sizeInterval) + radius;
                 }
 
                 return place;
             })
+
+            return state;
+        },
+        toggleSelectPlace: (state, action: PayloadAction<{ start: PointType, end: PointType }>) => {
+
+            const {start, end} = action.payload;
+
+
+            if (start.x < end.x && start.y < end.y) {
+
+                state.sectorPlaces.forEach(place => {
+
+                    if (place.x > start.x && place.x < end.x && place.y > start.y && place.y < end.y){
+                        place.isSelected = true;
+                    }
+                })
+            }
 
             return state;
         },
@@ -112,29 +131,16 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
     dispatch(removeSector({idLayer: data.idLayer, idGroup: data.idGroup}));
 })
 
-const checkSizeInterval = (places: PlaceType[]) => {
+export const selectedPlace = createAsyncThunk('changeSector/selectedPlace',(_,{dispatch, getState}) => {
 
-    let placeOne: PlaceType | null = null;
-    let placeVert: PlaceType | null = null;
-    let placeHor: PlaceType | null = null;
+    const state = getState() as RootState;
+    if (state.changeSector.idGroup && state.selectionArea.isSelection) {
 
-    places.forEach(place => {
-        if (place.numCol === 1 && place.numRow === 1) {
-            placeOne = place
-        }
-        if (place.numCol === 1 && place.numRow === 2) {
-            placeVert = place;
-        }
-        if (place.numCol === 2 && place.numRow === 1) {
-            placeHor = place;
-        }
-    })
-    if (placeOne && placeVert && placeHor) {
-        //@ts-ignore todo
-        return {horizontal: placeHor.x - placeOne.x - SIZE_CIRCLE, vertical: placeVert.y - placeOne.y - SIZE_CIRCLE}
+        dispatch(toggleSelectPlace({start: state.mouse.mouseDown, end: state.mouse.mouseUp}))
     }
-    return {horizontal: SIZE_IDENT_CIRCLE, vertical: SIZE_IDENT_CIRCLE}
-}
+})
 
-export const {setSectorForChange, cleanChangeSector, calcSizeInterval} = slice.actions;
+
+
+export const {setSectorForChange, cleanChangeSector, calcSizeInterval, toggleSelectPlace} = slice.actions;
 export default slice.reducer

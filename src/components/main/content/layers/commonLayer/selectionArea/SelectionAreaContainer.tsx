@@ -4,6 +4,10 @@ import {PreDrawRect} from "./prevDrawElement/PreDrawRect";
 import {setIsSelection} from "../../../../../../store/reducers/selectionAreaReducer";
 import {observerStage} from "../../../../../../observer/observerStage";
 import {PointType} from "../../../../../../store/mainType";
+import {selectedPlace, toggleSelectPlace} from "../../../../../../store/reducers/changeSectorReducer";
+import Konva from "konva";
+import KonvaEventObject = Konva.KonvaEventObject;
+import {useAppDispatch} from "../../../../../../store/hooks";
 
 type PropsType = {
     move: PointType,
@@ -14,9 +18,11 @@ type PropsType = {
 
 export const SelectionAreaContainer: FC<PropsType> = memo(({move, mouseDown, isSelection, isDown}) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const resetSelection = () => {
+
+        dispatch(selectedPlace());
         dispatch(setIsSelection({isSelection: false}));
     }
 

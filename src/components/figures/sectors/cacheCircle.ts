@@ -1,3 +1,4 @@
+import {COLORS} from "../../../store/constantsColor";
 import Konva from "konva";
 import Stage = Konva.Stage;
 import {PointType} from "../../../store/mainType";
@@ -60,7 +61,7 @@ export const cloningElement = (props: PlaceElementType) => {
         x: props.positionPlace.x,
         y: props.positionPlace.y,
         radius: SIZE_CIRCLE / 2,
-        fill: props.isSelected ? '#ff4000' : '#dd4814',
+        fill: COLORS.bgPlace,
         onDragStart: props.onDragStart,
         onDragEnd: props.onDragEnd,
     })

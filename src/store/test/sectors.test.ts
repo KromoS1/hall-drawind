@@ -1,8 +1,9 @@
 import {
-    SectorsReducerType,
     PlaceType,
+    sectorsReducerForTest,
+    SectorsReducerType,
     setPlaces,
-    setPlaceSector, sectorsReducerForTest, toggleSelectPlace
+    setPlaceSector,
 } from "../reducers/sectorsReducer";
 import uuid from "react-uuid";
 import {cleanCanvas} from "../reducers/stageReducer";
@@ -84,21 +85,6 @@ test('set new sector', () => {
     expect(keysLayer.length).toBe(1);
     expect(keysGroup.length).toBe(1);
     expect(keysCircle.length).toBe(10);
-});
-
-test('set toggleSelect', () => {
-
-    const places = createCircleArr(10);
-    const idGroup = uuid();
-
-    const middleState = sectorsReducerForTest(circleState, setPlaceSector({idGroup,places}));
-
-    const keysLayer = Object.keys(middleState);
-
-    const idPlace = middleState[keysLayer[0]][idGroup].places[0].id;
-
-    const endState = sectorsReducerForTest(middleState, toggleSelectPlace({idLayer:keysLayer[0], idGroup, idPlace, value: true}));
-    expect(endState[keysLayer[0]][idGroup].places[0].isSelected).toBe(true);
 });
 
 test('set remove all sectors', () => {

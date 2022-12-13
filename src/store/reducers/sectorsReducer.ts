@@ -60,17 +60,6 @@ const sliceCircles = createSlice({
             state[action.payload.idLayer][action.payload.idGroup].isSelected = action.payload.value;
             return state;
         },
-        //пока не используется
-        toggleSelectPlace: (state, action: PayloadAction<{ idLayer: string, idGroup: string, idPlace: string, value: boolean }>) => {
-
-            const place = state[action.payload.idLayer][action.payload.idGroup].places.find(place => place.id === action.payload.idPlace);
-
-            if (place) {
-                place.isSelected = action.payload.value;
-            }
-
-            return state;
-        },
         offAllSelectedSector: (state) => {
 
             const keysLayers = Object.keys(state);
@@ -110,7 +99,6 @@ export const {
     setPlaces,
     setPlaceSector,
     setSectorInLayer,
-    toggleSelectPlace,
     toggleSelectSector,
     removeSector,
     offAllSelectedSector,
