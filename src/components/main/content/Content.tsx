@@ -16,6 +16,7 @@ import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
 import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCircle";
 import {ChangeSectors} from "./layers/commonLayer/changeFigure/ChangeSectors";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {ShowCoordinate} from "./ShowCoordinate";
 
 export const Content = memo(() => {
 
@@ -97,7 +98,7 @@ export const Content = memo(() => {
 
     return (
         <Box className={styles.content}>
-            {/*<ShowCoordinate/>*/}
+            <ShowCoordinate/>
             <Stage id={'stage_container'} draggable={draggable} ref={stageRef}
                    width={window.innerWidth - WIDTH_ASIDE}
                    height={window.innerHeight - HEIGHT_APP_BAR}

@@ -5,7 +5,7 @@ import {RootState} from "../store";
 import {offSelectRectsAll, saveChangedRect} from "./rectsReducer";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
 import {PointType} from "../mainType";
-import {checkSizeInterval} from "../utils";
+import {checkSizeInterval, createArraysPointRegion} from "../utils";
 
 export type ChangeSectorType = {
     idLayer: string
@@ -62,21 +62,25 @@ const slice = createSlice({
         },
         toggleSelectPlace: (state, action: PayloadAction<{ start: PointType, end: PointType }>) => {
 
-            const {start, end} = action.payload;
+            const result = createArraysPointRegion(action.payload.start, action.payload.end);
 
+            state.sectorPlaces.forEach(place => {
 
-            if (start.x < end.x && start.y < end.y) {
-
-                state.sectorPlaces.forEach(place => {
-
-                    if (place.x > start.x && place.x < end.x && place.y > start.y && place.y < end.y){
-                        place.isSelected = true;
-                    }
-                })
-            }
+                if (result.pointsX.includes(place.x) && result.pointsY.includes(place.y)) {
+                    place.isSelected = true;
+                }
+            });
 
             return state;
         },
+        offSelectPlaces: (state) => {
+
+            state.sectorPlaces.forEach(place => {
+                place.isSelected = false;
+            })
+
+            return state;
+        }
     },
     extraReducers: builder => builder
         .addCase(cleanCanvas, (state) => {
@@ -88,6 +92,8 @@ const slice = createSlice({
 })
 
 export const saveChangedSector = createAsyncThunk('changeSector/saveChangedSector', (_, {dispatch, getState}) => {
+
+    dispatch(offSelectPlaces());
 
     const state = getState() as RootState;
     const changeSector = state.changeSector;
@@ -131,16 +137,16 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
     dispatch(removeSector({idLayer: data.idLayer, idGroup: data.idGroup}));
 })
 
-export const selectedPlace = createAsyncThunk('changeSector/selectedPlace',(_,{dispatch, getState}) => {
+export const selectedPlace = createAsyncThunk('changeSector/selectedPlace', (_, {dispatch, getState}) => {
 
     const state = getState() as RootState;
+
     if (state.changeSector.idGroup && state.selectionArea.isSelection) {
 
-        dispatch(toggleSelectPlace({start: state.mouse.mouseDown, end: state.mouse.mouseUp}))
+        dispatch(toggleSelectPlace({start: state.mouse.mouseDown, end: state.mouse.move}))
     }
 })
 
 
-
-export const {setSectorForChange, cleanChangeSector, calcSizeInterval, toggleSelectPlace} = slice.actions;
+export const {setSectorForChange, cleanChangeSector, calcSizeInterval, toggleSelectPlace, offSelectPlaces} = slice.actions;
 export default slice.reducer

@@ -9,8 +9,10 @@ import {
 } from "./mainType";
 import uuid from "react-uuid";
 import {COLORS} from "./constantsColor";
+import {PlaceType} from "./reducers/sectorsReducer";
+import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../components/figures/sectors/cacheCircle";
 
-export const createRect = (move: PointType, mouseDown:PointType): RectFigureType => {
+export const createRect = (move: PointType, mouseDown: PointType): RectFigureType => {
     return {
         id: uuid(),
         typeFigure: Figures.RECT,
@@ -27,7 +29,7 @@ export const createRect = (move: PointType, mouseDown:PointType): RectFigureType
     }
 }
 
-export const createEllipse = (move: PointType, mouseDown:PointType): EllipseFigureType => {
+export const createEllipse = (move: PointType, mouseDown: PointType): EllipseFigureType => {
     return {
         id: uuid(),
         typeFigure: Figures.ELLIPSE,
@@ -39,7 +41,7 @@ export const createEllipse = (move: PointType, mouseDown:PointType): EllipseFigu
     }
 }
 
-export const createText = (mouseDown:PointType): TextFigureType => {
+export const createText = (mouseDown: PointType): TextFigureType => {
     return {
         id: uuid(),
         typeFigure: Figures.TEXT,
@@ -136,4 +138,60 @@ export const checkNameFigureForNumber = (name: string | undefined) => {
     const valueNames = Object.values(NamesForUpdate);
 
     return valueNames.some(el => el === name);
+}
+
+export const checkSizeInterval = (places: PlaceType[]) => {
+
+    let placeOne: PlaceType | null = null;
+    let placeVert: PlaceType | null = null;
+    let placeHor: PlaceType | null = null;
+
+    places.forEach(place => {
+        if (place.numCol === 1 && place.numRow === 1) {
+            placeOne = place
+        }
+        if (place.numCol === 1 && place.numRow === 2) {
+            placeVert = place;
+        }
+        if (place.numCol === 2 && place.numRow === 1) {
+            placeHor = place;
+        }
+    })
+    if (placeOne && placeVert && placeHor) {
+        //@ts-ignore todo
+        return {horizontal: placeHor.x - placeOne.x - SIZE_CIRCLE, vertical: placeVert.y - placeOne.y - SIZE_CIRCLE}
+    }
+    return {horizontal: SIZE_IDENT_CIRCLE, vertical: SIZE_IDENT_CIRCLE}
+}
+
+export const createArraysPointRegion = (start: PointType, end: PointType) => {
+
+    const pointsX: number[] = [];
+    const pointsY: number[] = [];
+
+    if (start.x < end.x) {
+
+        for (let x = start.x; x <= end.x; x++) {
+            pointsX.push(x);
+        }
+    } else {
+
+        for (let x = end.x; x <= start.x; x++) {
+            pointsX.push(x);
+        }
+    }
+
+    if (start.y < end.y) {
+
+        for (let y = start.y; y <= end.y; y++) {
+            pointsY.push(y);
+        }
+    } else {
+
+        for (let y = end.y; y <= start.y; y++) {
+            pointsY.push(y);
+        }
+    }
+
+    return {pointsX, pointsY}
 }

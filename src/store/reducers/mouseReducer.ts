@@ -67,7 +67,7 @@ export const mouseDownThunk = createAsyncThunk('mouse/mouseMove', async (e: Konv
     const mouse = state.mouse.move;
 
     dispatch(setValueDown({isDown: true}));
-    dispatch(setMousePointDown({x: mouse.x, y: mouse.y}));
+    dispatch(setMousePointDown(e.currentTarget.getRelativePointerPosition()));
 })
 
 export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaEventObject<MouseEvent>, {
@@ -79,7 +79,7 @@ export const mouseUpThunk = createAsyncThunk('mouse/mouseMove', async (e: KonvaE
     const mouse = state.mouse.move;
 
     dispatch(setValueDown({isDown: false}));
-    dispatch(setMousePointUp({x: mouse.x, y: mouse.y}));
+    dispatch(setMousePointUp(e.currentTarget.getRelativePointerPosition()));
 })
 
 export const {setMousePosition, setMousePointDown, setMousePointUp, setValueDown} = sliceMouse.actions;
