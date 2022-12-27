@@ -5,7 +5,14 @@ import {RootState} from "../store";
 import {offSelectRectsAll, saveChangedRect} from "./rectsReducer";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
 import {PointType} from "../mainType";
-import {checkSizeInterval, createArraysPointRegion} from "../utils";
+import {
+    cacheMiddleColumnPlace,
+    calcPercentsForCurveCol,
+    checkMaxColumnOrRowInSector,
+    checkSizeInterval,
+    createArraysPointRegion,
+    percentageOfNumber, updatePercents
+} from "../utils";
 
 export type ChangeSectorType = {
     idLayer: string
@@ -13,6 +20,8 @@ export type ChangeSectorType = {
     isSelected: boolean
     sizeHorizontal: number
     sizeVertical: number
+    middleColumnPlace: { [key: string]: PlaceType }
+    curve: number
     sectorPlaces: PlaceType[]
 }
 
@@ -22,8 +31,14 @@ const initialState: ChangeSectorType = {
     isSelected: false,
     sizeHorizontal: SIZE_IDENT_CIRCLE,
     sizeVertical: SIZE_IDENT_CIRCLE,
+    middleColumnPlace: {},
+    curve: 0,
     sectorPlaces: []
 }
+
+let percents: number[] = [];
+let middle: number[] = [];
+let maxCol: number = 0;
 
 const slice = createSlice({
     name: 'changeSector',
@@ -56,6 +71,34 @@ const slice = createSlice({
                 }
 
                 return place;
+            })
+
+            return state;
+        },
+        calcCurve: (state, action: PayloadAction<{ curve: number }>) => {
+
+            const MIN_BIAS = 5; // pixel
+            const bias = action.payload.curve === 0 ? MIN_BIAS : action.payload.curve * MIN_BIAS;
+
+            percents = calcPercentsForCurveCol(middle[0]);
+            percents = updatePercents(percents, middle);
+
+            state.sectorPlaces.forEach(place => {
+
+                if (action.payload.curve === 0) {
+
+                    place.y = state.middleColumnPlace[place.numRow].y;
+
+                } else if (Math.sign(action.payload.curve) === -1) {
+
+                    place.y = state.middleColumnPlace[place.numRow].y - percentageOfNumber(percents[place.numCol - 1], Math.abs(bias));
+                    place.x = place.x + 1;
+
+                } else if (Math.sign(action.payload.curve) === 1) {
+
+                    place.y = state.middleColumnPlace[place.numRow].y + percentageOfNumber(percents[place.numCol - 1], Math.abs(bias));
+                    place.x = place.x + 1;
+                }
             })
 
             return state;
@@ -123,6 +166,13 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
 
     const interval = checkSizeInterval(sector.places);
 
+    maxCol = checkMaxColumnOrRowInSector(sector.places, 'numCol');
+    middle = [Math.ceil(maxCol / 2)];
+
+    if (maxCol % 2 === 0) {
+        middle.push(middle[0] + 1)
+    }
+
     dispatch(setSectorForChange({
         idLayer: data.idLayer,
         idGroup: data.idGroup,
@@ -130,6 +180,8 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
         sizeHorizontal: interval.horizontal,
         sizeVertical: interval.vertical,
         isSelected: sector.isSelected,
+        curve: 0,
+        middleColumnPlace: cacheMiddleColumnPlace(sector.places, middle[0]),
     }));
 
     dispatch(offSelectRectsAll())
@@ -148,5 +200,12 @@ export const selectedPlace = createAsyncThunk('changeSector/selectedPlace', (_, 
 })
 
 
-export const {setSectorForChange, cleanChangeSector, calcSizeInterval, toggleSelectPlace, offSelectPlaces} = slice.actions;
+export const {
+    setSectorForChange,
+    cleanChangeSector,
+    calcSizeInterval,
+    toggleSelectPlace,
+    offSelectPlaces,
+    calcCurve
+} = slice.actions;
 export default slice.reducer

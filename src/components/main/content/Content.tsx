@@ -98,7 +98,7 @@ export const Content = memo(() => {
 
     return (
         <Box className={styles.content}>
-            <ShowCoordinate/>
+            {/*<ShowCoordinate/>*/}
             <Stage id={'stage_container'} draggable={draggable} ref={stageRef}
                    width={window.innerWidth - WIDTH_ASIDE}
                    height={window.innerHeight - HEIGHT_APP_BAR}

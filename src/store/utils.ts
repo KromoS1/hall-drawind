@@ -195,3 +195,71 @@ export const createArraysPointRegion = (start: PointType, end: PointType) => {
 
     return {pointsX, pointsY}
 }
+
+export const percentageOfNumber = (percent: number, value: number): number => {
+    return value * (percent / 100);
+}
+
+export const checkMaxColumnOrRowInSector = (sector: PlaceType[],type: 'numRow' | 'numCol'): number => {
+
+    let maxValue = 0;
+
+    sector.forEach(place => {
+
+        if (place[type] > maxValue) {
+            maxValue = place.numCol;
+        }
+    })
+
+    return maxValue;
+}
+
+export const calcPercentsForCurveCol = (middleValue: number): number[] => {
+
+    let percents = [];
+    let percent = 100 / (middleValue - 1);
+
+    let changePercent = 100;
+
+    for(let i = 1; i < middleValue; i++) {
+
+        if (i === 1) {
+            percents.push(changePercent)
+            changePercent -= percent;
+            continue;
+        }
+
+        percents.push(changePercent);
+        changePercent -= percent;
+    }
+
+    return percents;
+}
+
+export const updatePercents = (percents: number[], middle:number[]): number[] => {
+
+    if (middle[1]) {
+
+        percents = [...percents, 0, 0, ...percents.reverse()];
+    }else{
+
+        percents = [...percents, 0, ...percents.reverse()];
+    }
+
+    return  percents;
+}
+
+export const cacheMiddleColumnPlace = (sector: PlaceType[], numCol: number) => {
+
+    const columns: {[key:string]: PlaceType} = {}
+
+    sector.forEach(place => {
+
+        if (place.numCol === numCol) {
+
+            columns[place.numRow] = place;
+        }
+    })
+
+    return columns;
+}

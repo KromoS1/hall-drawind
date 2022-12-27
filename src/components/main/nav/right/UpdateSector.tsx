@@ -1,7 +1,8 @@
 import {Box, createStyles, makeStyles, Slider, Theme} from "@material-ui/core";
 import {ChangeEvent, FC, memo, useState} from "react";
-import {calcSizeInterval, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
+import {calcCurve, calcSizeInterval, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
 import {useDispatch} from "react-redux";
+import {useDebounce} from "../../../../store/hooks";
 
 type PropsType = {
     sector: ChangeSectorType
@@ -9,19 +10,34 @@ type PropsType = {
 
 export const UpdateSector: FC<PropsType> = memo(({sector}) => {
 
+    const [curveSector, setCurveSector] = useState<number>(0)
     const [sizeHorizontal, setSizeHorizontal] = useState<number>(sector.sizeHorizontal);
     const [sizeVertical, setSizeVertical] = useState<number>(sector.sizeVertical);
     const dispatch = useDispatch();
     const style = useStyles();
 
     const changeHorizontal = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+
         setSizeHorizontal(newValue as number);
         dispatch(calcSizeInterval({size: newValue as number, col_row: "numCol", x_y: 'x'}));
     }
 
     const changeVertical = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+
         setSizeVertical(newValue as number);
         dispatch(calcSizeInterval({size: newValue as number, col_row: "numRow", x_y: 'y'}));
+    }
+
+    const changeCurve = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+
+        setCurveSector(newValue as number);
+
+        if (curveSector !== newValue) {
+
+           setTimeout(() => {
+               dispatch(calcCurve({curve: newValue as number}));
+           },100)
+        }
     }
 
     return (
@@ -34,6 +50,11 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
             <Box className={`${style.padding} ${style.flex}`}>
                 <div>По вертикали</div>
                 <Slider value={sizeVertical} onChange={changeVertical} valueLabelDisplay={'auto'}/>
+            </Box>
+            <Box className={`${style.padding} ${style.flex}`}>
+                <div>Изгиб</div>
+                <Slider min={-10} step={1} marks max={10} value={curveSector} onChange={changeCurve}
+                        valueLabelDisplay={'auto'}/>
             </Box>
         </>
     )
