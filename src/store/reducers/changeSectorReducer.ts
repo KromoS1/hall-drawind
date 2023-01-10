@@ -7,11 +7,12 @@ import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/c
 import {PointType} from "../mainType";
 import {
     cacheMiddleColumnPlace,
-    calcPercentsForCurveCol,
+    calcSidesTriangle, changeSizeIntervalPlaces,
+    checkCurveForPlace,
     checkMaxColumnOrRowInSector,
     checkSizeInterval,
     createArraysPointRegion,
-    percentageOfNumber, updatePercents
+    searchCenterCircle
 } from "../utils";
 
 export type ChangeSectorType = {
@@ -23,6 +24,7 @@ export type ChangeSectorType = {
     middleColumnPlace: { [key: string]: PlaceType }
     curve: number
     sectorPlaces: PlaceType[]
+    sectorPlacesCache: PlaceType[]
 }
 
 const initialState: ChangeSectorType = {
@@ -33,12 +35,14 @@ const initialState: ChangeSectorType = {
     sizeVertical: SIZE_IDENT_CIRCLE,
     middleColumnPlace: {},
     curve: 0,
-    sectorPlaces: []
+    sectorPlaces: [],
+    sectorPlacesCache: [],
 }
 
-let percents: number[] = [];
+const PREFIX = 'changeSector';
 let middle: number[] = [];
 let maxCol: number = 0;
+let centerPlaces: { [key: string]: PointType } = {};
 
 const slice = createSlice({
     name: 'changeSector',
@@ -61,45 +65,24 @@ const slice = createSlice({
             const sizeInterval = SIZE_CIRCLE + size;
             const radius = (SIZE_CIRCLE / 2);
 
-            let start = 0;
-            state.sectorPlaces = state.sectorPlaces.map(place => {
+            state.sectorPlaces = changeSizeIntervalPlaces(state.sectorPlaces, sizeInterval, radius, col_row, x_y);
+            state.sectorPlacesCache = changeSizeIntervalPlaces(state.sectorPlacesCache, sizeInterval, radius, col_row, x_y);
 
-                if (place[col_row] === 1) {
-                    start = place[x_y] - radius;
-                } else {
-                    place[x_y] = start + ((place[col_row] - 1) * sizeInterval) + radius;
-                }
-
-                return place;
-            })
+            centerPlaces = searchCenterCircle(state.sectorPlacesCache, maxCol);
 
             return state;
         },
         calcCurve: (state, action: PayloadAction<{ curve: number }>) => {
 
-            const MIN_BIAS = 5; // pixel
-            const bias = action.payload.curve === 0 ? MIN_BIAS : action.payload.curve * MIN_BIAS;
+            for (let i = 0; i < state.sectorPlaces.length; i++) {
 
-            percents = calcPercentsForCurveCol(middle[0]);
-            percents = updatePercents(percents, middle);
+                const placeCache = state.sectorPlacesCache[i];
+                const place = state.sectorPlaces[i];
 
-            state.sectorPlaces.forEach(place => {
+                const triangle = calcSidesTriangle(centerPlaces[place.numRow], placeCache, action.payload.curve);
 
-                if (action.payload.curve === 0) {
-
-                    place.y = state.middleColumnPlace[place.numRow].y;
-
-                } else if (Math.sign(action.payload.curve) === -1) {
-
-                    place.y = state.middleColumnPlace[place.numRow].y - percentageOfNumber(percents[place.numCol - 1], Math.abs(bias));
-                    place.x = place.x + 1;
-
-                } else if (Math.sign(action.payload.curve) === 1) {
-
-                    place.y = state.middleColumnPlace[place.numRow].y + percentageOfNumber(percents[place.numCol - 1], Math.abs(bias));
-                    place.x = place.x + 1;
-                }
-            })
+                state.sectorPlaces[i] = checkCurveForPlace(placeCache, action.payload.curve, middle, triangle, centerPlaces);
+            }
 
             return state;
         },
@@ -134,7 +117,7 @@ const slice = createSlice({
         })
 })
 
-export const saveChangedSector = createAsyncThunk('changeSector/saveChangedSector', (_, {dispatch, getState}) => {
+export const saveChangedSector = createAsyncThunk(`${PREFIX}/saveChangedSector`, (_, {dispatch, getState}) => {
 
     dispatch(offSelectPlaces());
 
@@ -147,7 +130,7 @@ export const saveChangedSector = createAsyncThunk('changeSector/saveChangedSecto
     dispatch(cleanChangeSector());
 })
 
-export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChange', (data: { idLayer: string, idGroup: string }, {
+export const setSectorInChange = createAsyncThunk(`${PREFIX}/setSectorInChange`, (data: { idLayer: string, idGroup: string }, {
     dispatch,
     getState
 }) => {
@@ -173,6 +156,8 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
         middle.push(middle[0] + 1)
     }
 
+    centerPlaces = searchCenterCircle(sector.places, maxCol);
+
     dispatch(setSectorForChange({
         idLayer: data.idLayer,
         idGroup: data.idGroup,
@@ -180,8 +165,9 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
         sizeHorizontal: interval.horizontal,
         sizeVertical: interval.vertical,
         isSelected: sector.isSelected,
-        curve: 0,
+        curve: 0, //todo написать функцию для расчета смещения
         middleColumnPlace: cacheMiddleColumnPlace(sector.places, middle[0]),
+        sectorPlacesCache: sector.places,
     }));
 
     dispatch(offSelectRectsAll())
@@ -189,7 +175,7 @@ export const setSectorInChange = createAsyncThunk('changeSector/setSectorInChang
     dispatch(removeSector({idLayer: data.idLayer, idGroup: data.idGroup}));
 })
 
-export const selectedPlace = createAsyncThunk('changeSector/selectedPlace', (_, {dispatch, getState}) => {
+export const selectedPlace = createAsyncThunk(`${PREFIX}/selectedPlace`, (_, {dispatch, getState}) => {
 
     const state = getState() as RootState;
 

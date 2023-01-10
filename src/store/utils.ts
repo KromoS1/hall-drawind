@@ -82,57 +82,6 @@ const typeCursorDraw = (container: HTMLElement, isDrawGrid: boolean, isFigure: b
     }
 }
 
-
-export const addScript = function (url: string, callback: Function) {
-
-    const u = url.split('/');
-    const id = u[u.length - 1];
-    const el = document.getElementById(id);
-
-    if (!document.getElementById(id)) {
-        const el = document.createElement('script');
-        el.type = 'text/javascript';
-        el.src = url;
-        el.id = id;
-        document.getElementsByTagName('head')[0].appendChild(el);
-        if (typeof callback == 'function') {
-            //@ts-ignore
-            el.onload = callback;
-        }
-
-    } else {
-        if (typeof callback == 'function') {
-            callback();
-        }
-    }
-
-}
-
-export const addCSS = function (url: string, callback: Function) {
-
-    const u = url.split('/');
-    const id = u[u.length - 1];
-    const el = document.getElementById(id);
-
-    if (!document.getElementById(id)) {
-        const el = document.createElement("link");
-        el.type = "text/css";
-        el.rel = "stylesheet";
-        el.href = url;
-        el.id = id;
-        document.getElementsByTagName("head")[0].appendChild(el);
-        if (typeof callback == 'function') {
-            //@ts-ignore
-            el.onload = callback;
-        }
-
-    } else {
-        if (typeof callback == 'function') {
-            callback();
-        }
-    }
-}
-
 export const checkNameFigureForNumber = (name: string | undefined) => {
 
     const valueNames = Object.values(NamesForUpdate);
@@ -196,11 +145,7 @@ export const createArraysPointRegion = (start: PointType, end: PointType) => {
     return {pointsX, pointsY}
 }
 
-export const percentageOfNumber = (percent: number, value: number): number => {
-    return value * (percent / 100);
-}
-
-export const checkMaxColumnOrRowInSector = (sector: PlaceType[],type: 'numRow' | 'numCol'): number => {
+export const checkMaxColumnOrRowInSector = (sector: PlaceType[], type: 'numRow' | 'numCol'): number => {
 
     let maxValue = 0;
 
@@ -214,44 +159,9 @@ export const checkMaxColumnOrRowInSector = (sector: PlaceType[],type: 'numRow' |
     return maxValue;
 }
 
-export const calcPercentsForCurveCol = (middleValue: number): number[] => {
-
-    let percents = [];
-    let percent = 100 / (middleValue - 1);
-
-    let changePercent = 100;
-
-    for(let i = 1; i < middleValue; i++) {
-
-        if (i === 1) {
-            percents.push(changePercent)
-            changePercent -= percent;
-            continue;
-        }
-
-        percents.push(changePercent);
-        changePercent -= percent;
-    }
-
-    return percents;
-}
-
-export const updatePercents = (percents: number[], middle:number[]): number[] => {
-
-    if (middle[1]) {
-
-        percents = [...percents, 0, 0, ...percents.reverse()];
-    }else{
-
-        percents = [...percents, 0, ...percents.reverse()];
-    }
-
-    return  percents;
-}
-
 export const cacheMiddleColumnPlace = (sector: PlaceType[], numCol: number) => {
 
-    const columns: {[key:string]: PlaceType} = {}
+    const columns: { [key: string]: PlaceType } = {}
 
     sector.forEach(place => {
 
@@ -262,4 +172,94 @@ export const cacheMiddleColumnPlace = (sector: PlaceType[], numCol: number) => {
     })
 
     return columns;
+}
+
+export const searchCenterCircle = (sectorPlaces: PlaceType[], maxCol: number): { [key: string]: PointType } => {
+
+    let centerCircle: { [key: string]: PointType } = {};
+    let startPlaceRows: { [key: string]: PlaceType } = {};
+
+    sectorPlaces.forEach(place => {
+
+        if (place.numCol === 1) {
+            startPlaceRows[place.numRow] = place;
+        }
+        if (place.numCol === maxCol) {
+            centerCircle[place.numRow] = {x: (place.x + startPlaceRows[place.numRow].x) / 2, y: place.y}
+        }
+    })
+
+    return centerCircle;
+}
+
+
+type SideTriangleType = { hypotenuse: number, katetA: number, katetB: number }
+export const calcSidesTriangle = (centerCircle: PointType, place: PlaceType, corner: number): SideTriangleType => {
+
+    const RADIAN = 0.0174533;
+
+    const hypotenuse = Math.abs(centerCircle.x - place.x);//radius
+    const katetB = hypotenuse * Math.abs(Math.sin(corner * RADIAN));
+    const katetA = Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(katetB, 2));
+
+    return {hypotenuse, katetA: +katetA.toFixed(2), katetB: +katetB.toFixed(2)}
+}
+
+export const checkCurveForPlace = (placeOld: PlaceType, curve: number, middle: number[], triangle: SideTriangleType, centerPlaces: { [key: string]: PointType }): PlaceType => {
+
+    let place = {...placeOld};
+
+    if (curve >= 0) {
+
+        if (place.numCol < middle[0]) {
+
+            place.x = centerPlaces[place.numRow].x - triangle.katetA;
+            place.y = centerPlaces[place.numRow].y - triangle.katetB;
+
+        } else if (middle[1] && place.numCol > middle[1]) {
+
+            place.x = centerPlaces[place.numRow].x + triangle.katetA;
+            place.y = centerPlaces[place.numRow].y - triangle.katetB;
+
+        } else if (!middle[1] && place.numCol > middle[0]) {
+
+            place.x = centerPlaces[place.numRow].x + triangle.katetA;
+            place.y = centerPlaces[place.numRow].y - triangle.katetB;
+        }
+    } else {
+
+        if (place.numCol < middle[0]) {
+
+            place.x = centerPlaces[place.numRow].x - triangle.katetA;
+            place.y = centerPlaces[place.numRow].y + triangle.katetB;
+
+        } else if (middle[1] && place.numCol > middle[1]) {
+
+            place.x = centerPlaces[place.numRow].x + triangle.katetA;
+            place.y = centerPlaces[place.numRow].y + triangle.katetB;
+
+        } else if (!middle[1] && place.numCol > middle[0]) {
+
+            place.x = centerPlaces[place.numRow].x + triangle.katetA;
+            place.y = centerPlaces[place.numRow].y + triangle.katetB;
+        }
+    }
+
+    return place;
+}
+
+export const changeSizeIntervalPlaces = (places: PlaceType[], sizeInterval: number, radius: number, col_row: 'numCol' | 'numRow', x_y: 'x' | 'y') => {
+
+    let start = 0;
+
+    return places.map(place => {
+
+        if (place[col_row] === 1) {
+            start = place[x_y] - radius;
+        } else {
+            place[x_y] = start + ((place[col_row] - 1) * sizeInterval) + radius;
+        }
+
+        return place;
+    })
 }

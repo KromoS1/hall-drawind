@@ -1,7 +1,14 @@
 import * as _chai from 'chai';
-import {createArraysPointRegion} from "../src/store/utils";
+import {calcSidesTriangle, createArraysPointRegion, searchCenterCircle} from "../src/store/utils";
+import {PlaceType} from "../src/store/reducers/sectorsReducer";
+import {createCirclesForGrid} from "../src/store/calculate/calculateGrid";
+import {CountCirclesDrawType} from "../src/components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
 
 _chai.should();
+
+const createPlaces = async (coordinate: {xStart: number, yStart: number}, countCircleGrid: CountCirclesDrawType): Promise<PlaceType[]> => {
+    return createCirclesForGrid({xStart:100, yStart: 100}, {countX: 3, countY: 1});
+}
 
 describe('createArraysPointRegion', () => {
 
@@ -83,7 +90,30 @@ describe('createArraysPointRegion', () => {
         res.should.have.property('pointsY').to.be.a('array').with.lengthOf(11);
         res.pointsY.should.to.be.contain(-5).contain(5)
     });
-
 })
 
+describe('curve place' ,() => {
+
+    let initPlaces: PlaceType[] = [];
+
+    before(() => {
+        createPlaces({xStart:100, yStart: 100}, {countX: 3, countY: 1}).then(res => {
+
+            initPlaces = res;
+        })
+    })
+
+    it('should be search center', function () {
+        let res = searchCenterCircle(initPlaces,3);
+
+        res.should.be.property('1').to.be.property('x').to.be.equal(135);
+    });
+
+    it('should be return sides right triangle place in start sector', function () {
+        let triangle = calcSidesTriangle({x: 122.5, y: 10}, initPlaces[0],10);
+
+        triangle.should.be.property('katetA').to.be.eq(12.31);
+        triangle.should.be.property('katetB').to.be.eq(2.17);
+    });
+})
 

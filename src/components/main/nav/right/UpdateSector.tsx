@@ -2,7 +2,6 @@ import {Box, createStyles, makeStyles, Slider, Theme} from "@material-ui/core";
 import {ChangeEvent, FC, memo, useState} from "react";
 import {calcCurve, calcSizeInterval, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
 import {useDispatch} from "react-redux";
-import {useDebounce} from "../../../../store/hooks";
 
 type PropsType = {
     sector: ChangeSectorType
@@ -53,7 +52,7 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
             </Box>
             <Box className={`${style.padding} ${style.flex}`}>
                 <div>Изгиб</div>
-                <Slider min={-10} step={1} marks max={10} value={curveSector} onChange={changeCurve}
+                <Slider min={-30} step={1} max={30} value={curveSector} onChange={changeCurve}
                         valueLabelDisplay={'auto'}/>
             </Box>
         </>
