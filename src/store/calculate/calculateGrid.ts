@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 import {CountCirclesDrawType} from "../../components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../../components/figures/sectors/cacheCircle";
 
-type CoordinateCalcType = {
+export type CoordinateCalcType = {
     xStart: number,
     yStart: number,
     xEnd: number,
@@ -26,14 +26,11 @@ export const calcCountCircleGrid = (coordinate: CoordinateCalcType) => {
     const width = coordinate.xEnd - coordinate.xStart;
     const height = coordinate.yEnd - coordinate.yStart;
 
-    let countX;
-    let countY;
+    let countX = 0;
+    let countY = 0;
 
-    if (width === sizeCircleWithIdent) countX = 1;
-    if (height === sizeCircleWithIdent) countY = 1;
-
-    countX = width % sizeCircleWithIdent === 0 ? width / sizeCircleWithIdent : (width - sizeCircleWithIdent) / sizeCircleWithIdent;
-    countY = height % sizeCircleWithIdent === 0 ? height / sizeCircleWithIdent : (height - sizeCircleWithIdent) / sizeCircleWithIdent;
+    countX = width / sizeCircleWithIdent;
+    countY = height / sizeCircleWithIdent;
 
     countX = Math.round(countX);
     countY = Math.round(countY);

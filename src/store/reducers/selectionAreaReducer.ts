@@ -30,5 +30,5 @@ const sliceSelectionArea = createSlice({
     }
 })
 
-export const {setIsSelection, setIsDrawGrid} = sliceSelectionArea.actions;
+export const {setIsSelection, setIsDrawGrid, resetParamSelection} = sliceSelectionArea.actions;
 export default sliceSelectionArea.reducer;

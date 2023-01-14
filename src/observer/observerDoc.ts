@@ -12,16 +12,8 @@ let subscribers: SubscribersType = {
     onkeydown: []
 }
 
-function ctrlKeyDown(e: KeyboardEvent) {
-    subscribers.ctrlKeyDown.forEach(s => s(e));
-}
-
-function ctrlKeyUp(e: KeyboardEvent) {
-    subscribers.ctrlKeyUp.forEach(s => s(e));
-}
-
-function onkeydown(e:KeyboardEvent) {
-    subscribers.onkeydown.forEach(s => s(e));
+function executorDoc(e: KeyboardEvent, eventName: EventDocType) {
+    subscribers[eventName].forEach(s => s(e));
 }
 
 function subscribeEventDoc(eventName: EventDocType, callback: Function) {
@@ -38,5 +30,5 @@ function cleanSubscribersAll() {
 }
 
 export const observerDoc = {
-    ctrlKeyDown, ctrlKeyUp, onkeydown, subscribeEventDoc, cleanSubscribersAll, removeListener
+    executorDoc, subscribeEventDoc, cleanSubscribersAll, removeListener
 }

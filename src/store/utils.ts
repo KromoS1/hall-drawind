@@ -67,14 +67,14 @@ export const checkTypeActionForCursor = ({isSelection, isDrawGrid, figure}: chec
     }
 }
 
-const typeCursorSelectArea = (container: HTMLElement, isSelection: boolean) => {
+export const typeCursorSelectArea = (container: HTMLElement, isSelection: boolean) => {
 
     isSelection
         ? container.classList.add('cursor-selection')
         : container.classList.remove('cursor-selection');
 }
 
-const typeCursorDraw = (container: HTMLElement, isDrawGrid: boolean, isFigure: boolean) => {
+export const typeCursorDraw = (container: HTMLElement, isDrawGrid: boolean, isFigure: boolean) => {
     if (isDrawGrid || isFigure) {
         container.classList.add('cursor-draw-grid')
     } else {
@@ -205,7 +205,7 @@ export const calcSidesTriangle = (centerCircle: PointType, place: PlaceType, cor
     return {hypotenuse, katetA: +katetA.toFixed(2), katetB: +katetB.toFixed(2)}
 }
 
-export const checkCurveForPlace = (placeOld: PlaceType, curve: number, middle: number[], triangle: SideTriangleType, centerPlaces: { [key: string]: PointType }): PlaceType => {
+export const changeCurveForPlace = (placeOld: PlaceType, curve: number, middle: number[], triangle: SideTriangleType, centerPlaces: { [key: string]: PointType }): PlaceType => {
 
     let place = {...placeOld};
 

@@ -1,15 +1,14 @@
 import Konva from "konva";
 import KonvaEventObject = Konva.KonvaEventObject;
 
-type eventMouse = 'click' | 'move' | 'mouseDown' | 'mouseUp' | 'wheel' | 'moveStage'
+type eventMouse = 'click' | 'move' | 'mouseDown' | 'mouseUp' | 'wheel';
 
 type SubscribersType = {
     click: Function[],
     move: Function[],
     mouseDown: Function[],
     mouseUp: Function[],
-    wheel: Function[]
-    moveStage: Function[]
+    wheel: Function[],
 }
 
 let subscribers: SubscribersType = {
@@ -18,31 +17,10 @@ let subscribers: SubscribersType = {
     'mouseDown': [],
     'mouseUp': [],
     'wheel': [],
-    'moveStage': []
 }
 
-function click(e: KonvaEventObject<MouseEvent>) {
-    subscribers.click.forEach(s => s(e))
-}
-
-function move(e: KonvaEventObject<MouseEvent>) {
-    subscribers.move.forEach(s => s(e))
-}
-
-function mouseDown(e: KonvaEventObject<MouseEvent>) {
-    subscribers.mouseDown.forEach(s => s(e))
-}
-
-function mouseUp(e: KonvaEventObject<MouseEvent>) {
-    subscribers.mouseUp.forEach(s => s(e))
-}
-
-function wheel(e: KonvaEventObject<WheelEvent>) {
-    subscribers.wheel.forEach(s => s(e))
-}
-
-function moveStage(e: KonvaEventObject<MouseEvent>) {
-    subscribers.moveStage.forEach(s => s(e))
+function executorStage(e: KonvaEventObject<MouseEvent>, eventName: eventMouse) {
+    subscribers[eventName].forEach(s => s(e));
 }
 
 function subscribeEventStage(eventName: eventMouse, callback: Function) {
@@ -58,17 +36,11 @@ function cleanSubscribersAll() {
     subscribers['mouseDown'] = [];
     subscribers['mouseUp'] = [];
     subscribers['wheel'] = [];
-    subscribers['moveStage'] = [];
 }
 
 export const observerStage = {
-    click,
-    move,
-    mouseDown,
-    mouseUp,
-    wheel,
+    executorStage,
     subscribeEventStage,
     removeSubscriber,
-    moveStage,
     cleanSubscribersAll
 }

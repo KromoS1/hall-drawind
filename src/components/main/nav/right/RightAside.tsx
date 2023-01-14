@@ -20,7 +20,6 @@ export const RightAside = memo(() => {
     const rect = useSelector<RootState, GeneralFigureType | null>(state => state.rects.present.changeRect);
     const sector = useSelector<RootState,ChangeSectorType>(state => state.changeSector);
 
-    // const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present);
     // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
 

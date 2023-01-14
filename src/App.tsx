@@ -15,12 +15,19 @@ function App() {
 
     useEffect(() => {
 
-        document.addEventListener('keydown', (e) => observerDoc.ctrlKeyDown(e));
-        document.addEventListener('keydown', (e) => observerDoc.onkeydown(e));
-        document.addEventListener('keyup', (e) => observerDoc.ctrlKeyUp(e));
+        const eventCtrlDown = (e:KeyboardEvent) => observerDoc.executorDoc(e,'ctrlKeyDown');
+        const eventKeyDown = (e:KeyboardEvent) => observerDoc.executorDoc(e,'onkeydown');
+        const eventCtrlUp = (e:KeyboardEvent) => observerDoc.executorDoc(e,'ctrlKeyUp');
+
+        document.addEventListener('keydown', eventCtrlDown);
+        document.addEventListener('keydown', eventKeyDown);
+        document.addEventListener('keyup', eventCtrlUp);
 
         return () => {
             observerDoc.cleanSubscribersAll();
+            document.removeEventListener('keydown', eventCtrlDown);
+            document.removeEventListener('keydown', eventKeyDown);
+            document.removeEventListener('keyup', eventCtrlUp);
         }
     }, [])
 

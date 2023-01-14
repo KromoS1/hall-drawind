@@ -16,7 +16,6 @@ import {ChangeFigure} from "./layers/commonLayer/changeFigure/ChangeFigure";
 import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCircle";
 import {ChangeSectors} from "./layers/commonLayer/changeFigure/ChangeSectors";
 import KonvaEventObject = Konva.KonvaEventObject;
-import {ShowCoordinate} from "./ShowCoordinate";
 
 export const Content = memo(() => {
 
@@ -26,11 +25,11 @@ export const Content = memo(() => {
 
     const stageRef = useRef(null);
 
-    const handlerMouseMove = (e: KonvaEventObject<MouseEvent>) => observerStage.move(e);
-    const handlerMouseDown = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseDown(e);
-    const handlerMouseUp = (e: KonvaEventObject<MouseEvent>) => observerStage.mouseUp(e);
-    const handlerWheel = (e: KonvaEventObject<WheelEvent>) => observerStage.wheel(e);
-    const handlerClick = (e: KonvaEventObject<WheelEvent>) => observerStage.click(e);
+    const handlerMouseMove = (e: KonvaEventObject<MouseEvent>) => observerStage.executorStage(e,'move');
+    const handlerMouseDown = (e: KonvaEventObject<MouseEvent>) => observerStage.executorStage(e, 'mouseDown');
+    const handlerMouseUp = (e: KonvaEventObject<MouseEvent>) => observerStage.executorStage(e, 'mouseUp');
+    const handlerWheel = (e: KonvaEventObject<WheelEvent>) => observerStage.executorStage(e, 'wheel');
+    const handlerClick = (e: KonvaEventObject<WheelEvent>) => observerStage.executorStage(e, 'click');
 
     const setCursorDrag = () => {
         if (draggable) document.getElementById('section_container')?.classList.add('cursor-move');

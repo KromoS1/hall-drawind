@@ -8,7 +8,7 @@ import {PointType} from "../mainType";
 import {
     cacheMiddleColumnPlace,
     calcSidesTriangle, changeSizeIntervalPlaces,
-    checkCurveForPlace,
+    changeCurveForPlace,
     checkMaxColumnOrRowInSector,
     checkSizeInterval,
     createArraysPointRegion,
@@ -81,7 +81,7 @@ const slice = createSlice({
 
                 const triangle = calcSidesTriangle(centerPlaces[place.numRow], placeCache, action.payload.curve);
 
-                state.sectorPlaces[i] = checkCurveForPlace(placeCache, action.payload.curve, middle, triangle, centerPlaces);
+                state.sectorPlaces[i] = changeCurveForPlace(placeCache, action.payload.curve, middle, triangle, centerPlaces);
             }
 
             return state;
