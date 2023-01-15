@@ -10,7 +10,7 @@ import {
     createArraysPointRegion,
     createEllipse,
     createRect,
-    createText,
+    createText, onChangeInput,
     searchCenterCircle,
 } from "../../src/store/utils";
 import {PlaceType} from "../../src/store/reducers/sectorsReducer";
@@ -18,6 +18,7 @@ import {createCirclesForGrid} from "../../src/store/calculate/calculateGrid";
 import {CountCirclesDrawType} from "../../src/components/main/content/layers/commonLayer/selectionArea/SelectionAreaGrid";
 import {Figures} from "../../src/store/mainType";
 import {SIZE_CIRCLE} from "../../src/components/figures/sectors/cacheCircle";
+import {ChangeEvent} from "react";
 
 _chai.should();
 
@@ -347,5 +348,32 @@ describe('change size interval between places', async () => {
 
         changedPlaces[0].should.be.property('x').to.eq(places[0].x);
         changedPlaces[1].should.be.property('x').to.eq(111);
+    });
+})
+
+describe('function change for inputs', () => {
+
+    it('should return value input', function () {
+
+        let valueResult = 0;
+        let nameResult = '';
+
+        const myEvent: ChangeEvent<HTMLInputElement> = {
+            // @ts-ignore
+            target: {
+                value: '10',
+                name: 'rotation',
+            }
+        }
+
+        const callback = (value: number, name: string,) => {
+
+            nameResult = name;
+            valueResult = value;
+        }
+
+        onChangeInput(myEvent, callback);
+
+        valueResult.should.be.eq(10);
     });
 })

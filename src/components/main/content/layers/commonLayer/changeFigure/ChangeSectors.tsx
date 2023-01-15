@@ -7,13 +7,16 @@ import {FPlace} from "../../../../../figures/sectors/FPlace";
 import {useAppDispatch} from "../../../../../../store/hooks";
 import {cleanChangeSector, saveChangedSector} from "../../../../../../store/reducers/changeSectorReducer";
 import {observerDoc} from "../../../../../../observer/observerDoc";
+import Konva from "konva";
 
 export const ChangeSectors = memo(() => {
 
     const idGroup = useSelector<RootState, string>(state => state.changeSector.idGroup);
     const sectorPlaces = useSelector<RootState, PlaceType[]>(state => state.changeSector.sectorPlaces);
-    const transformerRef = useRef(null);
-    const groupRef = useRef(null);
+    const rotate = useSelector<RootState,number>(state => state.changeSector.rotation);
+
+    const transformerRef = useRef<Konva.Transformer | null>(null);
+    const groupRef = useRef<Konva.Group | null>(null);
     const dispatch = useAppDispatch();
 
     const remove = (e: KeyboardEvent) => {
@@ -48,9 +51,27 @@ export const ChangeSectors = memo(() => {
 
     const fPlace = sectorPlaces.map(place => <FPlace key={place.id} place={place} isChange={true}/>)
 
+    if (transformerRef.current && groupRef.current) {
+
+        const width = transformerRef.current.getAttr('width')
+        const height = transformerRef.current.getAttr('height')
+
+        const offsetForCenter = {
+            x: width / 2,
+            y: height / 2,
+        }
+
+        // groupRef.current?.offsetX(offsetForCenter.x)
+        // groupRef.current?.offsetY(offsetForCenter.y)
+
+        groupRef.current.rotation(rotate)
+    }
+    // get absolute rotation
+    //var rotation = node.getAbsoluteRotation(); использовать для получения значение поворота
+
     return (
         <>
-            <Group key={idGroup} ref={groupRef}>
+            <Group key={idGroup} ref={groupRef} offset={{x: 100, y: 100}}>
                 {fPlace}
             </Group>
             {idGroup &&
@@ -65,25 +86,3 @@ export const ChangeSectors = memo(() => {
         </>
     )
 })
-
-
-// пример кода для изгиба сетки
-// lineCap={"round"}
-// sceneFunc={function (context, shape) {
-//
-//         context.beginPath();
-//
-//         // context.rect(0, 0, rect.w, rect.h);
-//         context.moveTo(0,0)
-//         context.quadraticCurveTo(rect.w/2,200,rect.w, 0);
-//         // context.lineTo(rect.w, 0);
-//         context.lineTo(rect.w, rect.h);
-//         context.quadraticCurveTo(rect.w/2,200+ 200, 0, rect.h);
-//
-//         // context.lineTo(0, rect.h);
-//         context.lineTo(0, 0);
-//
-//         // context.closePath();
-//
-//         context.fillStrokeShape(shape);
-//     }}

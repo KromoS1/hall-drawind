@@ -5,11 +5,10 @@ import {PointType} from "../../../store/mainType";
 import KonvaEventObject = Konva.KonvaEventObject;
 import KonvaCircle= Konva.Circle;
 import KonvaText= Konva.Text;
+import {PlaceType} from "../../../store/reducers/sectorsReducer";
 
 export type PlaceElementType = {
-    positionPlace: PointType,
-    isSelected: boolean,
-    numCol: number,
+    place: PlaceType
     offset: PointType
     onDragStart: (e: KonvaEventObject<DragEvent>) => void,
     onDragEnd: (e: KonvaEventObject<DragEvent>) => void
@@ -58,8 +57,8 @@ export const addCacheElement = (stage: Stage) => {
 export const cloningElement = (props: PlaceElementType) => {
 
     const cloneCircle = circleCache.clone({
-        x: props.positionPlace.x,
-        y: props.positionPlace.y,
+        x: props.place.x,
+        y: props.place.y,
         radius: SIZE_CIRCLE / 2,
         fill: COLORS.bgPlace,
         onDragStart: props.onDragStart,
@@ -67,9 +66,9 @@ export const cloningElement = (props: PlaceElementType) => {
     })
 
     const cloneText = textCache.clone({
-        x: props.positionPlace.x,
-        y: props.positionPlace.y,
-        text: `${props.numCol}`,
+        x: props.place.x,
+        y: props.place.y,
+        text: `${props.place.numCol}`,
         fontSize: 10,
         fill: '#fff',
         offset: props.offset,

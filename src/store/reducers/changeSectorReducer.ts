@@ -25,6 +25,7 @@ export type ChangeSectorType = {
     curve: number
     sectorPlaces: PlaceType[]
     sectorPlacesCache: PlaceType[]
+    rotation: number
 }
 
 const initialState: ChangeSectorType = {
@@ -37,6 +38,7 @@ const initialState: ChangeSectorType = {
     curve: 0,
     sectorPlaces: [],
     sectorPlacesCache: [],
+    rotation: 0
 }
 
 const PREFIX = 'changeSector';
@@ -72,16 +74,16 @@ const slice = createSlice({
 
             return state;
         },
-        calcCurve: (state, action: PayloadAction<{ curve: number }>) => {
+        calcCurve: (state, action: PayloadAction<{ cornerCurve: number }>) => {
 
             for (let i = 0; i < state.sectorPlaces.length; i++) {
 
                 const placeCache = state.sectorPlacesCache[i];
                 const place = state.sectorPlaces[i];
 
-                const triangle = calcSidesTriangle(centerPlaces[place.numRow], placeCache, action.payload.curve);
+                const triangle = calcSidesTriangle(centerPlaces[place.numRow], placeCache, action.payload.cornerCurve);
 
-                state.sectorPlaces[i] = changeCurveForPlace(placeCache, action.payload.curve, middle, triangle, centerPlaces);
+                state.sectorPlaces[i] = changeCurveForPlace(placeCache, action.payload.cornerCurve, middle, triangle, centerPlaces);
             }
 
             return state;
@@ -104,6 +106,12 @@ const slice = createSlice({
             state.sectorPlaces.forEach(place => {
                 place.isSelected = false;
             })
+
+            return state;
+        },
+        setRotation: (state,action: PayloadAction<{corner: number}>) => {
+
+            state.rotation = action.payload.corner;
 
             return state;
         }
@@ -168,6 +176,7 @@ export const setSectorInChange = createAsyncThunk(`${PREFIX}/setSectorInChange`,
         curve: 0, //todo написать функцию для расчета смещения
         middleColumnPlace: cacheMiddleColumnPlace(sector.places, middle[0]),
         sectorPlacesCache: sector.places,
+        rotation: 0
     }));
 
     dispatch(offSelectRectsAll())
@@ -192,6 +201,7 @@ export const {
     calcSizeInterval,
     toggleSelectPlace,
     offSelectPlaces,
-    calcCurve
+    calcCurve,
+    setRotation
 } = slice.actions;
 export default slice.reducer

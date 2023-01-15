@@ -1,7 +1,15 @@
 import {Box, createStyles, makeStyles, Slider, Theme} from "@material-ui/core";
 import {ChangeEvent, FC, memo, useState} from "react";
-import {calcCurve, calcSizeInterval, ChangeSectorType} from "../../../../store/reducers/changeSectorReducer";
+import {
+    calcCurve,
+    calcSizeInterval,
+    ChangeSectorType,
+    setRotation
+} from "../../../../store/reducers/changeSectorReducer";
 import {useDispatch} from "react-redux";
+import {IconsMui} from "../../iconsMui/iconsMui";
+import {InputUpdateGroup} from "./InputUpdateGroup";
+import {onChangeInput} from "../../../../store/utils";
 
 type PropsType = {
     sector: ChangeSectorType
@@ -12,6 +20,7 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
     const [curveSector, setCurveSector] = useState<number>(0)
     const [sizeHorizontal, setSizeHorizontal] = useState<number>(sector.sizeHorizontal);
     const [sizeVertical, setSizeVertical] = useState<number>(sector.sizeVertical);
+
     const dispatch = useDispatch();
     const style = useStyles();
 
@@ -34,9 +43,16 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
         if (curveSector !== newValue) {
 
            setTimeout(() => {
-               dispatch(calcCurve({curve: newValue as number}));
+               dispatch(calcCurve({cornerCurve: newValue as number}));
            },100)
         }
+    }
+
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+        const callback = (value: number) => dispatch(setRotation({corner: value}));
+
+        onChangeInput(e,callback);
     }
 
     return (
@@ -54,6 +70,11 @@ export const UpdateSector: FC<PropsType> = memo(({sector}) => {
                 <div>Изгиб</div>
                 <Slider min={-30} step={1} max={30} value={curveSector} onChange={changeCurve}
                         valueLabelDisplay={'auto'}/>
+            </Box>
+            <Box>
+                <InputUpdateGroup value={sector.rotation} name={'rotation'} onChange={onChange}>
+                    <IconsMui.Rotate90DegreesCcwIcon/>
+                </InputUpdateGroup>
             </Box>
         </>
     )

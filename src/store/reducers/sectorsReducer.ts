@@ -9,7 +9,8 @@ export type PlaceType = PointType & {
     id: string,
     numRow: number
     numCol: number
-    isSelected: boolean
+    isSelected: boolean,
+    rotation: number
 }
 
 export type SectorsPlacesType = {

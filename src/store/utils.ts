@@ -11,6 +11,8 @@ import uuid from "react-uuid";
 import {COLORS} from "./constantsColor";
 import {PlaceType} from "./reducers/sectorsReducer";
 import {SIZE_CIRCLE, SIZE_IDENT_CIRCLE} from "../components/figures/sectors/cacheCircle";
+import {ChangeEvent} from "react";
+import {changeDataRect} from "./reducers/rectsReducer";
 
 export const createRect = (move: PointType, mouseDown: PointType): RectFigureType => {
     return {
@@ -262,4 +264,28 @@ export const changeSizeIntervalPlaces = (places: PlaceType[], sizeInterval: numb
 
         return place;
     })
+}
+
+export const onChangeInput = (e: ChangeEvent<HTMLInputElement>, callback: (value: number, name: string,) => void) => {
+
+    let value: string | number = e.target.value;
+    const name = e.target.name;
+
+    if (checkNameFigureForNumber(name)) {
+        value = +value;
+        if (name === 'cornerRadius' && value < 0) {
+            value = 0;
+        }
+    }
+
+   callback(value as number, name);
+}
+
+export const changeRotationSector = (place: PlaceType, corner: number, middle: number[], triangle: SideTriangleType, centerPlaces: { [key: string]: PointType }): PlaceType => {
+
+    if (corner > 0) {
+
+    }
+
+    return place
 }

@@ -12,8 +12,6 @@ type PropsType = {
 
 export const FPlace: FC<PropsType> = memo(({place, isChange}) => {
 
-    const {numCol, x, y, isSelected} = place;
-
     const onDragStart = useCallback(() => {
         // setPositionPlace(position => ({...position, isDragging: true}));
     }, [])
@@ -23,17 +21,15 @@ export const FPlace: FC<PropsType> = memo(({place, isChange}) => {
     }, [])
 
     const offset = {
-        x: `${numCol}`.length > 2 ? 8.5 : `${numCol}`.length > 1 ? 6 : 3,
+        x: `${place.numCol}`.length > 2 ? 8.5 : `${place.numCol}`.length > 1 ? 6 : 3,
         y: 5
     }
 
     return (
         <>
             {isChange
-                ? <PlaceNoCache positionPlace={{x, y}} isSelected={isSelected} numCol={numCol}
-                                      offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
-                : <PlaceCache positionPlace={{x, y}} isSelected={isSelected} numCol={numCol}
-                              offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
+                ? <PlaceNoCache place={place} offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
+                : <PlaceCache place={place} offset={offset} onDragStart={onDragStart} onDragEnd={onDragEnd}/>
             }
         </>
     )

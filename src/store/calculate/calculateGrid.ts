@@ -18,6 +18,7 @@ const createCircle = (x: number, y: number, numberRow: number, numberColumn: num
         numCol: numberRow,
         numRow: numberColumn,
         isSelected: false,
+        rotation: 0,
     }
 }
 

@@ -1,11 +1,12 @@
 import {ChangeEvent, FC, memo} from "react";
 import {useDispatch} from "react-redux";
 import {Figures, GeneralFigureType, RectFigureType} from "../../../../store/mainType";
-import {checkNameFigureForNumber} from "../../../../store/utils";
-import {Box, createStyles, makeStyles, TextField, Theme} from "@material-ui/core";
+import {checkNameFigureForNumber, onChangeInput} from "../../../../store/utils";
+import {Box, createStyles, makeStyles, Theme} from "@material-ui/core";
 import {Color, ColorPicker, ColorType, createColor} from 'material-ui-color';
 import {IconsMui} from "../../iconsMui/iconsMui";
 import {changeDataRect} from "../../../../store/reducers/rectsReducer";
+import {InputUpdateGroup} from "./InputUpdateGroup";
 
 type PropsType = {
     figure: GeneralFigureType
@@ -32,22 +33,17 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 
-        let value: string | number = e.target.value;
-        const name = e.target.name;
-
-        if (checkNameFigureForNumber(name)) {
-            value = +value;
-            if (name === 'cornerRadius' && value < 0) {
-                value = 0;
-            }
+        const callback = (value:number, name: string) => {
+            dispatch(changeDataRect({
+                rect: {
+                    ...rect,
+                    [`${name}`]: value
+                }
+            }))
         }
-//TODO изменить на все фигуры
-        dispatch(changeDataRect({
-            rect: {
-                ...rect,
-                [`${name}`]: value
-            }
-        }))
+        //TODO изменить на все фигуры
+
+        onChangeInput(e,callback);
     }
 
     const onChangeColorBG = (color: Color | ColorType) => {
@@ -107,40 +103,8 @@ const UpdateRect: FC<PropsUpdateRectType> = memo(({rect}) => {
     )
 })
 
-type InputUpdateGroupProps = {
-    name: string
-    value: number | string
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
-    children: JSX.Element
-}
-
-const InputUpdateGroup: FC<InputUpdateGroupProps> = memo((props) => {
-
-    const style = useStyles();
-
-    return (
-        <TextField
-            type={'number'}
-            name={props.name}
-            onChange={props.onChange}
-            className={style.margin}
-            value={props.value}
-            InputProps={{
-                startAdornment: (
-                    <IconsMui.InputAdornment position="start">
-                        {props.children}
-                    </IconsMui.InputAdornment>
-                ),
-            }}
-        />
-    )
-})
-
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
-        margin: {
-            margin: theme.spacing(1),
-        },
         flex: {
             display: 'flex'
         },
