@@ -5,10 +5,10 @@ import Konva from "konva";
 import {useAppDispatch} from "../../../store/hooks";
 import {FTransformer} from "../transformer/Transformer";
 import {observerDoc} from "../../../observer/observerDoc";
-import {removeRects} from "../../../store/reducers/rectsReducer";
-import {changeDataEllipse, saveChangedEllipse,
+import {changeDataEllipse, removeEllipses, saveChangedEllipse,
     setEllipseForChange, toggleSelectEllipse} from "../../../store/reducers/ellipsesReducer";
 import KonvaEventObject = Konva.KonvaEventObject;
+import {COLORS} from "../../../store/constantsColor";
 
 type PropsType = {
     ellipse: EllipseFigureType
@@ -25,11 +25,11 @@ export const FEllipse: FC<PropsType> = memo(({ellipse, isChange}) => {
         const node = ellipseRef.current;
 
         if (node) {
-            const scaleX = node.scaleX();
-            const scaleY = node.scaleY();
+            // const scaleX = node.scaleX();
+            // const scaleY = node.scaleY();
 
-            node.scaleX(1);
-            node.scaleY(1);
+            // node.scaleX(1);
+            // node.scaleY(1);
 
             dispatch(changeDataEllipse({
                 ellipse: {
@@ -64,7 +64,7 @@ export const FEllipse: FC<PropsType> = memo(({ellipse, isChange}) => {
 
     const removeEllipse = (e: KeyboardEvent) => {
         if (e.key === 'Delete') {
-            dispatch(removeRects());
+            dispatch(removeEllipses());
         }
     }
 
@@ -79,6 +79,9 @@ export const FEllipse: FC<PropsType> = memo(({ellipse, isChange}) => {
         }
     }, [ellipse.isSelected])
 
+    const strokeEllipse = ellipse.borderColor !== 'transparent' ? ellipse.borderColor : COLORS.transparent;
+    const strokeWidth = ellipse.borderWidth !== 0 ? +ellipse.borderWidth : 0;
+
     return (
         <>
             <Ellipse
@@ -88,9 +91,9 @@ export const FEllipse: FC<PropsType> = memo(({ellipse, isChange}) => {
                 y={ellipse.y}
                 radiusX={ellipse.radiusX}
                 radiusY={ellipse.radiusY}
-                fill={'red'}
-                stroke={'black'}
-                strokeWidth={4}
+                fill={ellipse.bgColor}
+                stroke={strokeEllipse}
+                strokeWidth={strokeWidth}
                 draggable={isChange}
                 onDragEnd={onDragEnd}
                 onTransformEnd={transformEnd}

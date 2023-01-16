@@ -40,6 +40,9 @@ export const createEllipse = (move: PointType, mouseDown: PointType): EllipseFig
         y: mouseDown.y,
         radiusX: move.x - mouseDown.x,
         radiusY: move.y - mouseDown.y,
+        bgColor: COLORS.bgFigure,
+        borderWidth: 0,
+        borderColor: COLORS.transparent,
     }
 }
 

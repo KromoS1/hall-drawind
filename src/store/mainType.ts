@@ -41,6 +41,9 @@ export type RectFigureType = PointType & MainParamFigureType & {
 export type EllipseFigureType = PointType & MainParamFigureType & {
     radiusX: number,
     radiusY: number,
+    bgColor: string
+    borderWidth: number,
+    borderColor: string,
 }
 
 export type TextFigureType = PointType & MainParamFigureType & {
