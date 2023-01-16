@@ -17,7 +17,7 @@ const initialState: EllipseReducerType = {
 }
 
 const slice = createSlice({
-    name:'ellipses',
+    name: 'ellipses',
     initialState,
     reducers: {
         setEllipseFigure: (state, action: PayloadAction<{ ellipse: EllipseFigureType }>) => {
@@ -89,7 +89,6 @@ export const setEllipseForChange = createAsyncThunk('ellipses/setEllipseForChang
     dispatch(offAllSelectedSector());
     dispatch(offSelectEllipsesAll());
     dispatch(setEllipseInChange({ellipse}));
-
 })
 
 export const {

@@ -49,7 +49,7 @@ export const DrawEllipses: FC<DrawEllipseType> = function ({ellipses}) {
 export const DrawTexts: FC<DrawTextsType> = function ({texts}) {
 
     const drawTexts = useMemo(() => {
-        return texts.map(text => <FText key={text.id} textFigure={text}/>)
+        return texts.map(text => <FText key={text.id} textFigure={text} isChange={false}/>)
     }, [texts])
 
     return (
