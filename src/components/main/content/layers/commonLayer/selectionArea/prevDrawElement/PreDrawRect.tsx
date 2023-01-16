@@ -5,11 +5,11 @@ import {PointType} from "../../../../../../../store/mainType";
 import {COLORS} from "../../../../../../../store/constantsColor";
 
 type PropsType = PointType & {
-    w: number,
-    h: number,
-    isDrawGrid?: boolean,
-    countCircles?: CountCirclesDrawType,
-    bgColor?: string,
+    w: number
+    h: number
+    isDrawGrid?: boolean
+    countCircles?: CountCirclesDrawType
+    bgColor?: string
     borderWidth?: number
     borderColor?: string
 }

@@ -36,6 +36,8 @@ export const FEllipse: FC<PropsType> = memo(({ellipse, isChange}) => {
                     ...ellipse,
                     x: Math.round(node.x()),
                     y: Math.round(node.y()),
+                    // radiusX:
+                    // radiusY:
                 }
             }))
         }
