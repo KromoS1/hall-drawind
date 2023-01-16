@@ -35,7 +35,7 @@ export const DrawEllipses: FC<DrawEllipseType> = function ({ellipses}) {
 
     const drawEllipses = useMemo(() => {
         return ellipses.map(ellipse => {
-            return <FEllipse key={ellipse.id} ellipse={ellipse}/>
+            return <FEllipse key={ellipse.id} ellipse={ellipse} isChange={false}/>
         })
     }, [ellipses])
 

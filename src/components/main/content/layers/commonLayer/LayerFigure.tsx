@@ -1,15 +1,16 @@
 import React, {memo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../../../store/store";
-import {Figures, PointType, RectFigureType, TypesFigureType} from "../../../../../store/mainType";
+import {EllipseFigureType, Figures, PointType, RectFigureType, TypesFigureType} from "../../../../../store/mainType";
 import {PreDrawRect} from "./selectionArea/prevDrawElement/PreDrawRect";
 import {observerStage} from "../../../../../observer/observerStage";
 import {PreDrawEllipse} from "./selectionArea/prevDrawElement/PreDrawEllipse";
 import {COLORS} from "../../../../../store/constantsColor";
 import {setRectFigure} from "../../../../../store/reducers/rectsReducer";
-import {createRect} from "../../../../../store/utils";
-import {DrawRects} from "./drawFigure/DrawsFigure";
+import {createEllipse, createRect} from "../../../../../store/utils";
+import {DrawEllipses, DrawRects} from "./drawFigure/DrawsFigure";
 import {setFigureDraw} from "../../../../../store/reducers/stageReducer";
+import {setEllipseFigure} from "../../../../../store/reducers/ellipsesReducer";
 
 export const LayerFigure = memo(() => {
 
@@ -18,7 +19,7 @@ export const LayerFigure = memo(() => {
     const mouseDown = useSelector<RootState, PointType>(state => state.mouse.mouseDown);
     const typeFigure = useSelector<RootState, TypesFigureType | null>(state => state.stage.drawFigure);
     const rects = useSelector<RootState, RectFigureType[]>(state => state.rects.present.rects);
-    // const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.otherFigure.present.figures.ellipses);
+    const ellipses = useSelector<RootState,EllipseFigureType[]>(state => state.ellipses.present.ellipses);
     // const texts = useSelector<RootState,TextFigureType[]>(state => state.otherFigure.present.figures.text);
     const dispatch = useDispatch();
 
@@ -31,7 +32,7 @@ export const LayerFigure = memo(() => {
                 break;
             }
             case 2: {
-                // dispatch(setFigure({figure: createEllipse()}));
+                dispatch(setEllipseFigure({ellipse: createEllipse(move, mouseDown)}));
                 dispatch(setFigureDraw({typeFigure: null}));
                 break;
             }
@@ -55,7 +56,7 @@ export const LayerFigure = memo(() => {
     return (
         <>
             <DrawRects rects={rects}/>
-            {/*<DrawEllipses ellipses={ellipses}/>*/}
+            <DrawEllipses ellipses={ellipses}/>
             {/*<DrawTexts texts={texts}/>*/}
             {isDown && typeFigure === Figures.RECT ?
                 <PreDrawRect x={mouseDown.x} y={mouseDown.y} w={move.x - mouseDown.x} h={move.y - mouseDown.y}
