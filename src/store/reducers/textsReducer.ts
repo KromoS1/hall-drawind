@@ -1,4 +1,4 @@
-import {EllipseFigureType, TextFigureType} from "../mainType";
+import {TextFigureType} from "../mainType";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import undoable from "redux-undo";
 import {cleanCanvas} from "./stageReducer";

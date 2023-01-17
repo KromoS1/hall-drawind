@@ -40,6 +40,5 @@ export const PreDrawRect: FC<PropsType> = memo(({x, y, w, h, isDrawGrid, countCi
             </Shape>
             {isDrawGrid && <Text x={xText} y={yText} text={`${countCircles?.countX}x${countCircles?.countY}`} fontSize={20}/>}
         </>
-
     )
 })

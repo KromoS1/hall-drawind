@@ -4,15 +4,14 @@ import {Text} from "react-konva";
 
 type PropsType = PointType & {
     text: string
-    isDrawGrid?: boolean
 }
 
-export const PreDrawText: FC<PropsType> = ({x, y, text, isDrawGrid}) => {
+export const PreDrawText: FC<PropsType> = ({x, y, text}) => {
 
     return (
         <>
-        <Text x={x} y={y}/>
-        {isDrawGrid && <Text x={x} y={y} text={text} fontSize={20}/>}
+        <Text x={x} y={y} text={text}/>
+        {/*{text && <Text x={x} y={y} text={text} fontSize={20}/>}*/}
         </>
     )
 }

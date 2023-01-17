@@ -17,6 +17,7 @@ import {addCacheElement, cleanCircleCache} from "../../figures/sectors/cacheCirc
 import {ChangeSectors} from "./layers/commonLayer/changeFigure/ChangeSectors";
 import KonvaEventObject = Konva.KonvaEventObject;
 import {ChangeEllipse} from "./layers/commonLayer/changeFigure/ChangeEllipse";
+import {ChangeText} from "./layers/commonLayer/changeFigure/ChangeText";
 
 export const Content = memo(() => {
 
@@ -110,6 +111,7 @@ export const Content = memo(() => {
                     <LayerFigure/>
                     <ChangeFigure/>
                     <ChangeEllipse/>
+                    <ChangeText/>
                     <ChangeSectors/>
                 </Layer>
                 <LayerSectors/>

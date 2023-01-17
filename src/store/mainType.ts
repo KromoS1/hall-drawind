@@ -22,6 +22,7 @@ export const NamesForUpdate = {
 }
 
 export type TypesFigureType = typeof Figures.RECT | typeof Figures.ELLIPSE | typeof Figures.TEXT | Figures.SECTOR
+
 export type MainParamFigureType = {
     id: string,
     typeFigure: TypesFigureType,

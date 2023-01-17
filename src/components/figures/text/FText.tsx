@@ -17,13 +17,33 @@ import KonvaEventObject = Konva.KonvaEventObject;
 type PropsType = {
     textFigure: TextFigureType
     isChange: boolean
-    // bgColor?: string
 }
 
 export const FText: FC<PropsType> = memo(({textFigure, isChange}) => {
 
     const textRef = useRef<Konva.Ellipse | null>(null);
     const dispatch = useAppDispatch();
+
+    const transformEnd = () => {
+
+        const node = textRef.current;
+
+        if (node) {
+            // const scaleX = node.scaleX();
+            // const scaleY = node.scaleY();
+
+            node.scaleX(1);
+            node.scaleY(1);
+
+            dispatch(changeDataText({
+                text: {
+                    ...textFigure,
+                    x: Math.round(node.x()),
+                    y: Math.round(node.y()),
+                }
+            }))
+        }
+    }
 
     const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
         dispatch(changeDataText({text: {...textFigure, x: e.target.x(), y: e.target.y()}}))
@@ -74,6 +94,7 @@ export const FText: FC<PropsType> = memo(({textFigure, isChange}) => {
                   // fill={bgColor ? bgColor : COLORS.bgSelected}
                   draggable={isChange}
                   onDragEnd={onDragEnd}
+                  onTransformEnd={transformEnd}
                   onClick={onClick}
                   onDblClick={dbClick}
             />

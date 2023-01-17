@@ -113,5 +113,6 @@ export const {
     removeRects,
     offSelectRectsAll,
 } = slice.actions;
+
 export const RectsReducerForTest = slice.reducer;
 export default undoable(slice.reducer);
